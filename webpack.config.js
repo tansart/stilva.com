@@ -129,8 +129,8 @@ const backEnd = Object.assign({}, baseConfig, {
 	entry: '../app.js',
 
 	output: {
-		path: path.resolve(__dirname, "dist", 'folio'),
-		publicPath: '/folio',
+		path: path.resolve(__dirname, "dist"),
+		publicPath: '/',
 		filename: 'bundle.server.js'
 	},
 
@@ -160,8 +160,8 @@ const frontEnd = Object.assign({}, baseConfig, {
 	entry: './index.js',
 
 	output: {
-		path: path.resolve(__dirname, "dist", 'folio'),
-		publicPath: '/folio',
+		path: path.resolve(__dirname, "dist"),
+		publicPath: '/',
 		filename: 'bundle.js'
 	}
 });
