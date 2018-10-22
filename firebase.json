@@ -5,12 +5,15 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**",
-      "dist/*.map"
+      "dist/*.map",
+      "dist/bundle.server.js",
+      "dist/stats-be.json",
+      "dist/stats-fe.json"
     ],
     "rewrites": [
       {
-        "source": "folio/**",
-        "destination": "folio/index.html"
+        "source": "**",
+        "destination": "index.html"
       }
     ]
   }

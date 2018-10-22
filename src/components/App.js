@@ -120,9 +120,9 @@ export default class App extends Component {
 
   render() {
     return <Router>
-			<Home path="/folio/" />
-			<About path="/folio/about" />
-			<Search path="/folio/search/:query?/:advanced?" />
+			<Home path="/" />
+			<About path="/about" />
+			<Search path="/search/:query?/:advanced?" />
 		</Router>
   }
 }
