@@ -1,6 +1,6 @@
 export default class AnimationController {
 	get length() {
-		return this.rectangles.length * 2;
+		return this.rectangles.length * 8;
 	}
 
 	constructor() {
@@ -11,9 +11,7 @@ export default class AnimationController {
 	addRectangle(rect) {
 		this.rectangles.push(rect);
 
-		this.output = this.rectangles.reduce((acc, rect) => {
-			return acc.concat(rect.getData(0));
-		}, []);
+		this.compile();
 	}
 
 	removeRectangles(rectIDs = []) {
@@ -21,7 +19,9 @@ export default class AnimationController {
 			return;
 
 		this.output = [];
+
 		const newRectangles = [];
+
 		for(let i = 0; i<this.rectangles.length; i++) {
 			if(rectIDs.indexOf(i) === -1) {
 				newRectangles.push(this.rectangles[i]);
@@ -29,6 +29,16 @@ export default class AnimationController {
 			}
 		}
 		this.rectangles = newRectangles;
+
+		for(let i = 0; i<this.rectangles.length; i++) {
+			this.output[i*8*4+4*5+3] = this.rectangles[i].ease(this.rectangles[i].time);
+		}
+	}
+
+	compile() {
+		this.output = this.rectangles.reduce((acc, rect) => {
+			return acc.concat(rect.getData());
+		}, []);
 	}
 
 	get(delta) {
@@ -36,11 +46,11 @@ export default class AnimationController {
 		const length = this.rectangles.length;
 
 		for(let i = 0; i<length; i++) {
-			this.rectangles[i].time += delta;
-			this.output[i*8+5] = this.rectangles[i].ease(this.rectangles[i].time);
+			this.rectangles[i].update(delta);
+			this.output[i*8*4+4*5+3] = this.rectangles[i].ease(this.rectangles[i].time);
 
-			if(this.rectangles[i].time > 1 && !this.rectangles[i].isShowAnimation) {
-				// remove.push(i);
+			if(this.rectangles[i].time > 1 && this.rectangles[i].isHiding) {
+				remove.push(i);
 			}
 		}
 

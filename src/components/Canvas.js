@@ -15,7 +15,7 @@ export default class Canvas extends Component {
 	}
 
 	componentDidMount() {
-		this.gl = this.node.getContext('webgl');
+		this.gl = this.node.getContext('webgl', {antialias: false});
 
 		this.gl.viewport(0, 0, this.gl.drawingBufferWidth, this.gl.drawingBufferHeight);
 
@@ -28,7 +28,6 @@ export default class Canvas extends Component {
 		this.gl.vertexAttribPointer(positionLocation, 2, this.gl.FLOAT, false, 0, 0);
 
 		const resolutionLocation = this.gl.getUniformLocation(program, "u_resolution");
-		const timeLocation = this.gl.getUniformLocation(program, "u_time");
 		const numRectLocation = this.gl.getUniformLocation(program, "u_num_rectangle");
 
 		function pGetImage(src) {
@@ -47,24 +46,33 @@ export default class Canvas extends Component {
 		this.projectTextureTwo = createTexture(this.gl, program, 1, "u_image1");
 		this.projectTextureThree = createTexture(this.gl, program, 2, "u_image2");
 
-		const rect1 = new RectangleAnimation(0., 0., .3, .3);
-		rect1.animationProperties(0, true, 1);
+		const rect1 = new RectangleAnimation(.1, .1, .3, .4);
+		rect1.animationProperties(1000, 0, false, 1);
 
-		const rect2 = new RectangleAnimation(.2, .2, .3, .3);
-		rect2.animationProperties(0, false, 1);
+		const rect2 = new RectangleAnimation(.5, .1, .5, .2);
+		rect2.animationProperties(5000, 255, false, -1);
 
-		const rect3 = new RectangleAnimation(.7, .4, .3, .3);
-		rect3.animationProperties(0, true, 1);
+		const rect3 = new RectangleAnimation(.7, .4, .31, .3);
+		rect3.animationProperties(750, 0, false, 1);
 
 		const controller = new AnimationController();
 		controller.addRectangle(rect1);
-		setTimeout(_ => {
-			controller.addRectangle(rect2);
-		}, 1000);
-		setTimeout(_ => {
-			controller.addRectangle(rect3);
-		}, 1500);
+		controller.addRectangle(rect2);
+		controller.addRectangle(rect3);
 
+		setTimeout(_ => {
+			if(rect2.time == 1) {
+				rect2._time = 0;
+			}
+
+			rect2._cancelled = true;
+
+			rect2.isHiding = true;
+			rect2.output = null;
+			controller.compile();
+		}, 500);
+
+		this.gl.uniform2fv(resolutionLocation, [window.innerWidth, window.innerHeight]);
 
 		const render = () => {
 			requestAnimationFrame(render);
@@ -72,18 +80,14 @@ export default class Canvas extends Component {
 			this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 			this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
 
-			this.gl.uniform2fv(resolutionLocation, [window.innerWidth, window.innerHeight]);
-			this.gl.uniform3fv(numRectLocation, [1., parseFloat(controller.length), 2.]);
-			// this.gl.uniform1f(timeLocation, parseFloat((Date.now() - dTime)/1000));
-
 			dTime2 = Date.now();
 			const arr = controller.get(parseFloat((dTime2 - dTime)/1000));
 			dTime = dTime2;
 
+			this.gl.uniform3fv(numRectLocation, [1., parseFloat(controller.length), parseFloat(controller.rectangles.length)]);
+
 			this.projectTextureThree.apply(new ImageData(new Uint8ClampedArray(arr), 1, controller.length));
 		};
-
-		render();
 
 		Promise.all([
 			pGetImage("/dist/abstract-q-c-640-480-7.jpg"),
@@ -99,6 +103,8 @@ export default class Canvas extends Component {
 
 			ctxt.drawImage(imgTwo, 0, 0);
 			this.projectTextureTwo.apply(c);
+
+			render();
 		})
 	}
 
@@ -126,7 +132,7 @@ function getShaders() {
 		
 		uniform float u_time;
 		
-		float rectangle2(vec2 uv, vec2 pos, vec2 size) {
+		float rectangle(vec2 uv, vec2 pos, vec2 size) {
 			pos = vec2(pos.x, 1. - pos.y);
 			
 			float a = (step(pos.x, uv.x) - step(pos.x + size.x, uv.x));
@@ -141,12 +147,22 @@ function getShaders() {
 		
 		// x, y, w, h,
 		vec4 getPositions(float rect_num) {
-			return readPixel(vec2(1.0, 2. * rect_num));
+			return vec4(
+				readPixel(vec2(1.0, 8. * rect_num)).a,
+				readPixel(vec2(1.0, 8. * rect_num + 1.)).a,
+				readPixel(vec2(1.0, 8. * rect_num + 2.)).a,
+				readPixel(vec2(1.0, 8. * rect_num + 3.)).a
+			);
 		}
 		
 		// animation direction, t animation time (0 -> 1), show/hide, which texture
 		vec4 getAnimationDetails(float rect_num) {
-			return readPixel(vec2(1.0, 2. * rect_num + 1.0));
+			return vec4(
+				readPixel(vec2(1.0, 8. * rect_num + 4.)).a,
+				readPixel(vec2(1.0, 8. * rect_num + 5.)).a,
+				readPixel(vec2(1.0, 8. * rect_num + 6.)).a,
+				readPixel(vec2(1.0, 8. * rect_num + 7.)).a
+			);
 		}
 		
 		void main() {
@@ -157,26 +173,37 @@ function getShaders() {
 			vec4 textureTwo = texture2D(u_image1, uv);
 			
 			// x, y, w, h,
-			// animation direction, show/hide, which texture, N/A
+			// which texture, timing, is hiding animation, animation direction
 			
 			// sets the background colour
 			gl_FragColor = vec4(1., 1., 1., 1.);
 			
 			for(float i = 0.; i <= 100.; i++) {
+				if(i == u_num_rectangle.z) break;
+
 				vec4 pos = getPositions(i);
 				vec4 anim = getAnimationDetails(i);
 				
-				/*
-				1 - ratio == -1 * (-1 + ratio)
-				ratio
+				float w = pos.b * anim.y;
 				
-				float step(float edge, float x) => 0 if x < edge & 1 otherwise
-				*/
+				// if hide is true
+				if(anim.z == 1.) {
+					w = pos.b * (1. - anim.y);
+				}
 				
-				float w = pos.b * .5;// * anim.y;
-				gl_FragColor = mix(gl_FragColor, textureOne, rectangle2(uv, pos.rg, vec2(w, pos.a)));
+				float x = pos.r;
 				
-				if(i >= u_num_rectangle.z) break;
+				if(anim.w == 0.) {
+					x = pos.r + pos.b - w;
+				}
+				
+				vec4 texture = textureOne;
+				
+				if(anim.x > 0.) {
+					texture = textureTwo;
+				}
+				
+				gl_FragColor = mix(gl_FragColor, texture, rectangle(uv, vec2(x, pos.g), vec2(w, pos.a)));
 			}
 		}`;
 
