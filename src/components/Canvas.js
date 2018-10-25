@@ -227,6 +227,10 @@ function createTexture(gl, program, index, name) {
 	gl.bindTexture(gl.TEXTURE_2D, texture);
 	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, new ImageData(2,2));
 
+	// maybe ?
+	// const resolutionLocation = gl.getUniformLocation(program, `u_resolution_${index}`);
+	// gl.uniform2fv(resolutionLocation, [window.innerWidth, window.innerHeight]);
+
 	return {
 		apply: (source) => {
 			gl.activeTexture(textureID);
