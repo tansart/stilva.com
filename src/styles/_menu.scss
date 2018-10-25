@@ -1,0 +1,33 @@
+.menu {
+  @include font-regular(10px);
+  align-items: center;
+  display: inline-flex;
+  flex-direction: row;
+  padding: 1rem 1rem 0 0;
+  transform: translateX(-100%) rotate(-90deg);
+  transform-origin: right top;
+
+  li {
+    list-style: none;
+
+    a {
+      color: black;
+      line-height: 1;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+  }
+
+  &__divider {
+    min-width: 10vh;
+    padding: 0 1rem;
+
+    &:before {
+      background: black;
+      content: '';
+      display: block;
+      height: 1px;
+      width: 100%;
+    }
+  }
+}

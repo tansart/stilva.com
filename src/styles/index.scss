@@ -5,7 +5,9 @@
   font-size: $fontSize;
 }
 
+@import './menu';
 @import './project-list';
+@import './hero-bg-canvas';
 
 * {
   -webkit-font-smoothing: antialiased;

@@ -16,7 +16,11 @@
 }
 
 .project-list {
+  cursor: pointer;
   display: block;
+  overflow: hidden;
+  margin: 0 auto;
+  max-width: 80%;
 
   &__wrap {
     display: flex;
@@ -118,7 +122,7 @@
       .project-list__title {
         transition-property: opacity;
         transition-duration: 250ms;
-        transition-delay: 250ms;
+        transition-delay: 150ms;
         opacity: 1;
 
         &:before {
