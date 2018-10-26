@@ -27,6 +27,7 @@ export default class Canvas extends Component {
 		this.gl.enableVertexAttribArray(positionLocation);
 		this.gl.vertexAttribPointer(positionLocation, 2, this.gl.FLOAT, false, 0, 0);
 
+		const timeLocation = this.gl.getUniformLocation(program, "u_time");
 		const resolutionLocation = this.gl.getUniformLocation(program, "u_resolution");
 		const numRectLocation = this.gl.getUniformLocation(program, "u_num_rectangle");
 
@@ -47,20 +48,28 @@ export default class Canvas extends Component {
 		this.projectTextureThree = createTexture(this.gl, program, 2, "u_image2");
 
 		const rect1 = new RectangleAnimation(.1, .1, .3, .4);
-		rect1.animationProperties(1000, 0, false, 1);
+		rect1.animationProperties(1000, 0, true, 1);
+		rect1.onComplete(_ => console.log("rect1 Complete"));
 
 		const rect2 = new RectangleAnimation(.5, .1, .5, .2);
-		rect2.animationProperties(5000, 255, false, -1);
+		rect2.animationProperties(1000, 255, true, -1);
+		rect2.onComplete(_ => console.log("rect2 Complete"));
 
 		const rect3 = new RectangleAnimation(.7, .4, .31, .3);
-		rect3.animationProperties(750, 0, false, 1);
+		rect3.animationProperties(750, 0, true, 1);
+		rect3.onComplete(_ => console.log("rect3 Complete"));
+
+		const rect4 = new RectangleAnimation(.2, .8, .4, .1);
+		rect4.animationProperties(1750, 255, true, -1);
+		rect4.onComplete(_ => console.log("rect4 Complete"));
 
 		const controller = new AnimationController();
 		controller.addRectangle(rect1);
 		controller.addRectangle(rect2);
 		controller.addRectangle(rect3);
+		controller.addRectangle(rect4);
 
-		setTimeout(_ => {
+		/*setTimeout(_ => {
 			if(rect2.time == 1) {
 				rect2._time = 0;
 			}
@@ -70,7 +79,9 @@ export default class Canvas extends Component {
 			rect2.isHiding = true;
 			rect2.output = null;
 			controller.compile();
-		}, 500);
+		}, 500);*/
+
+		let timeDelta = 0;
 
 		this.gl.uniform2fv(resolutionLocation, [window.innerWidth, window.innerHeight]);
 
@@ -81,9 +92,11 @@ export default class Canvas extends Component {
 			this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
 
 			dTime2 = Date.now();
-			const arr = controller.get(parseFloat((dTime2 - dTime)/1000));
+			timeDelta = parseFloat((dTime2 - dTime)/1000);
+			const arr = controller.get(timeDelta);
 			dTime = dTime2;
 
+			this.gl.uniform1f(timeLocation, timeDelta);
 			this.gl.uniform3fv(numRectLocation, [1., parseFloat(controller.length), parseFloat(controller.rectangles.length)]);
 
 			this.projectTextureThree.apply(new ImageData(new Uint8ClampedArray(arr), 1, controller.length));
@@ -140,6 +153,17 @@ function getShaders() {
 			
 			return a * b;
 		}
+		
+		float uniformNoise(vec2 n) {
+			return fract(sin(dot(n, vec2(12.9898, 78.233))) * 43758.5453);
+		}
+		
+		float noise(vec2 p) {
+			return uniformNoise(vec2(u_time * p.x, cos(u_time) * .8 * p.y ));
+			// return uniformNoise(vec2(p.x * u_time, 2. * cos(u_time*3.) * u_time * 8. + p.y * 1.));
+			// return uniformNoise(vec2(p.x + u_time * .01, p.y));
+		}
+
 		
 		vec4 readPixel(vec2 pos) {
 			return texture2D(u_image2, (pos + .5)/u_num_rectangle.xy);
@@ -205,6 +229,8 @@ function getShaders() {
 				
 				gl_FragColor = mix(gl_FragColor, texture, rectangle(uv, vec2(x, pos.g), vec2(w, pos.a)));
 			}
+
+			gl_FragColor += noise(uv)/8.;
 		}`;
 
 	return {vertex, fragment};
@@ -226,10 +252,6 @@ function createTexture(gl, program, index, name) {
 	gl.activeTexture(textureID);
 	gl.bindTexture(gl.TEXTURE_2D, texture);
 	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, new ImageData(2,2));
-
-	// maybe ?
-	// const resolutionLocation = gl.getUniformLocation(program, `u_resolution_${index}`);
-	// gl.uniform2fv(resolutionLocation, [window.innerWidth, window.innerHeight]);
 
 	return {
 		apply: (source) => {

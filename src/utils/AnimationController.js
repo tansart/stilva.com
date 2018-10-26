@@ -1,6 +1,6 @@
 export default class AnimationController {
 	get length() {
-		return this.rectangles.length * 8;
+		return this.rectangles.length * 8 || 1;
 	}
 
 	constructor() {
@@ -26,6 +26,8 @@ export default class AnimationController {
 			if(rectIDs.indexOf(i) === -1) {
 				newRectangles.push(this.rectangles[i]);
 				this.output = this.output.concat(this.rectangles[i].getData());
+			} else {
+				this.rectangles[i].remove();
 			}
 		}
 		this.rectangles = newRectangles;
@@ -55,6 +57,10 @@ export default class AnimationController {
 		}
 
 		this.removeRectangles(remove);
+
+		if(this.rectangles.length == 0) {
+			return [0,0,0,0];
+		}
 
 		return this.output;
 	}

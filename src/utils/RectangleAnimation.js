@@ -24,6 +24,14 @@ export default class RectangleAnimation {
 		this._time += delta;
 	}
 
+	onComplete(cb) {
+		this._onComplete = cb;
+	}
+
+	remove() {
+		this._onComplete();
+	}
+
 	animationProperties(duration, texture, isHiding, direction) {
 		this.duration = duration / 1000;
 		this.texture = texture;
