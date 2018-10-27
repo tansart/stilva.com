@@ -5,9 +5,69 @@ import Transition from 'preact-transition-group';
 import RectangleAnimation from '../utils/RectangleAnimation';
 import AnimationController from '../utils/AnimationController';
 
+const IMGS = [
+	'/dist/abstract-q-c-640-480-6.jpg',
+	'/dist/abstract-q-c-640-480-7.jpg',
+	'/dist/abstract-q-c-640-480-8.jpg',
+	'/dist/abstract-q-c-640-480-9.jpg',
+	'/dist/abstract-q-c-640-480-6.jpg',
+	'/dist/abstract-q-c-640-480-7.jpg',
+	'/dist/abstract-q-c-640-480-8.jpg',
+	'/dist/abstract-q-c-640-480-9.jpg',
+	'/dist/abstract-q-c-640-480-6.jpg',
+	'/dist/abstract-q-c-640-480-7.jpg'
+];
+
 export default class Canvas extends Component {
 	constructor(props) {
 		super(props);
+
+		this.controller = new AnimationController();
+	}
+
+	componentWillReceiveProps(newProps) {
+		// console.log(newProps.projectId > -1 ? IMGS[newProps.projectId]: '');
+
+		if(newProps.projectId == -1) {
+			this.controller.rectangles.forEach(r => {
+				r._isHiding = true;
+				r.output = null;
+			});
+
+			this.controller.compile();
+
+			return null;
+		}
+
+		if (this.controller.output.length === 0) {
+
+			pGetImage(IMGS[newProps.projectId])
+					.then(img => this.projectTextureOne.apply(img))
+					.then(_ => {
+
+						for (let i = 0; i < 5; i++) {
+							const rect = new RectangleAnimation(Math.random(), Math.random(), clamp(.2, .4), clamp(.2, .4));
+							rect.animationProperties(0, 0, false, 1);
+							this.controller.addRectangle(rect)
+						}
+					});
+		} else {
+
+			pGetImage(IMGS[newProps.projectId])
+					.then(img => this.projectTextureTwo.apply(img))
+					.then(_ => {
+
+						for (let i = 0; i < 5; i++) {
+							const rect = new RectangleAnimation(Math.random(), Math.random(), clamp(.2, .4), clamp(.2, .4));
+							rect.animationProperties(0, 1, false, -1);
+							this.controller.addRectangle(rect)
+						}
+					});
+		}
+
+		function clamp(min, max) {
+			return max * Math.random() + min
+		}
 	}
 
 	shouldComponentUpdate() {
@@ -31,94 +91,37 @@ export default class Canvas extends Component {
 		const resolutionLocation = this.gl.getUniformLocation(program, "u_resolution");
 		const numRectLocation = this.gl.getUniformLocation(program, "u_num_rectangle");
 
-		function pGetImage(src) {
-			const img = new Image();
-
-			return new Promise(resolve => {
-				img.addEventListener("load", _ => resolve(img));
-				img.src = src
-			});
-		}
-
-		let dTime = Date.now();
-		let dTime2 = Date.now();
-
 		this.projectTextureOne = createTexture(this.gl, program, 0, "u_image0");
 		this.projectTextureTwo = createTexture(this.gl, program, 1, "u_image1");
 		this.projectTextureThree = createTexture(this.gl, program, 2, "u_image2");
 
-		const rect1 = new RectangleAnimation(.1, .1, .3, .4);
-		rect1.animationProperties(1000, 0, true, 1);
-		rect1.onComplete(_ => console.log("rect1 Complete"));
-
-		const rect2 = new RectangleAnimation(.5, .1, .5, .2);
-		rect2.animationProperties(1000, 255, true, -1);
-		rect2.onComplete(_ => console.log("rect2 Complete"));
-
-		const rect3 = new RectangleAnimation(.7, .4, .31, .3);
-		rect3.animationProperties(750, 0, true, 1);
-		rect3.onComplete(_ => console.log("rect3 Complete"));
-
-		const rect4 = new RectangleAnimation(.2, .8, .4, .1);
-		rect4.animationProperties(1750, 255, true, -1);
-		rect4.onComplete(_ => console.log("rect4 Complete"));
-
-		const controller = new AnimationController();
-		controller.addRectangle(rect1);
-		controller.addRectangle(rect2);
-		controller.addRectangle(rect3);
-		controller.addRectangle(rect4);
-
-		/*setTimeout(_ => {
-			if(rect2.time == 1) {
-				rect2._time = 0;
-			}
-
-			rect2._cancelled = true;
-
-			rect2.isHiding = true;
-			rect2.output = null;
-			controller.compile();
-		}, 500);*/
-
 		let timeDelta = 0;
+
+		this._dTime = Date.now();
+		this._dTime2 = Date.now();
 
 		this.gl.uniform2fv(resolutionLocation, [window.innerWidth, window.innerHeight]);
 
-		const render = () => {
-			requestAnimationFrame(render);
+		this.render = () => {
+			// if(this.controller.output.length > 0) {
+				requestAnimationFrame(this.render);
+			// }
 
 			this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 			this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
 
-			dTime2 = Date.now();
-			timeDelta = parseFloat((dTime2 - dTime)/1000);
-			const arr = controller.get(timeDelta);
-			dTime = dTime2;
+			this._dTime2 = Date.now();
+			timeDelta = parseFloat((this._dTime2 - this._dTime)/1000);
+			const arr = this.controller.get(timeDelta);
+			this._dTime = this._dTime2;
 
 			this.gl.uniform1f(timeLocation, timeDelta);
-			this.gl.uniform3fv(numRectLocation, [1., parseFloat(controller.length), parseFloat(controller.rectangles.length)]);
+			this.gl.uniform3fv(numRectLocation, [1., parseFloat(this.controller.length), parseFloat(this.controller.rectangles.length)]);
 
-			this.projectTextureThree.apply(new ImageData(new Uint8ClampedArray(arr), 1, controller.length));
+			this.projectTextureThree.apply(new ImageData(new Uint8ClampedArray(arr), 1, this.controller.length));
 		};
 
-		Promise.all([
-			pGetImage("/dist/abstract-q-c-640-480-7.jpg"),
-			pGetImage("/dist/abstract-q-c-640-480-8.jpg")
-		]).then(([img, imgTwo]) => {
-			const c = document.createElement("canvas");
-			c.width = img.width;
-			c.height = img.height;
-			const ctxt = c.getContext('2d');
-			ctxt.drawImage(img, 0, 0);
-
-			this.projectTextureOne.apply(c);
-
-			ctxt.drawImage(imgTwo, 0, 0);
-			this.projectTextureTwo.apply(c);
-
-			render();
-		})
+		this.render();
 	}
 
 	render(props) {
@@ -148,10 +151,8 @@ function getShaders() {
 		float rectangle(vec2 uv, vec2 pos, vec2 size) {
 			pos = vec2(pos.x, 1. - pos.y);
 			
-			float a = (step(pos.x, uv.x) - step(pos.x + size.x, uv.x));
-			float b = (step(pos.y - size.y, uv.y) - step(pos.y, uv.y));
-			
-			return a * b;
+			return (step(pos.x, uv.x) - step(pos.x + size.x, uv.x))
+				* (step(pos.y - size.y, uv.y) - step(pos.y, uv.y));
 		}
 		
 		float uniformNoise(vec2 n) {
@@ -160,8 +161,6 @@ function getShaders() {
 		
 		float noise(vec2 p) {
 			return uniformNoise(vec2(u_time * p.x, cos(u_time) * .8 * p.y ));
-			// return uniformNoise(vec2(p.x * u_time, 2. * cos(u_time*3.) * u_time * 8. + p.y * 1.));
-			// return uniformNoise(vec2(p.x + u_time * .01, p.y));
 		}
 
 		
@@ -293,4 +292,13 @@ function setupProgram(gl, vertex, fragment) {
 	gl.useProgram(program);
 
 	return program;
+}
+
+function pGetImage(src) {
+	const img = new Image();
+
+	return new Promise(resolve => {
+		img.addEventListener("load", _ => resolve(img));
+		img.src = src
+	});
 }

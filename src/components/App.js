@@ -41,8 +41,7 @@ class Wrapper extends Component {
 
 	render() {
 		return <div className='app-wrapper'>
-			<h1>{this.state.projectId}</h1>
-			<Canvas />
+			<Canvas projectId={this.state.projectId} />
 			{this.props.children}
 		</div>
 	}
@@ -50,7 +49,7 @@ class Wrapper extends Component {
 
 class Menu extends Component {
 	render(props) {
-		return <ul className="menu" style={{opacity: 0}}>
+		return <ul className="menu">
 			<li><a href="/">home</a></li>
 			<li className="menu__divider"></li>
 			<li><a href="/about">about</a></li>

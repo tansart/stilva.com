@@ -33,7 +33,8 @@ export default class AnimationController {
 		this.rectangles = newRectangles;
 
 		for(let i = 0; i<this.rectangles.length; i++) {
-			this.output[i*8*4+4*5+3] = this.rectangles[i].ease(this.rectangles[i].time);
+			// [i*8*4+4*5+3]
+			this.output[i*32 + 23] = this.rectangles[i].ease(this.rectangles[i].time);
 		}
 	}
 
