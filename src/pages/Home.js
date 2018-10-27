@@ -28,7 +28,7 @@ export default class Home extends Component{
 			'show': this.state.show
 		});
 
-		return <div className={projectListClassname} style={{opacity: 0}}>
+		return <div className={projectListClassname}>
 			{[1,2,3,4,5,6,7,8,9,10].map((_, i) => i%3 === 1 ? <ProjectListMiddleItem index={i} />: <ProjectListItem index={i} />)}
 		</div>;
 	}

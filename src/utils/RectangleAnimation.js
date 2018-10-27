@@ -1,6 +1,10 @@
 export default class RectangleAnimation {
+	get isHiding() {
+		return this._isHiding;
+	}
+
 	get time() {
-		return this._time/this.duration;
+		return this._time/this._duration;
 	}
 
 	constructor(x, y, w, h) {
@@ -20,23 +24,26 @@ export default class RectangleAnimation {
 	}
 
 	update(delta) {
-		if(this._cancelled) return;
+		if(this._cancelled) {
+			return;
+		}
+
 		this._time += delta;
 	}
 
-	onComplete(cb) {
-		this._onComplete = cb;
+	onRemoved(cb) {
+		this._onRemoved = cb;
 	}
 
 	remove() {
-		this._onComplete();
+		this._onRemoved && this._onRemoved();
 	}
 
 	animationProperties(duration, texture, isHiding, direction) {
-		this.duration = duration / 1000;
-		this.texture = texture;
-		this.isHiding = isHiding;
-		this.direction = direction;
+		this._duration = duration / 1000;
+		this._texture = texture === 0 ? 0: 255;
+		this._isHiding = isHiding;
+		this._direction = direction;
 	}
 
 	getData() {
@@ -45,10 +52,10 @@ export default class RectangleAnimation {
 			0,0,0,this.y,
 			0,0,0,this.w,
 			0,0,0,this.h,
-			0,0,0,this.texture,
+			0,0,0,this._texture,
 			0,0,0,0 /* time */,
-			0,0,0,this.isHiding? 255: 0,
-			0,0,0,this.direction < 0 ? 0: 255 /* -1 to left, 1 to right */
+			0,0,0,this._isHiding? 255: 0,
+			0,0,0,this._direction < 0 ? 0: 255 /* -1 to left, 1 to right */
 		];
 
 		return this.output;
