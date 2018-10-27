@@ -160,10 +160,22 @@ function getShaders() {
 		}
 		
 		float noise(vec2 p) {
-			return uniformNoise(vec2(u_time * p.x, cos(u_time) * .8 * p.y ));
+			// return uniformNoise(vec2(sin(u_time * p.x * .5), cos(u_time) * .8 * p.y ));
+			float t = fract( u_time );
+
+			float nrnd0 = uniformNoise( p + 0.07*t );
+			float nrnd1 = uniformNoise( p + 0.11*t );	
+			float nrnd2 = uniformNoise( p + 0.13*t );
+			float nrnd3 = uniformNoise( p + 0.17*t );
+			
+			float nrnd4 = uniformNoise( p + 0.19*t );
+			float nrnd5 = uniformNoise( p + 0.23*t );
+			float nrnd6 = uniformNoise( p + 0.29*t );
+			float nrnd7 = uniformNoise( p + 0.31*t );
+			
+			return (nrnd0+nrnd1+nrnd2+nrnd3 +nrnd4+nrnd5+nrnd6+nrnd7) / 8.0;
 		}
 
-		
 		vec4 readPixel(vec2 pos) {
 			return texture2D(u_image2, (pos + .5)/u_num_rectangle.xy);
 		}
@@ -229,7 +241,7 @@ function getShaders() {
 				gl_FragColor = mix(gl_FragColor, texture, rectangle(uv, vec2(x, pos.g), vec2(w, pos.a)));
 			}
 
-			gl_FragColor += noise(uv)/8.;
+			gl_FragColor += noise(uv)/4.;
 		}`;
 
 	return {vertex, fragment};
