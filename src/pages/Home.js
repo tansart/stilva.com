@@ -1,6 +1,7 @@
 import {h, Component} from 'preact'; // eslint-disable-line no-unused-vars
 import cx from 'classnames';
 
+import Canvas from '../components/Canvas';
 import ProjectListItem from '../components/ProjectListItem';
 import ProjectListMiddleItem from '../components/ProjectListMiddletem';
 
@@ -9,8 +10,15 @@ export default class Home extends Component{
 		super(props);
 
 		this.state = {
-			show: false
+			show: false,
+			projectId: -1
 		};
+
+		this.projectHover = this.projectHover.bind(this);
+	}
+
+	projectHover(projectId) {
+		this.setState({projectId});
 	}
 
 	componentWillLeave(cb) {
@@ -28,8 +36,14 @@ export default class Home extends Component{
 			'show': this.state.show
 		});
 
-		return <div className={projectListClassname}>
-			{[1,2,3,4,5,6,7,8,9,10].map((_, i) => i%3 === 1 ? <ProjectListMiddleItem index={i} />: <ProjectListItem index={i} />)}
-		</div>;
+		return <div>
+			<div className={projectListClassname}>
+				{[1,2,3,4,5,6,7,8,9,10].map((_, i) => i%3 === 1
+						? <ProjectListMiddleItem index={i} projectHover={this.projectHover} />
+						: <ProjectListItem index={i} projectHover={this.projectHover} />)
+				}
+			</div>
+			<Canvas projectId={this.state.projectId} />
+		</div>
 	}
 }

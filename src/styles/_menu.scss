@@ -4,8 +4,10 @@
   display: inline-flex;
   flex-direction: row;
   padding: 1rem 1rem 0 0;
+  position: relative;
   transform: translateX(-100%) rotate(-90deg);
   transform-origin: right top;
+  z-index: 1;
 
   li {
     list-style: none;

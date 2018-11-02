@@ -26,11 +26,12 @@ export default class ProjectListMiddleItem extends Component {
 		});
 
 		return <a
+				href={`/projects/${props.index}`}
 				className={projectListClassname}
 				style={{transitionDelay: `${props.index * 250}ms`}}
 				ref={el => this.node = el}
-				onMouseOver={_ => this.context.projectHover(this.props.index)}
-				onMouseOut={_ => this.context.projectHover(-1)}
+				onMouseOver={_ => this.props.projectHover(this.props.index)}
+				onMouseOut={_ => this.props.projectHover(-1)}
 		>
 			{span}
 			{title}

@@ -21,6 +21,8 @@
   overflow: hidden;
   margin: 0 auto;
   max-width: 80%;
+  position: relative;
+  z-index: 1;
 
   &__wrap {
     display: flex;

@@ -3,72 +3,16 @@ import cx from 'classnames';
 import Transition from 'preact-transition-group';
 
 import RectangleAnimation from '../utils/RectangleAnimation';
-import AnimationController from '../utils/AnimationController';
-
-const IMGS = [
-	'/dist/abstract-q-c-640-480-6.jpg',
-	'/dist/abstract-q-c-640-480-7.jpg',
-	'/dist/abstract-q-c-640-480-8.jpg',
-	'/dist/abstract-q-c-640-480-9.jpg',
-	'/dist/abstract-q-c-640-480-6.jpg',
-	'/dist/abstract-q-c-640-480-7.jpg',
-	'/dist/abstract-q-c-640-480-8.jpg',
-	'/dist/abstract-q-c-640-480-9.jpg',
-	'/dist/abstract-q-c-640-480-6.jpg',
-	'/dist/abstract-q-c-640-480-7.jpg'
-];
+import DragController from '../utils/DragController';
 
 export default class Canvas extends Component {
 	constructor(props) {
 		super(props);
 
 		this.kill = false;
+		this.textureTarget = 0;
 
-		this.controller = new AnimationController();
-	}
-
-	componentWillReceiveProps(newProps) {
-
-		if(newProps.projectId == -1) {
-			this.controller.rectangles.forEach(r => {
-				r._isHiding = true;
-				r.output = null;
-			});
-
-			this.controller.compile();
-
-			return null;
-		}
-
-		if (this.controller.output.length === 0) {
-
-			pGetImage(IMGS[newProps.projectId])
-					.then(img => this.projectTextureOne.apply(img))
-					.then(_ => {
-
-						for (let i = 0; i < 5; i++) {
-							const rect = new RectangleAnimation(Math.random(), Math.random(), clamp(.2, .4), clamp(.2, .4));
-							rect.animationProperties(0, 0, false, 1);
-							this.controller.addRectangle(rect)
-						}
-					});
-		} else {
-
-			pGetImage(IMGS[newProps.projectId])
-					.then(img => this.projectTextureTwo.apply(img))
-					.then(_ => {
-
-						for (let i = 0; i < 5; i++) {
-							const rect = new RectangleAnimation(Math.random(), Math.random(), clamp(.2, .4), clamp(.2, .4));
-							rect.animationProperties(0, 1, false, -1);
-							this.controller.addRectangle(rect)
-						}
-					});
-		}
-
-		function clamp(min, max) {
-			return max * Math.random() + min
-		}
+		this.controller = new DragController();
 	}
 
 	shouldComponentUpdate() {
@@ -101,14 +45,13 @@ export default class Canvas extends Component {
 		this.projectTextureThree = createTexture(this.gl, program, 2, "u_image2");
 
 		let timeDelta = 0;
+		let windowInnerWidth = window.innerWidth * .8;
 
 		this._dTime = Date.now();
 		this._dTime2 = Date.now();
 
-		this.gl.uniform2fv(resolutionLocation, [window.innerWidth, window.innerHeight]);
-
 		this.render = () => {
-			if(!this.kill) {
+			if (!this.kill) {
 				requestAnimationFrame(this.render);
 			}
 
@@ -116,21 +59,77 @@ export default class Canvas extends Component {
 			this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
 
 			this._dTime2 = Date.now();
-			timeDelta = parseFloat((this._dTime2 - this._dTime)/1000);
-			const arr = this.controller.get(timeDelta);
+			timeDelta = parseFloat((this._dTime2 - this._dTime) / 1000);
 			this._dTime = this._dTime2;
 
-			this.gl.uniform1f(timeLocation, timeDelta);
-			this.gl.uniform3fv(numRectLocation, [1., parseFloat(this.controller.length), parseFloat(this.controller.rectangles.length)]);
+			const arr = this.controller.get(this.props.deltaX, this.textureTarget);
 
-			this.projectTextureThree.apply(new ImageData(new Uint8ClampedArray(arr), 1, this.controller.length));
+			windowInnerWidth = .8 * window.innerWidth;
+			this.gl.uniform1f(timeLocation, timeDelta);
+			this.gl.uniform2fv(resolutionLocation, [windowInnerWidth, windowInnerWidth / (640 / 480)]);
+
+			this.gl.uniform3fv(numRectLocation, [1., parseFloat(this.controller.getLength(this.textureTarget)), parseFloat(this.controller.rectangles[this.textureTarget].length)]);
+			this.projectTextureThree.apply(new ImageData(new Uint8ClampedArray(arr), 1, this.controller.getLength(this.textureTarget)));
 		};
+
+		pGetImage('/dist/abstract-q-c-640-480-8.jpg')
+				.then(img => this.projectTextureTwo.apply(img))
+				.then(_ => {
+
+					let rect = new RectangleAnimation(0., 0., 1., .2);
+					rect.animationProperties(500, 0, false, 1);
+					this.controller.addRectangle(rect, 0);
+
+					rect = new RectangleAnimation(0., .2, 1., .2);
+					rect.animationProperties(750, 0, false, -1);
+					this.controller.addRectangle(rect, 0);
+
+					rect = new RectangleAnimation(0., .4, 1., .2);
+					rect.animationProperties(1000, 0, false, 1);
+					this.controller.addRectangle(rect, 0);
+
+					rect = new RectangleAnimation(0., .6, 1., .2);
+					rect.animationProperties(1250, 0, false, -1);
+					this.controller.addRectangle(rect, 0);
+
+					rect = new RectangleAnimation(0., .8, 1., .2);
+					rect.animationProperties(1500, 0, false, 1);
+					this.controller.addRectangle(rect, 0);
+				});
+
+		pGetImage('/dist/abstract-q-c-640-480-9.jpg')
+				.then(img => this.projectTextureOne.apply(img))
+				.then(_ => {
+
+					/*let rect = new RectangleAnimation(0., 0., 1., .2);
+					rect.animationProperties(500, 1, false, 1);
+					this.controller.addRectangle(rect, 1);
+
+					rect = new RectangleAnimation(0., .2, 1., .2);
+					rect.animationProperties(750, 1, false, -1);
+					this.controller.addRectangle(rect, 1);
+
+					rect = new RectangleAnimation(0., .4, 1., .2);
+					rect.animationProperties(1000, 1, false, 1);
+					this.controller.addRectangle(rect, 1);
+
+					rect = new RectangleAnimation(0., .6, 1., .2);
+					rect.animationProperties(1250, 1, false, -1);
+					this.controller.addRectangle(rect, 1);
+
+					rect = new RectangleAnimation(0., .8, 1., .2);
+					rect.animationProperties(1500, 1, false, 1);
+					this.controller.addRectangle(rect, 1);*/
+				});
 
 		this.render();
 	}
 
 	render(props) {
-		return <canvas ref={node => this.node = node} className='hero-bg-canvas' width={window.innerWidth} height={window.innerHeight}/>
+		const width = window.innerWidth * .8;
+
+		return <canvas ref={node => this.node = node} className='project-bg-canvas' width={width}
+									 height={width / (640 / 480)} />
 	}
 }
 
@@ -142,7 +141,7 @@ function getShaders() {
 		}`;
 
 	const fragment = `
-		precision mediump float;
+		precision highp float;
 		
 		uniform sampler2D u_image0;
 		uniform sampler2D u_image1;
@@ -161,7 +160,8 @@ function getShaders() {
 		}
 		
 		float uniformNoise(vec2 n) {
-			return fract(sin(dot(n, vec2(12.9898, 78.233))) * 43758.5453);
+			// return fract(sin(dot(n, vec2(12.9898, 78.233))) * 43758.5453);
+			return fract(4096.0 * sin(dot(n, vec2(12.0, 59.0))));
 		}
 		
 		float noise(vec2 p) {
@@ -208,15 +208,16 @@ function getShaders() {
 		void main() {
 			
 			vec2 uv = gl_FragCoord.xy/u_resolution.xy;
+			vec2 flippedUV = vec2(uv.x, 1. - uv.y);
 			
-			vec4 textureOne = texture2D(u_image0, uv);
-			vec4 textureTwo = texture2D(u_image1, uv);
+			vec4 textureOne = texture2D(u_image0, flippedUV);
+			vec4 textureTwo = texture2D(u_image1, flippedUV);
 			
 			// x, y, w, h,
 			// which texture, timing, is hiding animation, animation direction
 			
 			// sets the background colour
-			gl_FragColor = vec4(1., 1., 1., 1.);
+			gl_FragColor = vec4(0., 0., 0., 0.);
 			
 			for(float i = 0.; i <= 100.; i++) {
 				if(i == u_num_rectangle.z) break;
@@ -224,23 +225,25 @@ function getShaders() {
 				vec4 pos = getPositions(i);
 				vec4 anim = getAnimationDetails(i);
 				
-				float w = pos.b * anim.y;
+				vec4 texture = textureOne;
+				
+				if(anim.x > 0.) {
+					texture = textureTwo;
+				}
+				
+				float t = anim.y;
+				
+				float w = pos.b * t;
 				
 				// if hide is true
 				if(anim.z == 1.) {
-					w = pos.b * (1. - anim.y);
+					w = pos.b * (1. - t);
 				}
 				
 				float x = pos.r;
 				
 				if(anim.w == 0.) {
 					x = pos.r + pos.b - w;
-				}
-				
-				vec4 texture = textureOne;
-				
-				if(anim.x > 0.) {
-					texture = textureTwo;
 				}
 				
 				gl_FragColor = mix(gl_FragColor, texture, rectangle(uv, vec2(x, pos.g), vec2(w, pos.a)));
@@ -258,7 +261,7 @@ function createTexture(gl, program, index, name) {
 
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+	// gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
 
 	gl.uniform1i(gl.getUniformLocation(program, name), index);
@@ -267,7 +270,7 @@ function createTexture(gl, program, index, name) {
 
 	gl.activeTexture(textureID);
 	gl.bindTexture(gl.TEXTURE_2D, texture);
-	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, new ImageData(2,2));
+	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, new ImageData(2, 2));
 
 	return {
 		apply: (source) => {
@@ -287,11 +290,11 @@ function setupProgram(gl, vertex, fragment) {
 			new Float32Array([
 				-1.0, -1.0,
 				1.0, -1.0,
-				-1.0,  1.0,
-				-1.0,  1.0,
+				-1.0, 1.0,
+				-1.0, 1.0,
 				1.0, -1.0,
-				1.0,  1.0]),
-			gl.STATIC_DRAW
+				1.0, 1.0
+			]), gl.STATIC_DRAW
 	);
 
 	const vertexShader = gl.createShader(gl.VERTEX_SHADER);

@@ -1,0 +1,16 @@
+.project {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  &-bg-canvas {
+    cursor: grab;
+    flex: 0 0 80%;
+    height: calc(80% / (640/480));
+    position: relative;
+    width: 80%;
+    z-index: 1;
+  }
+}
+
