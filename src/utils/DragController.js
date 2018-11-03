@@ -1,25 +1,21 @@
 export default class AnimationController {
 
+	get length() {
+		return this.rectangles.length * 8 || 1;
+	}
+
 	constructor() {
-		this.rectangles = [[]];
+		this.rectangles = [];
 		this.output = [];
 	}
 
-	getLength(texture) {
-		return this.rectangles[texture].length * 8 || 1;
+	addRectangle(rect) {
+		this.rectangles.push(rect);
+
+		this.compile();
 	}
 
-	addRectangle(rect, texture) {
-		if(!Array.isArray(this.rectangles[texture])) {
-			this.rectangles[texture] = [];
-		}
-
-		this.rectangles[texture].push(rect);
-
-		this.compile(texture);
-	}
-
-	removeRectangles(rectIDs = [], texture) {
+	removeRectangles(rectIDs = []) {
 		if(!rectIDs.length)
 			return;
 
@@ -27,44 +23,55 @@ export default class AnimationController {
 
 		const newRectangles = [];
 
-		for(let i = 0; i<this.rectangles[texture].length; i++) {
+		for(let i = 0; i<this.rectangles.length; i++) {
 			if(rectIDs.indexOf(i) === -1) {
-				newRectangles.push(this.rectangles[texture][i]);
-				this.output = this.output.concat(this.rectangles[texture][i].getData());
+				newRectangles.push(this.rectangles[i]);
+				this.output = this.output.concat(this.rectangles[i].getData());
 			} else {
-				this.rectangles[texture][i].remove();
+				this.rectangles[i].remove();
 			}
 		}
-		this.rectangles[texture] = newRectangles;
+		this.rectangles = newRectangles;
 
-		for(let i = 0; i<this.rectangles[texture].length; i++) {
-			// [i*8*4+4*5+3]
-			this.output[i*32 + 23] = this.rectangles[texture][i].ease(this.rectangles[texture][i].time);
+		for(let i = 0; i<this.rectangles.length; i++) {
+			this.output[i*32 + 23] = this.rectangles[i].ease(this.rectangles[i].time);
 		}
 	}
 
 	compile(texture) {
-		this.output = this.rectangles[texture].reduce((acc, rect) => {
+		this.output = this.rectangles.reduce((acc, rect) => {
 			return acc.concat(rect.getData());
 		}, []);
 	}
 
-	get(delta, texture) {
+	get(delta) {
 		const remove = [];
-		const length = this.rectangles[texture].length;
+		const length = this.rectangles.length;
 
 		for(let i = 0; i<length; i++) {
-			this.rectangles[texture][i].update(delta);
+			if(this.rectangles[i]._texture === 255) {
+				if(delta < 0) {
+					this.rectangles[i]._time = -1 * delta;
+				} else {
+					this.rectangles[i]._time *= .8;
+				}
+			} else {
+				if(delta > 0) {
+					this.rectangles[i]._time = delta;
+				} else {
+					this.rectangles[i]._time *= .8;
+				}
+			}
 
-			if(this.rectangles[texture][i]._time < 0) this.rectangles[texture][i]._time = 0;
-			if(this.rectangles[texture][i]._time > 1) this.rectangles[texture][i]._time = 1;
+			if(this.rectangles[i]._time < 0) this.rectangles[i]._time = 0;
+			if(this.rectangles[i]._time > 1) this.rectangles[i]._time = 1;
 
-			this.output[i*8*4+4*5+3] = this.rectangles[texture][i].ease(this.rectangles[texture][i].time);
+			this.output[i*8*4+4*5+3] = this.rectangles[i].ease(this.rectangles[i].time);
 		}
 
-		this.removeRectangles(remove, texture);
+		this.removeRectangles(remove);
 
-		if(this.rectangles[texture].length == 0) {
+		if(this.rectangles.length == 0) {
 			return [0,0,0,0];
 		}
 

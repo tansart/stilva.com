@@ -10,7 +10,6 @@ export default class Canvas extends Component {
 		super(props);
 
 		this.kill = false;
-		this.textureTarget = 0;
 
 		this.controller = new DragController();
 	}
@@ -62,64 +61,36 @@ export default class Canvas extends Component {
 			timeDelta = parseFloat((this._dTime2 - this._dTime) / 1000);
 			this._dTime = this._dTime2;
 
-			const arr = this.controller.get(this.props.deltaX, this.textureTarget);
+			const arr = this.controller.get(this.props.dist);
 
 			windowInnerWidth = .8 * window.innerWidth;
 			this.gl.uniform1f(timeLocation, timeDelta);
 			this.gl.uniform2fv(resolutionLocation, [windowInnerWidth, windowInnerWidth / (640 / 480)]);
 
-			this.gl.uniform3fv(numRectLocation, [1., parseFloat(this.controller.getLength(this.textureTarget)), parseFloat(this.controller.rectangles[this.textureTarget].length)]);
-			this.projectTextureThree.apply(new ImageData(new Uint8ClampedArray(arr), 1, this.controller.getLength(this.textureTarget)));
+			this.gl.uniform3fv(numRectLocation, [1., parseFloat(this.controller.length), parseFloat(this.controller.rectangles.length)]);
+			this.projectTextureThree.apply(new ImageData(new Uint8ClampedArray(arr), 1, this.controller.length));
 		};
 
 		pGetImage('/dist/abstract-q-c-640-480-8.jpg')
 				.then(img => this.projectTextureTwo.apply(img))
 				.then(_ => {
-
-					let rect = new RectangleAnimation(0., 0., 1., .2);
-					rect.animationProperties(500, 0, false, 1);
-					this.controller.addRectangle(rect, 0);
-
-					rect = new RectangleAnimation(0., .2, 1., .2);
-					rect.animationProperties(750, 0, false, -1);
-					this.controller.addRectangle(rect, 0);
-
-					rect = new RectangleAnimation(0., .4, 1., .2);
-					rect.animationProperties(1000, 0, false, 1);
-					this.controller.addRectangle(rect, 0);
-
-					rect = new RectangleAnimation(0., .6, 1., .2);
-					rect.animationProperties(1250, 0, false, -1);
-					this.controller.addRectangle(rect, 0);
-
-					rect = new RectangleAnimation(0., .8, 1., .2);
-					rect.animationProperties(1500, 0, false, 1);
-					this.controller.addRectangle(rect, 0);
+					const max = 5;
+					for(let i = 0; i < max; i++) {
+						let rect = new RectangleAnimation(0., 1/max*i, 1., 1/max);
+						rect.animationProperties(500 + 250 * i, 0, false, (i%2+.5)*2-2);
+						this.controller.addRectangle(rect, 0);
+					}
 				});
 
 		pGetImage('/dist/abstract-q-c-640-480-9.jpg')
 				.then(img => this.projectTextureOne.apply(img))
 				.then(_ => {
-
-					/*let rect = new RectangleAnimation(0., 0., 1., .2);
-					rect.animationProperties(500, 1, false, 1);
-					this.controller.addRectangle(rect, 1);
-
-					rect = new RectangleAnimation(0., .2, 1., .2);
-					rect.animationProperties(750, 1, false, -1);
-					this.controller.addRectangle(rect, 1);
-
-					rect = new RectangleAnimation(0., .4, 1., .2);
-					rect.animationProperties(1000, 1, false, 1);
-					this.controller.addRectangle(rect, 1);
-
-					rect = new RectangleAnimation(0., .6, 1., .2);
-					rect.animationProperties(1250, 1, false, -1);
-					this.controller.addRectangle(rect, 1);
-
-					rect = new RectangleAnimation(0., .8, 1., .2);
-					rect.animationProperties(1500, 1, false, 1);
-					this.controller.addRectangle(rect, 1);*/
+					const max = 4;
+					for(let i = 0; i < max; i++) {
+						let rect = new RectangleAnimation(0., 1/max*i, 1., 1/max);
+						rect.animationProperties(500 + 250 * i, 1, false, (i%2+.5)*2-2);
+						this.controller.addRectangle(rect, 0);
+					}
 				});
 
 		this.render();
@@ -227,11 +198,15 @@ function getShaders() {
 				
 				vec4 texture = textureOne;
 				
+				float t = anim.y;
+				
 				if(anim.x > 0.) {
 					texture = textureTwo;
 				}
 				
-				float t = anim.y;
+				if(t < .0) {
+					t = -1.;
+				}
 				
 				float w = pos.b * t;
 				
