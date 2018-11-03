@@ -42,8 +42,10 @@ class Wrapper extends Component {
 
 class Menu extends Component {
 	render(props) {
-		return <ul className="menu" style={{opacity:.0}} >
+		return <ul className="menu" style={{opacity:1.}} >
 			<li><a href="/">home</a></li>
+			<li className="menu__divider"></li>
+			<li><a href="/">lab</a></li>
 			<li className="menu__divider"></li>
 			<li><a href="/about">about</a></li>
 		</ul>

@@ -1,16 +1,47 @@
 .project {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+
+  &__canvas-wrapper {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
 
   &-bg-canvas {
     cursor: grab;
     flex: 0 0 80%;
-    height: calc(80% / (640/480));
+    height: calc(80% / (640 / 480));
     position: relative;
     width: 80%;
     z-index: 1;
   }
 }
 
+.project__title {
+  @include font-regular(32px);
+  display: block;
+  margin: 1rem auto 0;
+  max-width: 80%;
+  position: relative;
+  overflow: hidden;
+
+  &-word {
+    display: inline-block;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+
+  &-overlay {
+    color: black;
+    position: absolute;
+    pointer-events: none;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    display: inline-block;
+    background: white;
+    will-change: transform;
+  }
+}

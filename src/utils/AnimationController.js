@@ -49,10 +49,9 @@ export default class AnimationController {
 		const length = this.rectangles.length;
 
 		for(let i = 0; i<length; i++) {
-			this.rectangles[i].update(delta);
-			this.output[i*8*4+4*5+3] = this.rectangles[i].ease(this.rectangles[i].time);
+			this.output[i*8*4+4*5+3] = this.rectangles[i].ease(1);
 
-			if(this.rectangles[i].time > 1 && this.rectangles[i].isHiding) {
+			if(this.rectangles[i].isHiding) {
 				remove.push(i);
 			}
 		}

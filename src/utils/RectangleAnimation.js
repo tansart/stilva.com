@@ -4,7 +4,7 @@ export default class RectangleAnimation {
 	}
 
 	get time() {
-		return this._time/this._duration;
+		return this._time * this._duration;
 	}
 
 	constructor(x, y, w, h) {
@@ -40,7 +40,7 @@ export default class RectangleAnimation {
 	}
 
 	animationProperties(duration, texture, isHiding, direction) {
-		this._duration = duration / 1000;
+		this._duration = Math.max(0, duration);
 		this._texture = texture === 0 ? 0: 255;
 		this._isHiding = isHiding;
 		this._direction = direction;
