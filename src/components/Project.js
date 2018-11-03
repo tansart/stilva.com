@@ -12,8 +12,8 @@ export default class Project extends Component {
 
 		this.state = {
 			isActive: STATUS_IS_IDLE,
-			prevX: null,
-			deltaX: null,
+			currentX: 0,
+			clientWidth: 0
 		};
 
 		this.end = this.end.bind(this);
@@ -32,8 +32,9 @@ export default class Project extends Component {
 
 		this.setState({
 			isActive: STATUS_IS_SWIPING,
-			prevX: clientX,
-			initX: clientX
+			initX: clientX,
+			currentX: clientX,
+			clientWidth: this.node.clientWidth
 		});
 	}
 
@@ -42,8 +43,7 @@ export default class Project extends Component {
 
 		this.setState({
 			isActive: STATUS_IS_SWIPING,
-			prevX: clientX,
-			deltaX: this.state.prevX - clientX
+			currentX: clientX
 		});
 	}
 
@@ -52,7 +52,6 @@ export default class Project extends Component {
 
 		this.setState({
 			isActive: STATUS_IS_BUSY,
-			deltaX: Math.sign(this.state.prevX - this.state.initX) * Math.max(1, Math.abs(this.state.prevX - this.state.initX)/25)
 		});
 
 		setTimeout(_ => {
@@ -77,8 +76,13 @@ export default class Project extends Component {
 			mouseEvents['onMouseMove'] = this.move;
 		}
 
-		return <div className="project" {...mouseEvents}>
-			<ProjectCanvas deltaX={this.state.deltaX/1000} />
+		let dist = this.state.isActive !== STATUS_IS_IDLE ? (this.state.initX - this.state.currentX)/this.state.clientWidth: 0;
+		if(Math.abs(dist) > .35) {
+			dist = Math.sign(dist);
+		}
+
+		return <div className="project" {...mouseEvents} ref={el => this.node = el}>
+			<ProjectCanvas dist={dist} />
 			<img src={"/dist/abstract-q-c-640-480-6.jpg"} style={{position: 'absolute', width: '80%', zIndex: 0}} />
 		</div>
 	}
