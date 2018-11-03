@@ -77,7 +77,7 @@ export default class Canvas extends Component {
 					const max = 5;
 					for(let i = 0; i < max; i++) {
 						let rect = new RectangleAnimation(0., 1/max*i, 1., 1/max);
-						rect.animationProperties(500 + 250 * i, 0, false, (i%2+.5)*2-2);
+						rect.animationProperties(max-i, 0, false, -1);
 						this.controller.addRectangle(rect, 0);
 					}
 				});
@@ -85,10 +85,10 @@ export default class Canvas extends Component {
 		pGetImage('/dist/abstract-q-c-640-480-9.jpg')
 				.then(img => this.projectTextureOne.apply(img))
 				.then(_ => {
-					const max = 4;
+					const max = 5;
 					for(let i = 0; i < max; i++) {
 						let rect = new RectangleAnimation(0., 1/max*i, 1., 1/max);
-						rect.animationProperties(500 + 250 * i, 1, false, (i%2+.5)*2-2);
+						rect.animationProperties(max - i, 1, false, 1);
 						this.controller.addRectangle(rect, 0);
 					}
 				});

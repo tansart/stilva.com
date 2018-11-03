@@ -28,7 +28,6 @@ export default class Canvas extends Component {
 	}
 
 	componentWillReceiveProps(newProps) {
-
 		if(newProps.projectId == -1) {
 			this.controller.rectangles.forEach(r => {
 				r._isHiding = true;
@@ -117,7 +116,7 @@ export default class Canvas extends Component {
 
 			this._dTime2 = Date.now();
 			timeDelta = parseFloat((this._dTime2 - this._dTime)/1000);
-			const arr = this.controller.get(timeDelta);
+			const arr = this.controller.get(0);
 			this._dTime = this._dTime2;
 
 			this.gl.uniform1f(timeLocation, timeDelta);
@@ -208,9 +207,10 @@ function getShaders() {
 		void main() {
 			
 			vec2 uv = gl_FragCoord.xy/u_resolution.xy;
+			vec2 flippedUV = vec2(uv.x, 1. - uv.y);
 			
-			vec4 textureOne = texture2D(u_image0, uv);
-			vec4 textureTwo = texture2D(u_image1, uv);
+			vec4 textureOne = texture2D(u_image0, flippedUV);
+			vec4 textureTwo = texture2D(u_image1, flippedUV);
 			
 			// x, y, w, h,
 			// which texture, timing, is hiding animation, animation direction

@@ -81,11 +81,32 @@ export default class Project extends Component {
 			dist = Math.sign(dist);
 		}
 
+		const title = "hello hi bye".split(" ");
+
 		return <div className="project" {...mouseEvents} ref={el => this.node = el}>
-			<ProjectCanvas dist={dist} />
-			<img src={"/dist/abstract-q-c-640-480-6.jpg"} style={{position: 'absolute', width: '80%', zIndex: 0}} />
+			<div className="project__canvas-wrapper">
+				<ProjectCanvas dist={dist} />
+				<img src={"/dist/abstract-q-c-640-480-6.jpg"} style={{position: 'absolute', width: '80%', zIndex: 0}} />
+			</div>
+			<div className="project__title">
+				<Title dist={dist} offset={1} >{"hello hi bye"}</Title>
+			</div>
 		</div>
 	}
+}
+
+function Title({dist, children, offset}) {
+	return <div className="project__title-word">
+		<span
+				className="project__title-overlay"
+				style={{transform: `translate3d(${Math.sign(dist) * easeOut(Math.pow(Math.abs(dist), offset)) * -100}%, 0, 0)`}}
+		>{children}&nbsp;</span>
+		{children}&nbsp;
+	</div>;
+}
+
+function easeOut(k) {
+	return k === 1 ? 1 : 1 - Math.pow(2, - 10 * k);
 }
 
 function getEvent(e) {

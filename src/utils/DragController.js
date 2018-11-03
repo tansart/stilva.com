@@ -67,6 +67,8 @@ export default class AnimationController {
 			if(this.rectangles[i]._time > 1) this.rectangles[i]._time = 1;
 
 			this.output[i*8*4+4*5+3] = this.rectangles[i].ease(this.rectangles[i].time);
+
+			// i == 0 && console.log(this.rectangles[i]._time, this.rectangles[i]._duration)
 		}
 
 		this.removeRectangles(remove);
