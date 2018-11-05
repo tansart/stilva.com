@@ -42,11 +42,8 @@ export default class Canvas extends Component {
 		this.projectTextureThree = createTexture(this.gl, program, 2, "u_image2");
 		this.projectMatrix = createTexture(this.gl, program, 3, "u_image3");
 
-		let timeDelta = 0;
+		let initTime = Date.now();
 		let windowInnerWidth = window.innerWidth * .8;
-
-		this._dTime = Date.now();
-		this._dTime2 = Date.now();
 
 		this.render = () => {
 			if (!this.kill) {
@@ -56,14 +53,10 @@ export default class Canvas extends Component {
 			this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 			this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
 
-			this._dTime2 = Date.now();
-			timeDelta = parseFloat((this._dTime2 - this._dTime) / 1000);
-			this._dTime = this._dTime2;
-
 			const arr = this.controller.get(this.props.dist);
 
 			windowInnerWidth = .8 * window.innerWidth;
-			this.gl.uniform1f(timeLocation, timeDelta);
+			this.gl.uniform1f(timeLocation, Date.now() - initTime);
 			this.gl.uniform2fv(resolutionLocation, [windowInnerWidth, windowInnerWidth / (640 / 480)]);
 
 			this.gl.uniform3fv(numRectLocation, [1., parseFloat(this.controller.length), parseFloat(this.controller.rectangles.length)]);
@@ -72,13 +65,12 @@ export default class Canvas extends Component {
 
 		const [prev, curr, next] = this.context.getPrevNext(this.context.projectList, this.props.projectId);
 
-		pGetImage(curr[1].heroImage)
-				.then(img => this.projectTextureOne.apply(img))
-				.then(_ => {
-					let rect = new RectangleAnimation(0., 0., 1., 1.);
-					rect.animationProperties(0, 0, false, 1);
-					this.controller.addRectangle(rect, 0);
-				});
+		const img = new Image();
+		img.src = curr[1].heroImage;
+		this.projectTextureOne.apply(img);
+		let rect = new RectangleAnimation(0., 0., 1., 1.);
+		rect.animationProperties(0, 0, false, 1);
+		this.controller.addRectangle(rect, 0);
 
 		pGetImage(prev[1].heroImage)
 				.then(img => this.projectTextureTwo.apply(img))
@@ -143,26 +135,75 @@ function getShaders() {
 				* (step(pos.y - size.y, uv.y) - step(pos.y, uv.y));
 		}
 		
-		float uniformNoise(vec2 n) {
-			// return fract(sin(dot(n, vec2(12.9898, 78.233))) * 43758.5453);
-			return fract(4096.0 * sin(dot(n, vec2(12.0, 59.0))));
+		//
+		// Description : Array and textureless GLSL 2D simplex noise function.
+		//      Author : Ian McEwan, Ashima Arts.
+		//  Maintainer : stegu
+		//     Lastmod : 20110822 (ijm)
+		//     License : Copyright (C) 2011 Ashima Arts. All rights reserved.
+		//               Distributed under the MIT License. See LICENSE file.
+		//               https://github.com/ashima/webgl-noise
+		//               https://github.com/stegu/webgl-noise
+		// 
+		
+		vec3 mod289(vec3 x) {
+			return x - floor(x * (1.0 / 289.0)) * 289.0;
 		}
 		
-		float noise(vec2 p) {
-			// return uniformNoise(vec2(cos(u_time * p.x * .5), cos(u_time) * .8 * p.y ));
-			float t = fract( u_time );
-
-			float nrnd0 = uniformNoise( p + 0.07*t );
-			float nrnd1 = uniformNoise( p + 0.11*t );	
-			float nrnd2 = uniformNoise( p + 0.13*t );
-			float nrnd3 = uniformNoise( p + 0.17*t );
+		vec2 mod289(vec2 x) {
+			return x - floor(x * (1.0 / 289.0)) * 289.0;
+		}
+		
+		vec3 permute(vec3 x) {
+			return mod289(((x*34.0)+1.0)*x);
+		}
+		
+		float snoise(vec2 v) {
+			const vec4 C = vec4(0.211324865405187,  // (3.0-sqrt(3.0))/6.0
+													0.366025403784439,  // 0.5*(sqrt(3.0)-1.0)
+												 -0.577350269189626,  // -1.0 + 2.0 * C.x
+													0.024390243902439); // 1.0 / 41.0
+			// First corner
+			vec2 i  = floor(v + dot(v, C.yy) );
+			vec2 x0 = v -   i + dot(i, C.xx);
+		
+			// Other corners
+			vec2 i1;
+			//i1.x = step( x0.y, x0.x ); // x0.x > x0.y ? 1.0 : 0.0
+			//i1.y = 1.0 - i1.x;
+			i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+			// x0 = x0 - 0.0 + 0.0 * C.xx ;
+			// x1 = x0 - i1 + 1.0 * C.xx ;
+			// x2 = x0 - 1.0 + 2.0 * C.xx ;
+			vec4 x12 = x0.xyxy + C.xxzz;
+			x12.xy -= i1;
+		
+			// Permutations
+			i = mod289(i); // Avoid truncation effects in permutation
+			vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))
+				+ i.x + vec3(0.0, i1.x, 1.0 ));
+		
+			vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
+			m = m*m ;
+			m = m*m ;
 			
-			float nrnd4 = uniformNoise( p + 0.19*t );
-			float nrnd5 = uniformNoise( p + 0.23*t );
-			float nrnd6 = uniformNoise( p + 0.29*t );
-			float nrnd7 = uniformNoise( p + 0.31*t );
-			
-			return (nrnd0+nrnd1+nrnd2+nrnd3 +nrnd4+nrnd5+nrnd6+nrnd7) / 8.0;
+			// Gradients: 41 points uniformly over a line, mapped onto a diamond.
+			// The ring size 17*17 = 289 is close to a multiple of 41 (41*7 = 287)
+		
+			vec3 x = 2.0 * fract(p * C.www) - 1.0;
+			vec3 h = abs(x) - 0.5;
+			vec3 ox = floor(x + 0.5);
+			vec3 a0 = x - ox;
+		
+			// Normalise gradients implicitly by scaling m
+			// Approximation of: m *= inversesqrt( a0*a0 + h*h );
+			m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+		
+			// Compute final noise value at P
+			vec3 g;
+			g.x  = a0.x  * x0.x  + h.x  * x0.y;
+			g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+			return 130.0 * dot(m, g);
 		}
 
 		vec4 readPixel(vec2 pos) {
@@ -235,10 +276,14 @@ function getShaders() {
 				}
 				
 				gl_FragColor = mix(gl_FragColor, texture, rectangle(uv, vec2(x, pos.g), vec2(w, pos.a)));
-				// gl_FragColor = mix(gl_FragColor, vec4(1., 0., 0., 1.), rectangle(uv, vec2(x, pos.g), vec2(w, pos.a)));
 			}
 			
-			gl_FragColor += noise(uv)/4.;
+			vec4 test = gl_FragColor; //vec4(0., 1., 0., 1.);
+			vec4 whitened = mix(test, vec4(.5, .5, .5, 1.), .15);
+			
+			float n = fract(snoise(uv * u_time) * 918.);
+			
+			gl_FragColor = mix(test, whitened, step(.55, n));
 		}`;
 
 	return {vertex, fragment};
