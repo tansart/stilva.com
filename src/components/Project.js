@@ -15,7 +15,7 @@ export default class Project extends Component {
 			leave: false,
 			isActive: STATUS_IS_IDLE,
 			currentX: 0,
-			clientWidth: 0
+			clientWidth: 1
 		};
 
 		this.end = this.end.bind(this);
@@ -45,7 +45,7 @@ export default class Project extends Component {
 
 		this.setState({
 			isActive: STATUS_IS_SWIPING,
-			currentX: clientX
+			currentX: clientX,
 		});
 	}
 
@@ -60,8 +60,7 @@ export default class Project extends Component {
 			this.setState({
 				leave: false,
 				isActive: STATUS_IS_IDLE,
-				currentX: 0,
-				clientWidth: 0
+				currentX: 0
 			});
 		}
 	}
@@ -113,7 +112,7 @@ function Title({dist, children}) {
 	return <div className="project__title-word">
 		<span
 				className="project__title-overlay"
-				style={{transform: `translate3d(${Math.sign(dist) * easeOut(Math.abs(dist)) * -100}%, 0, 0)`}}
+				style={{opacity: 0, transform: `translate3d(${Math.sign(dist) * easeOut(Math.abs(dist)) * -100}%, 0, 0)`}}
 		>{children}</span>
 		{children}
 	</div>;
