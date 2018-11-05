@@ -2,12 +2,11 @@ import Router from 'preact-router';
 import Match from 'preact-router/match';
 
 import {h, Component} from 'preact'; // eslint-disable-line no-unused-vars
-import cx from 'classnames';
 import Transition from 'preact-transition-group';
 
 import Home from '../pages/Home';
 import Project from './Project';
-import Canvas from './Canvas';
+import Menu from './Menu';
 
 function About() {
   return <h1>About</h1>
@@ -40,18 +39,6 @@ class Wrapper extends Component {
 	}
 }
 
-class Menu extends Component {
-	render(props) {
-		return <ul className="menu" style={{opacity:1.}} >
-			<li><a href="/">home</a></li>
-			<li className="menu__divider"></li>
-			<li><a href="/">lab</a></li>
-			<li className="menu__divider"></li>
-			<li><a href="/about">about</a></li>
-		</ul>
-	};
-}
-
 const PROJECT_LIST = new Map([
 	[
 		'slug-0',
@@ -64,16 +51,14 @@ const PROJECT_LIST = new Map([
 		'slug-1',
 		{
 			projectName: "hello hi bye 7",
-			// heroImage: "/dist/abstract-q-c-640-480-7.jpg"
-			heroImage: "/dist/abstract-q-c-640-480-6.jpg"
+			heroImage: "/dist/abstract-q-c-640-480-7.jpg"
 		}
 	],
 	[
 		'slug-2',
 		{
 			projectName: "hello hi bye 8",
-			// heroImage: "/dist/abstract-q-c-640-480-8.jpg"
-			heroImage: "/dist/abstract-q-c-640-480-6.jpg"
+			heroImage: "/dist/abstract-q-c-640-480-8.jpg"
 		}
 	],
 	[

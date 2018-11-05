@@ -7,13 +7,15 @@ export default class Canvas extends Component {
 	constructor(props) {
 		super(props);
 
+		this.maxRects = 5;
+
 		this.kill = false;
 
 		this.controller = new DragController();
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		return nextProps.projectId != this.props.projectId;
+		return false;
 	}
 
 	componentWillUnmount() {
@@ -75,10 +77,9 @@ export default class Canvas extends Component {
 		pGetImage(prev[1].heroImage)
 				.then(img => this.projectTextureTwo.apply(img))
 				.then(_ => {
-					const max = 5;
-					for(let i = 0; i < max; i++) {
-						let rect = new RectangleAnimation(0., 1/max*i, 1., 1/max);
-						rect.animationProperties(max-i, 1, false, -1);
+					for(let i = 0; i < this.maxRects; i++) {
+						let rect = new RectangleAnimation(0., 1/this.maxRects*i, 1., 1/this.maxRects);
+						rect.animationProperties(this.maxRects-i, 1, false, -1);
 						this.controller.addRectangle(rect, 0);
 					}
 				});
@@ -86,10 +87,9 @@ export default class Canvas extends Component {
 		pGetImage(next[1].heroImage)
 				.then(img => this.projectTextureThree.apply(img))
 				.then(_ => {
-					const max = 5;
-					for(let i = 0; i < max; i++) {
-						let rect = new RectangleAnimation(0., 1/max*i, 1., 1/max);
-						rect.animationProperties(max - i, 2, false, 1);
+					for(let i = 0; i < this.maxRects; i++) {
+						let rect = new RectangleAnimation(0., 1/this.maxRects*i, 1., 1/this.maxRects);
+						rect.animationProperties(this.maxRects-i, 2, false, 1);
 						this.controller.addRectangle(rect, 0);
 					}
 				});
