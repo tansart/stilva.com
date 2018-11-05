@@ -19,7 +19,7 @@ export default class ProjectListItem extends Component {
 	render(props) {
 		const moduloIndex = (props.index + 2)%3;
 		const span = <span className="project-list__bar"></span>;
-		const title = <span className="project-list__title">QWERTY</span>;
+		const title = <span className="project-list__title">{props.projectName}</span>;
 
 		const projectListClassname = cx('project-list__wrap', {
 			'right': moduloIndex === 2,
@@ -28,7 +28,7 @@ export default class ProjectListItem extends Component {
 		});
 
 		return <a
-				href={`/projects/${props.index}`}
+				href={`/projects/${props.slug}`}
 				className={projectListClassname}
 				style={{transitionDelay: `${props.index * 250}ms`}}
 				ref={el => this.node = el}

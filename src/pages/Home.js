@@ -36,12 +36,24 @@ export default class Home extends Component{
 			'show': this.state.show
 		});
 
+		const {projectList} = this.context;
+
+		let i = 0;
+		let list = [];
+		const entries = projectList.entries();
+
+		for (let [key, data] of entries) {
+			if(i%3 === 1) {
+				list.push(<ProjectListMiddleItem index={i} projectHover={this.projectHover} slug={key} {...data} />);
+			} else {
+				list.push(<ProjectListItem index={i} projectHover={this.projectHover} slug={key} {...data} />);
+			}
+			i++;
+		}
+
 		return <div>
 			<div className={projectListClassname}>
-				{[1,2,3,4,5,6,7,8,9,10].map((_, i) => i%3 === 1
-						? <ProjectListMiddleItem index={i} projectHover={this.projectHover} />
-						: <ProjectListItem index={i} projectHover={this.projectHover} />)
-				}
+				{list}
 			</div>
 			<Canvas projectId={this.state.projectId} />
 		</div>

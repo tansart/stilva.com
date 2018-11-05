@@ -52,7 +52,84 @@ class Menu extends Component {
 	};
 }
 
+const PROJECT_LIST = new Map([
+	[
+		'slug-0',
+		{
+			projectName: "hello hi bye",
+			heroImage: "/dist/abstract-q-c-640-480-6.jpg"
+		}
+	],
+	[
+		'slug-1',
+		{
+			projectName: "hello hi bye 7",
+			// heroImage: "/dist/abstract-q-c-640-480-7.jpg"
+			heroImage: "/dist/abstract-q-c-640-480-6.jpg"
+		}
+	],
+	[
+		'slug-2',
+		{
+			projectName: "hello hi bye 8",
+			// heroImage: "/dist/abstract-q-c-640-480-8.jpg"
+			heroImage: "/dist/abstract-q-c-640-480-6.jpg"
+		}
+	],
+	[
+		'slug-3',
+		{
+			projectName: "hello hi bye 9",
+			heroImage: "/dist/abstract-q-c-640-480-9.jpg"
+		}
+	],
+	[
+		'slug-4',
+		{
+			projectName: "hello hi bye 21",
+			heroImage: "/dist/abstract-q-c-640-480-6.jpg"
+		}
+	],
+	[
+		'slug-5',
+		{
+			projectName: "hello hi bye 22",
+			heroImage: "/dist/abstract-q-c-640-480-7.jpg"
+		}
+	],
+	[
+		'slug-6',
+		{
+			projectName: "hello hi bye 23",
+			heroImage: "/dist/abstract-q-c-640-480-8.jpg"
+		}
+	],
+	[
+		'slug-7',
+		{
+			projectName: "hello hi bye 24",
+			heroImage: "/dist/abstract-q-c-640-480-9.jpg"
+		}
+	],
+]);
+
 export default class App extends Component {
+	getChildContext() {
+		return {
+			projectList:PROJECT_LIST,
+			getPrevNext: (projectList, projectId) => {
+				const keys = Array.from(projectList.keys());
+				const entries = Array.from(projectList.entries());
+				const index = keys.indexOf(projectId);
+
+				const prevIndex = index - 1 < 0 ? keys.length - 1: index - 1;
+				const nextIndex = (index + 1) % keys.length;
+
+				return [entries[prevIndex], entries[index], entries[nextIndex]];
+			}
+		};
+	}
+
 	constructor(props) {
 		super(props);
 	}
@@ -63,9 +140,9 @@ export default class App extends Component {
 				{({url}) => <Menu url={url}/>}
 			</Match>
 			<TransitionRouter>
-				<Home key="wrap-home" path="/"/>
+				<Home key="wrap-home" path="/" />
 				<About key="wrap-about" path="/about"/>
-				<Project key="wrap-project" path="/projects/:projectId"/>
+				<Project key="wrap-project" path="/projects/:projectId" />
 			</TransitionRouter>
 		</Wrapper>
 	}

@@ -49,7 +49,7 @@ export default class AnimationController {
 		const length = this.rectangles.length;
 
 		for(let i = 0; i<length; i++) {
-			if(this.rectangles[i]._texture === 255) {
+			if(this.rectangles[i]._texture === 2) {
 				if(delta < 0) {
 					this.rectangles[i]._time = -1 * delta;
 				} else {

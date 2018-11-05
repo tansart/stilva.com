@@ -1,6 +1,4 @@
 import {h, Component} from 'preact'; // eslint-disable-line no-unused-vars
-import cx from 'classnames';
-import Transition from 'preact-transition-group';
 
 import RectangleAnimation from '../utils/RectangleAnimation';
 import DragController from '../utils/DragController';
@@ -14,8 +12,8 @@ export default class Canvas extends Component {
 		this.controller = new DragController();
 	}
 
-	shouldComponentUpdate() {
-		return false;
+	shouldComponentUpdate(nextProps, nextState) {
+		return nextProps.projectId != this.props.projectId;
 	}
 
 	componentWillUnmount() {
@@ -42,6 +40,7 @@ export default class Canvas extends Component {
 		this.projectTextureOne = createTexture(this.gl, program, 0, "u_image0");
 		this.projectTextureTwo = createTexture(this.gl, program, 1, "u_image1");
 		this.projectTextureThree = createTexture(this.gl, program, 2, "u_image2");
+		this.projectMatrix = createTexture(this.gl, program, 3, "u_image3");
 
 		let timeDelta = 0;
 		let windowInnerWidth = window.innerWidth * .8;
@@ -68,27 +67,37 @@ export default class Canvas extends Component {
 			this.gl.uniform2fv(resolutionLocation, [windowInnerWidth, windowInnerWidth / (640 / 480)]);
 
 			this.gl.uniform3fv(numRectLocation, [1., parseFloat(this.controller.length), parseFloat(this.controller.rectangles.length)]);
-			this.projectTextureThree.apply(new ImageData(new Uint8ClampedArray(arr), 1, this.controller.length));
+			this.projectMatrix.apply(new ImageData(new Uint8ClampedArray(arr), 1, this.controller.length));
 		};
 
-		pGetImage('/dist/abstract-q-c-640-480-8.jpg')
+		const [prev, curr, next] = this.context.getPrevNext(this.context.projectList, this.props.projectId);
+
+		pGetImage(curr[1].heroImage)
+				.then(img => this.projectTextureOne.apply(img))
+				.then(_ => {
+					let rect = new RectangleAnimation(0., 0., 1., 1.);
+					rect.animationProperties(0, 0, false, 1);
+					this.controller.addRectangle(rect, 0);
+				});
+
+		pGetImage(prev[1].heroImage)
 				.then(img => this.projectTextureTwo.apply(img))
 				.then(_ => {
 					const max = 5;
 					for(let i = 0; i < max; i++) {
 						let rect = new RectangleAnimation(0., 1/max*i, 1., 1/max);
-						rect.animationProperties(max-i, 0, false, -1);
+						rect.animationProperties(max-i, 1, false, -1);
 						this.controller.addRectangle(rect, 0);
 					}
 				});
 
-		pGetImage('/dist/abstract-q-c-640-480-9.jpg')
-				.then(img => this.projectTextureOne.apply(img))
+		pGetImage(next[1].heroImage)
+				.then(img => this.projectTextureThree.apply(img))
 				.then(_ => {
 					const max = 5;
 					for(let i = 0; i < max; i++) {
 						let rect = new RectangleAnimation(0., 1/max*i, 1., 1/max);
-						rect.animationProperties(max - i, 1, false, 1);
+						rect.animationProperties(max - i, 2, false, 1);
 						this.controller.addRectangle(rect, 0);
 					}
 				});
@@ -99,8 +108,11 @@ export default class Canvas extends Component {
 	render(props) {
 		const width = window.innerWidth * .8;
 
-		return <canvas ref={node => this.node = node} className='project-bg-canvas' width={width}
-									 height={width / (640 / 480)} />
+		return <canvas ref={node => this.node = node}
+									 className='project-bg-canvas'
+									 width={width}
+									 height={width / (640 / 480)}
+		/>
 	}
 }
 
@@ -117,6 +129,7 @@ function getShaders() {
 		uniform sampler2D u_image0;
 		uniform sampler2D u_image1;
 		uniform sampler2D u_image2;
+		uniform sampler2D u_image3;
 		
 		uniform vec2 u_resolution;
 		uniform vec3 u_num_rectangle;
@@ -153,7 +166,7 @@ function getShaders() {
 		}
 
 		vec4 readPixel(vec2 pos) {
-			return texture2D(u_image2, (pos + .5)/u_num_rectangle.xy);
+			return texture2D(u_image3, (pos + .5)/u_num_rectangle.xy);
 		}
 		
 		// x, y, w, h,
@@ -181,14 +194,14 @@ function getShaders() {
 			vec2 uv = gl_FragCoord.xy/u_resolution.xy;
 			vec2 flippedUV = vec2(uv.x, 1. - uv.y);
 			
-			vec4 textureOne = texture2D(u_image0, flippedUV);
-			vec4 textureTwo = texture2D(u_image1, flippedUV);
+			vec4 textureOne = texture2D(u_image1, flippedUV);
+			vec4 textureTwo = texture2D(u_image2, flippedUV);
 			
 			// x, y, w, h,
 			// which texture, timing, is hiding animation, animation direction
 			
 			// sets the background colour
-			gl_FragColor = vec4(0., 0., 0., 0.);
+			gl_FragColor = texture2D(u_image0, flippedUV);
 			
 			for(float i = 0.; i <= 100.; i++) {
 				if(i == u_num_rectangle.z) break;
@@ -196,12 +209,12 @@ function getShaders() {
 				vec4 pos = getPositions(i);
 				vec4 anim = getAnimationDetails(i);
 				
-				vec4 texture = textureOne;
+				vec4 texture = textureTwo;
 				
 				float t = anim.y;
 				
-				if(anim.x > 0.) {
-					texture = textureTwo;
+				if(anim.x == 2./255.) {
+					texture = textureOne;
 				}
 				
 				if(t < .0) {
@@ -222,8 +235,9 @@ function getShaders() {
 				}
 				
 				gl_FragColor = mix(gl_FragColor, texture, rectangle(uv, vec2(x, pos.g), vec2(w, pos.a)));
+				// gl_FragColor = mix(gl_FragColor, vec4(1., 0., 0., 1.), rectangle(uv, vec2(x, pos.g), vec2(w, pos.a)));
 			}
-
+			
 			gl_FragColor += noise(uv)/4.;
 		}`;
 
