@@ -17,7 +17,7 @@ export default class ProjectListMiddleItem extends Component {
 
 	render(props) {
 		const span = <span className="project-list__bar"></span>;
-		const title = <span className="project-list__title">QWERTY</span>;
+		const title = <span className="project-list__title">{props.projectName}</span>;
 
 		const projectListClassname = cx('project-list__wrap', 'middle', {
 			'phase--one': this.state.phase > 0,
@@ -26,7 +26,7 @@ export default class ProjectListMiddleItem extends Component {
 		});
 
 		return <a
-				href={`/projects/${props.index}`}
+				href={`/projects/${props.slug}`}
 				className={projectListClassname}
 				style={{transitionDelay: `${props.index * 250}ms`}}
 				ref={el => this.node = el}

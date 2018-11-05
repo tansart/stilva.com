@@ -41,7 +41,7 @@ export default class RectangleAnimation {
 
 	animationProperties(duration, texture, isHiding, direction) {
 		this._duration = Math.max(0, duration);
-		this._texture = texture === 0 ? 0: 255;
+		this._texture = texture;
 		this._isHiding = isHiding;
 		this._direction = direction;
 	}
