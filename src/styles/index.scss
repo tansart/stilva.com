@@ -3,7 +3,10 @@
 @mixin font-regular($fontSize: 14px) {
   font-family: 'Montserrat', sans-serif;
   font-size: $fontSize;
+  font-display: swap;
 }
+
+@import './media-queries';
 
 @import './menu';
 @import './project';
@@ -19,4 +22,20 @@ html,
 body {
 	height: 100%;
 	margin: 0;
+}
+
+.app-wrapper {
+  padding-top: 3rem;
+}
+
+.home {
+  align-items: center;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
