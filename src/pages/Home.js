@@ -51,7 +51,7 @@ export default class Home extends Component{
 			i++;
 		}
 
-		return <div>
+		return <div className="home">
 			<div className={projectListClassname}>
 				{list}
 			</div>

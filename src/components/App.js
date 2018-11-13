@@ -5,12 +5,9 @@ import {h, Component} from 'preact'; // eslint-disable-line no-unused-vars
 import Transition from 'preact-transition-group';
 
 import Home from '../pages/Home';
+import About from '../pages/About';
 import Project from './Project';
 import Menu from './Menu';
-
-function About() {
-  return <h1>About</h1>
-}
 
 class TransitionRouter extends Router {
 	render(props, state) {
@@ -122,11 +119,12 @@ export default class App extends Component {
 	render() {
 		return <Wrapper>
 			<Match path="/">
-				{({url}) => <Menu url={url}/>}
+				{({url}) => <Menu url={url} />}
 			</Match>
 			<TransitionRouter>
 				<Home key="wrap-home" path="/" />
 				<About key="wrap-about" path="/about"/>
+				<About key="wrap-about" path="/lab"/>
 				<Project key="wrap-project" path="/projects/:projectId" />
 			</TransitionRouter>
 		</Wrapper>

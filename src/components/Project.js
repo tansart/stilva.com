@@ -112,7 +112,7 @@ function Title({dist, children}) {
 	return <div className="project__title-word">
 		<span
 				className="project__title-overlay"
-				style={{opacity: 0, transform: `translate3d(${Math.sign(dist) * easeOut(Math.abs(dist)) * -100}%, 0, 0)`}}
+				style={{opacity: 1, transform: `translate3d(${Math.sign(dist) * easeOut(Math.abs(dist)) * -100}%, 0, 0)`}}
 		>{children}</span>
 		{children}
 	</div>;

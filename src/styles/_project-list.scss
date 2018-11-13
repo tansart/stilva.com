@@ -20,8 +20,9 @@
   display: block;
   overflow: hidden;
   margin: 0 auto;
-  max-width: 80%;
+  max-width: 800px;
   position: relative;
+  width: 80%;
   z-index: 1;
 
   &__wrap {
@@ -36,6 +37,11 @@
     transition-property: transform;
     transition-timing-function: ease-out;
     width: 100%;
+
+    &,
+    &:active {
+      color: black;
+    }
 
     &:before {
       @include black-bar;
