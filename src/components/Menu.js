@@ -6,8 +6,6 @@ const MENU = [
 	{pattern: /^\/lab(\/.+)?/i, url: '/lab'},
 	{pattern: /^\/projects(\/.+)?/i, url: '/projects'},
 	{pattern: /^\/about/i, url: '/about'},
-
-
 ];
 
 export default class Menu extends Component {
@@ -16,11 +14,16 @@ export default class Menu extends Component {
 
 		this.state = {
 			url: '',
-			mounted: false
+			mounted: false,
+			width: window.innerWidth
 		};
 	}
 
 	componentDidMount() {
+		document.addEventListener('resize', e => {
+			this.setState({width: window.innerWidth});
+		});
+
 		requestAnimationFrame(_ => {
 			this.setState({
 				mounted: true
@@ -28,8 +31,10 @@ export default class Menu extends Component {
 		});
 	}
 
-	shouldComponentUpdate(nextProps) {
-		return this.props.url !== nextProps.url;
+	shouldComponentUpdate(nextProps, nextState) {
+		return this.props.url !== nextProps.url
+				|| this.state.width !== nextState.width
+				|| this.state.mounted !== nextState.mounted;
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -51,13 +56,13 @@ export default class Menu extends Component {
 
 		return <div className="menu__wrapper">
 			<ul className="menu" style={{opacity: 1.}}>
-				<li className={getClassName(url, dir, prevIndex == 0, MENU[0])}><a href={MENU[0].url}>home</a></li>
+				<li className={getClassName(url, dir, isPrev(prevIndex, newIndex, 0), MENU[0])}><a href={MENU[0].url}>home</a></li>
 				{divider}
-				<li className={getClassName(url, dir, prevIndex == 1, MENU[1])}><a href={MENU[1].url}>lab</a></li>
+				<li className={getClassName(url, dir, isPrev(prevIndex, newIndex, 1), MENU[1])}><a href={MENU[1].url}>lab</a></li>
 				{divider}
-				<li className={getClassName(url, dir, prevIndex == 2, MENU[2])}><a href={`${MENU[2].url}/${firstKey}`}>projects</a></li>
+				<li className={getClassName(url, dir, isPrev(prevIndex, newIndex, 2), MENU[2])}><a href={`${MENU[2].url}/${firstKey}`}>projects</a></li>
 				{divider}
-				<li className={getClassName(url, dir, prevIndex == 3, MENU[3])}><a href={MENU[3].url}>about</a></li>
+				<li className={getClassName(url, dir, isPrev(prevIndex, newIndex, 3), MENU[3])}><a href={MENU[3].url}>about</a></li>
 			</ul>
 
 			<svg viewBox="0 0 30 30"
@@ -72,6 +77,10 @@ export default class Menu extends Component {
 			</svg>
 		</div>
 	};
+}
+
+function isPrev(prevIndex, newIndex, targetIndex) {
+	return newIndex !== prevIndex && prevIndex == targetIndex;
 }
 
 function getClassName(url, dir, wasPrev, {pattern}) {

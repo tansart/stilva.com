@@ -1,17 +1,13 @@
 .menu {
   @include font-regular(10px);
   align-items: center;
-  display: none;
+  display: inline-flex;
   flex-direction: row;
   padding: 1.5rem 1rem 0 0;
   position: relative;
   transform: translateX(-100%) rotate(-90deg);
   transform-origin: right top;
   z-index: 1;
-
-  @media #{$laptop} {
-    display: inline-flex;
-  }
 
   li {
     list-style: none;
@@ -79,10 +75,6 @@
   right: 1.5rem;
   top: calc(1.5rem - 10px);
   z-index: 1;
-
-  @media #{$laptop} {
-    display: none;
-  }
 }
 
 .menu__wrapper {
@@ -113,11 +105,11 @@
   }
 
   .menu__line-top {
-    transform: translateY(10px);
+    transform: translateY(9px);
   }
 
   .menu__line-bottom {
-    transform: translateY(20px);
+    transform: translateY(21px);
   }
 }
 
