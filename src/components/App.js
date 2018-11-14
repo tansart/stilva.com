@@ -20,7 +20,6 @@ class TransitionRouter extends Router {
 }
 
 class Wrapper extends Component {
-
 	constructor(props) {
 		super(props);
 
@@ -31,6 +30,11 @@ class Wrapper extends Component {
 
 	render() {
 		return <div className='app-wrapper'>
+			<svg viewBox={`0 0 ${window.innerWidth} ${window.innerHeight}`} style={{height: '0px', width: '0px'}}>
+				<clipPath id="myClip">
+					<circle cx="40" cy="35" r="35" />
+				</clipPath>
+			</svg>
 			{this.props.children}
 		</div>
 	}
@@ -118,9 +122,10 @@ export default class App extends Component {
 
 	render() {
 		return <Wrapper>
-			<Match path="/">
-				{({url}) => <Menu url={url} />}
-			</Match>
+			<Match path="/">{({url}) => <Menu url={url} />}</Match>
+			<Match path="/">{
+				_ => <h1>hi hi</h1>
+			}</Match>
 			<TransitionRouter>
 				<Home key="wrap-home" path="/" />
 				<About key="wrap-about" path="/about"/>
