@@ -1,4 +1,4 @@
-import {h, Component} from 'preact'; // eslint-disable-line no-unused-vars
+import React, {Component} from 'react';
 import cx from 'classnames';
 import Transition from 'preact-transition-group';
 
@@ -128,7 +128,7 @@ export default class Canvas extends Component {
 		this.render();
 	}
 
-	render(props) {
+	render() {
 		return <canvas ref={node => this.node = node} className='hero-bg-canvas' width={window.innerWidth} height={window.innerHeight}/>
 	}
 }
