@@ -1,44 +1,13 @@
-import Router from 'preact-router';
-import Match from 'preact-router/match';
+import React, {createContext, Component, Children} from 'react';
+import {Router, Link, Location} from "@reach/router";
+import {Transition, TransitionGroup} from "react-transition-group";
 
-import {h, Component} from 'preact'; // eslint-disable-line no-unused-vars
-import Transition from 'preact-transition-group';
+import {AppContextConsumer, AppContextProvider} from "./AppContext";
 
 import Home from '../pages/Home';
 import About from '../pages/About';
-import Project from './Project';
-import Menu from './Menu';
 
-class TransitionRouter extends Router {
-	render(props, state) {
-		return (
-				<Transition component="section">
-					{super.render(props, state)}
-				</Transition>
-		);
-	}
-}
-
-class Wrapper extends Component {
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			projectId: -1
-		};
-	}
-
-	render() {
-		return <div className='app-wrapper'>
-			<svg viewBox={`0 0 ${window.innerWidth} ${window.innerHeight}`} style={{height: '0px', width: '0px'}}>
-				<clipPath id="myClip">
-					<circle cx="40" cy="35" r="35" />
-				</clipPath>
-			</svg>
-			{this.props.children}
-		</div>
-	}
-}
+import SVGMask from './SVGMask';
 
 const PROJECT_LIST = new Map([
 	[
@@ -99,39 +68,107 @@ const PROJECT_LIST = new Map([
 	],
 ]);
 
-export default class App extends Component {
-	getChildContext() {
-		return {
-			projectList:PROJECT_LIST,
-			getPrevNext: (projectList, projectId) => {
-				const keys = Array.from(projectList.keys());
-				const entries = Array.from(projectList.entries());
-				const index = keys.indexOf(projectId);
+function getProps({isCurrent}) {
+	return isCurrent ? {style: {pointerEvents: 'none'}} : null;
+}
 
-				const prevIndex = index - 1 < 0 ? keys.length - 1: index - 1;
-				const nextIndex = (index + 1) % keys.length;
+let Menu = () => (
+		<nav style={{position: 'absolute', zIndex: 2, display: 'block', background: 'white'}}>
+			<Link to="/" getProps={getProps}>Home</Link>
+			<Link to={`/project/${PROJECT_LIST.keys().next().value}`} getProps={getProps}>Projects</Link>
+			<Link to="/lab" getProps={getProps}>Lab</Link>
+			<Link to="/about" getProps={getProps}>About</Link>
+		</nav>
+);
 
-				return [entries[prevIndex], entries[index], entries[nextIndex]];
-			}
-		};
+const style = {
+	display: 'block',
+	position: 'absolute',
+	height: '100vh',
+	top: 0,
+	left: 0,
+	width: '100vw'
+};
+
+const context = {
+	projectList: PROJECT_LIST,
+	getPrevNext: (projectList, projectId) => {
+		const keys = Array.from(projectList.keys());
+		const entries = Array.from(projectList.entries());
+		const index = keys.indexOf(projectId);
+
+		const prevIndex = index - 1 < 0 ? keys.length - 1 : index - 1;
+		const nextIndex = (index + 1) % keys.length;
+
+		return [entries[prevIndex], entries[index], entries[nextIndex]];
 	}
+};
 
+class Page extends Component {
+	render() {
+		const props = this.props;
+		const colors = {
+			project: 'red',
+			lab: 'yellow',
+			about: 'green'
+		};
+
+		return <div style={Object.assign({}, style, {
+			background: colors[props.type],
+			zIndex: props.state == 'entering' || props.state == 'entered' ? 1 : 0
+		}, props.state == 'entering' ? {clipPath: `url(#my${props.type})`} : null)}>
+			<SVGMask type={props.type} state={props.state}/>
+			<h1 style={{color: 'white', paddingTop: '100px', zIndex: 1, display: 'block', position: 'relative'}}>
+				{Date.now()} {props.type} {props.state}
+			</h1>
+			<div>
+				<h1>hi</h1>
+				<h1>hi</h1>
+				<h1>hi</h1>
+				<h1>hi</h1>
+			</div>
+			{props.type}
+		</div>
+	}
+}
+
+export default class App extends Component {
 	constructor(props) {
 		super(props);
 	}
 
 	render() {
-		return <Wrapper>
-			<Match path="/">{({url}) => <Menu url={url} />}</Match>
-			<Match path="/">{
-				_ => <h1>hi hi</h1>
-			}</Match>
-			<TransitionRouter>
-				<Home key="wrap-home" path="/" />
-				<About key="wrap-about" path="/about"/>
-				<About key="wrap-about" path="/lab"/>
-				<Project key="wrap-project" path="/projects/:projectId" />
-			</TransitionRouter>
-		</Wrapper>
+		return <AppContextProvider value={context}>
+			<Menu/>
+			<TransitionRouter />
+		</AppContextProvider>
+	}
+}
+
+class TransitionRouter extends Component {
+	shouldComponentUpdate(nextProps) {
+		console.log(this.props, nextProps);
+		return true;
+	}
+
+	render() {
+		const children = this.props.children;
+
+		return <Location>
+			{({location}) => (
+					<TransitionGroup component={null}>
+						<Transition key={location.key} timeout={1000}>
+							{state => (
+									<Router location={location} key={location.pathname}>
+										<Home path="/" type="home" state={state} />
+										<Page path="/project/:projectSlug" type="project" state={state} />
+										<Page path="/lab" type="lab" state={state} />
+										<About path="/about" type="about" state={state} />
+									</Router>
+							)}
+						</Transition>
+					</TransitionGroup>
+			)}
+		</Location>;
 	}
 }
