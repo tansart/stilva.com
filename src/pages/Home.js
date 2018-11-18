@@ -86,15 +86,14 @@ export default class Home extends Component {
 	}
 
 	componentDidMount() {
-		requestAnimationFrame(() => {
+		setTimeout(() => {
 			this.setState({show: true});
-		});
+		}, 500);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {state, props} = this;
-		console.log(this.props, nextProps, this.props == nextProps);
-		console.log(this.state, nextState, this.state == nextState);
+
 		return state.show !== nextState.show
 				|| state.projectId !== nextState.projectId
 				|| props.state !== nextProps.state;
