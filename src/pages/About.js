@@ -25,16 +25,19 @@ export default class About extends Component {
 			about: 'green'
 		};
 
-		return <div style={Object.assign({}, style, {
-			background: colors[props.type],
-			clipPath: `url(#my-my-my)`,
-			zIndex: props.state == 'entering' ? 1 : 0
-		})}>
+		return <div>
 			<SVGMask type='-my-my' state={props.state}/>
-			<h1 style={{color: 'white', paddingTop: '100px', zIndex: 1, display: 'block', position: 'relative'}}>
-				{Date.now()} {props.type} {props.state}
-			</h1>
-			{props.type}
+			<div style={Object.assign({}, style, {
+				background: colors[props.type],
+				contain: 'content',
+				transform: `translate3d(0,0,0)`,
+				zIndex: props.state == 'entering' ? 1 : 0
+			})}>
+				<h1 style={{color: 'white', paddingTop: '100px', zIndex: 1, display: 'block', position: 'relative'}}>
+					{Date.now()} {props.type} {props.state}
+				</h1>
+				{props.type}
+			</div>
 		</div>
 	}
 }

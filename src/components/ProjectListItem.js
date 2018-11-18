@@ -8,6 +8,8 @@ export default class ProjectListItem extends Component {
 		this.state = {
 			reveal: false
 		};
+
+		this.kill = false;
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -16,8 +18,12 @@ export default class ProjectListItem extends Component {
 
 	componentDidMount() {
 		this.node.addEventListener('transitionend', _ => {
-			this.setState({reveal: true});
+			!this.kill && this.setState({reveal: true});
 		})
+	}
+
+	componentWillUnmount() {
+		this.kill = true;
 	}
 
 	render() {
