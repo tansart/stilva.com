@@ -140,53 +140,35 @@ export default class App extends Component {
 	render() {
 		return <AppContextProvider value={context}>
 			<Menu/>
-			<TransitionRouter/>
+			<TransitionRouter />
 		</AppContextProvider>
 	}
 }
 
 class TransitionRouter extends Component {
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			location: 'home',
-			m: [
-				<Transition key={location.key} timeout={1000} key={'home'}>
-					{state => (<Home path="/" type="home" state={state}/>)}
-				</Transition>
-			]
-		};
-	}
-
-	componentDidMount() {
-		setTimeout(_ => {
-			this.setState({
-				location: 'about',
-				m: [
-					<Transition key={location.key} timeout={1000} key={'about'}>
-						{state => (<About path="/about" type="about" state={state}/>)}
-					</Transition>
-				]
-			});
-		}, 1000);
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		return this.state !== nextState;
-	}
-
-	_render() {
-		const children = this.props.children;
-
-		return <TransitionGroup component={null}>
-
-		</TransitionGroup>;
+	shouldComponentUpdate(nextProps) {
+		console.log(this.props, nextProps);
+		return true;
 	}
 
 	render() {
-		return <TransitionGroup component={null}>
-			{this.state.m}
-		</TransitionGroup>;
+		const children = this.props.children;
+
+		return <Location>
+			{({location}) => (
+					<TransitionGroup component={null}>
+						<Transition key={location.key} timeout={1000}>
+							{state => (
+									<Router location={location} key={location.pathname}>
+										<Home path="/" type="home" state={state} />
+										<Page path="/project/:projectSlug" type="project" state={state} />
+										<Page path="/lab" type="lab" state={state} />
+										<About path="/about" type="about" state={state} />
+									</Router>
+							)}
+						</Transition>
+					</TransitionGroup>
+			)}
+		</Location>;
 	}
 }
