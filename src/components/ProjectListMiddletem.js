@@ -8,8 +8,6 @@ export default class ProjectListMiddleItem extends Component {
 		this.state = {
 			phase: 0
 		};
-
-		this.kill = false;
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -17,14 +15,8 @@ export default class ProjectListMiddleItem extends Component {
 	}
 
 	componentDidMount() {
-		this.node.addEventListener('transitionend', _ => {
-			!this.kill && this.setState({phase: this.state.phase + 1});
-		});
-		setTimeout(_ => !this.kill && this.setState({phase:1}));
-	}
-
-	componentWillUnmount() {
-		this.kill = true;
+		this.node.addEventListener('transitionend', _ => this.setState({phase: this.state.phase + 1}));
+		setTimeout(_ => this.setState({phase:1}));
 	}
 
 	render() {

@@ -8,23 +8,25 @@ export default class SVGMask extends Component {
 
 	render() {
 		const props = this.props;
-		const w = window.innerWidth;
+
 		return <Spring
-				from={{w: 0, t: -window.innerWidth}}
-				to={{w: 200, t: 0}}>
-			{p => <svg viewBox={`0 0 ${w} ${window.innerHeight}`}
+				from={{aa: 5}}
+				to={{aa: window.innerWidth}}>
+			{p => <animated.svg viewBox={`0 0 ${window.innerWidth} ${window.innerHeight}`}
 								 style={{
 									 top: 0,
 									 position: 'absolute',
 									 height: `${window.innerHeight}px`,
-									 width: `${w}px`,
+									 width: `${window.innerWidth}px`,
 									 pointerEvents: 'none',
 									 zIndex: 2
 								 }}>
-				<animated.path
-						d={`M0 0 L${w - 200 + p.w} 0 Q${(w - 200 + p.w) * 1.2} ${window.innerHeight / 2} ${w - 200 + p.w} ${window.innerHeight} L${0} ${window.innerHeight} Z`}
-						fill="transparent" stroke="black"/>
-			</svg>}
+				<clipPath id={`my${props.type}`}>
+					<animated.path
+							d={`M0 0 L${p.aa} 0 Q${p.aa * 1.2} ${window.innerHeight / 2} ${p.aa} ${window.innerHeight} L0 ${window.innerHeight} Z`}
+							stroke="black" fill="purple" />
+				</clipPath>
+			</animated.svg>}
 		</Spring>
 	}
 }
