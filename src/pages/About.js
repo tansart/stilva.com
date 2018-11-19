@@ -1,5 +1,6 @@
 import React, {Component} from "react";
-import SVGMask from '../components/SVGMask';
+
+import {AppContextConsumer} from '../components/AppContext';
 
 const style = {
 	display: 'block',
@@ -12,8 +13,23 @@ const style = {
 
 export default class About extends Component {
 
-	shouldComponentUpdate(nextProps) {
-		return this.props.state !== nextProps.state;
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			show: false
+		};
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		return this.props.state !== nextProps.state
+				|| this.state.show !== nextProps.show;
+	}
+
+	componentDidMount() {
+		setTimeout(_ => {
+			this.setState({show: true})
+		}, 250);
 	}
 
 	render() {
@@ -25,16 +41,19 @@ export default class About extends Component {
 			about: 'green'
 		};
 
-		return <div style={Object.assign({}, style, {
-			background: colors[props.type],
-			clipPath: `url(#my-my-my)`,
-			zIndex: props.state == 'entering' ? 1 : 0
-		})}>
-			<SVGMask type='-my-my' state={props.state}/>
-			<h1 style={{color: 'white', paddingTop: '100px', zIndex: 1, display: 'block', position: 'relative'}}>
-				{Date.now()} {props.type} {props.state}
-			</h1>
-			{props.type}
-		</div>
+		return <AppContextConsumer>
+			{c => {
+				return <div style={Object.assign({}, style, {
+					background: colors[props.type],
+					transform: `translateX(${this.state.show ? 0: -100}%)`,
+					zIndex: props.state == 'entering' ? 1 : 0
+				})}>
+					<h1 style={{color: 'white', paddingTop: '100px', zIndex: 1, display: 'block', position: 'relative'}}>
+						{Date.now()} {props.type} {props.state}
+					</h1>
+					{props.type}
+				</div>
+			}}
+		</AppContextConsumer>
 	}
 }

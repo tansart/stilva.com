@@ -141,7 +141,7 @@ function getShaders() {
 		}`;
 
 	const fragment = `
-		precision mediump float;
+		precision highp float;
 		
 		uniform sampler2D u_image0;
 		uniform sampler2D u_image1;
