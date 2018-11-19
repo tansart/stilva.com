@@ -1,4 +1,4 @@
-import React, {createContext, Component, Children} from 'react';
+import React, {createContext, Component, Fragment} from 'react';
 import {Router, Link, Location} from "@reach/router";
 import {Transition, TransitionGroup} from "react-transition-group";
 
@@ -7,79 +7,22 @@ import {AppContextConsumer, AppContextProvider} from "./AppContext";
 import Home from '../pages/Home';
 import About from '../pages/About';
 
-import SVGMask from './SVGMask';
+import PROJECT_LIST from '../projectList'
 
-const PROJECT_LIST = new Map([
-	[
-		'slug-0',
-		{
-			projectName: "hello hi bye",
-			heroImage: "/dist/abstract-q-c-640-480-6.jpg"
-		}
-	],
-	[
-		'slug-1',
-		{
-			projectName: "hello hi bye 7",
-			heroImage: "/dist/abstract-q-c-640-480-7.jpg"
-		}
-	],
-	[
-		'slug-2',
-		{
-			projectName: "hello hi bye 8",
-			heroImage: "/dist/abstract-q-c-640-480-8.jpg"
-		}
-	],
-	[
-		'slug-3',
-		{
-			projectName: "hello hi bye 9",
-			heroImage: "/dist/abstract-q-c-640-480-9.jpg"
-		}
-	],
-	[
-		'slug-4',
-		{
-			projectName: "hello hi bye 21",
-			heroImage: "/dist/abstract-q-c-640-480-6.jpg"
-		}
-	],
-	[
-		'slug-5',
-		{
-			projectName: "hello hi bye 22",
-			heroImage: "/dist/abstract-q-c-640-480-7.jpg"
-		}
-	],
-	[
-		'slug-6',
-		{
-			projectName: "hello hi bye 23",
-			heroImage: "/dist/abstract-q-c-640-480-8.jpg"
-		}
-	],
-	[
-		'slug-7',
-		{
-			projectName: "hello hi bye 24",
-			heroImage: "/dist/abstract-q-c-640-480-9.jpg"
-		}
-	],
-]);
+import TransitionMask from './TransitionMask';
 
 function getProps({isCurrent}) {
 	return isCurrent ? {style: {pointerEvents: 'none'}} : null;
 }
 
-let Menu = () => (
-		<nav style={{position: 'absolute', zIndex: 2, display: 'block', background: 'white'}}>
-			<Link to="/" getProps={getProps}>Home</Link>
-			<Link to={`/project/${PROJECT_LIST.keys().next().value}`} getProps={getProps}>Projects</Link>
-			<Link to="/lab" getProps={getProps}>Lab</Link>
-			<Link to="/about" getProps={getProps}>About</Link>
-		</nav>
-);
+let Menu = _ => <AppContextConsumer>
+	{({projectList}) => <nav style={{position: 'absolute', zIndex: 3, display: 'block', background: 'white'}}>
+		<Link to="/" getProps={getProps}>Home</Link>
+		<Link to={`/project/${projectList.keys().next().value}`} getProps={getProps}>Projects</Link>
+		<Link to="/lab" getProps={getProps}>Lab</Link>
+		<Link to="/about" getProps={getProps}>About</Link>
+	</nav>}
+</AppContextConsumer>;
 
 const style = {
 	display: 'block',
@@ -105,6 +48,20 @@ const context = {
 };
 
 class Page extends Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			show: false
+		};
+	}
+
+	componentDidMount() {
+		setTimeout(_ => {
+			this.setState({show: true})
+		}, 250);
+	}
+
 	render() {
 		const props = this.props;
 		const colors = {
@@ -115,9 +72,9 @@ class Page extends Component {
 
 		return <div style={Object.assign({}, style, {
 			background: colors[props.type],
+			transform: `translateX(${this.state.show ? 0: -100}%)`,
 			zIndex: props.state == 'entering' || props.state == 'entered' ? 1 : 0
-		}, props.state == 'entering' ? {clipPath: `url(#my${props.type})`} : null)}>
-			<SVGMask type={props.type} state={props.state}/>
+		})}>
 			<h1 style={{color: 'white', paddingTop: '100px', zIndex: 1, display: 'block', position: 'relative'}}>
 				{Date.now()} {props.type} {props.state}
 			</h1>
@@ -140,7 +97,7 @@ export default class App extends Component {
 	render() {
 		return <AppContextProvider value={context}>
 			<Menu/>
-			<TransitionRouter />
+			<TransitionRouter/>
 		</AppContextProvider>
 	}
 }
@@ -152,19 +109,20 @@ class TransitionRouter extends Component {
 	}
 
 	render() {
-		const children = this.props.children;
-
 		return <Location>
 			{({location}) => (
 					<TransitionGroup component={null}>
-						<Transition key={location.key} timeout={1000}>
+						<Transition key={location.key} timeout={500}>
 							{state => (
-									<Router location={location} key={location.pathname}>
-										<Home path="/" type="home" state={state} />
-										<Page path="/project/:projectSlug" type="project" state={state} />
-										<Page path="/lab" type="lab" state={state} />
-										<About path="/about" type="about" state={state} />
-									</Router>
+									<Fragment>
+										<TransitionMask location={location} state={state}/>
+										<Router location={location} key={location.pathname}>
+											<Home path="/" type="home" state={state}/>
+											<Page path="/project/:projectSlug" type="project" state={state}/>
+											<Page path="/lab" type="lab" state={state}/>
+											<About path="/about" type="about" state={state}/>
+										</Router>
+									</Fragment>
 							)}
 						</Transition>
 					</TransitionGroup>

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import cx from "classnames";
+import {Link} from "@reach/router";
 
 export default class ProjectListMiddleItem extends Component {
 	constructor(props) {
@@ -30,8 +31,8 @@ export default class ProjectListMiddleItem extends Component {
 			'phase--three': this.state.phase > 2
 		});
 
-		return <a
-				href={`/project/${props.slug}`}
+		return <Link
+				to={`/project/${props.slug}`}
 				className={projectListClassname}
 				style={{transitionDelay: `${props.index * 250}ms`}}
 				ref={el => this.node = el}
@@ -41,6 +42,6 @@ export default class ProjectListMiddleItem extends Component {
 			{span}
 			{title}
 			{span}
-		</a>;
+		</Link>;
 	}
 }
