@@ -1,4 +1,9 @@
 .project {
+  padding-top: 15vw;
+
+  @media #{$tablet-large} {
+    padding-top: 80px;
+  }
 
   &__canvas-wrapper {
     align-items: center;
