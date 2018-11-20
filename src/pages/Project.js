@@ -1,17 +1,20 @@
-import {h, Component} from 'preact'; // eslint-disable-line no-unused-vars
-import { route } from 'preact-router';
+import React, {Component} from 'react'; // eslint-disable-line no-unused-vars
+import {navigate} from '@reach/router';
 
-import ProjectCanvas from './ProjectCanvas';
+import {getPrevNext, isProject} from '../utils/menu';
+import {projectList} from '../data';
+
+import ProjectCanvas from '../components/ProjectCanvas';
 
 const STATUS_IS_IDLE = 0;
 const STATUS_IS_SWIPING = 1;
-
 
 export default class Project extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
+			show: false,
 			leave: false,
 			isActive: STATUS_IS_IDLE,
 			currentX: 0,
@@ -39,7 +42,7 @@ export default class Project extends Component {
 	move(e) {
 		const {clientX} = getEvent(e);
 
-		if(this.state.isActive !== STATUS_IS_SWIPING) {
+		if (this.state.isActive !== STATUS_IS_SWIPING) {
 			return;
 		}
 
@@ -55,14 +58,24 @@ export default class Project extends Component {
 		});
 	}
 
-	componentWillReceiveProps(nextProps, nextState) {
-		if(this.props.projectId != nextProps.projectId) {
+	componentDidUpdate(prevProps) {
+		if (this.props.projectId != prevProps.projectId) {
 			this.setState({
 				leave: false,
 				isActive: STATUS_IS_IDLE,
 				currentX: 0
 			});
 		}
+	}
+
+	componentDidMount() {
+		const {location, prevLocation} = this.props;
+
+		if(!prevLocation || (isProject(location.pathname) && isProject(prevLocation.pathname))) {
+			return this.setState({show: true});
+		}
+
+		setTimeout(_ => this.setState({show: true}), 250);
 	}
 
 	render() {
@@ -75,31 +88,31 @@ export default class Project extends Component {
 			onTouchEnd: this.end,
 		};
 
-		if(this.state.isActive === STATUS_IS_SWIPING) {
+		if (this.state.isActive === STATUS_IS_SWIPING) {
 			mouseEvents['onTouchMove'] = this.move;
 			mouseEvents['onMouseMove'] = this.move;
 		}
 
-		let dist = this.state.isActive !== STATUS_IS_IDLE ? (this.state.initX - this.state.currentX)/this.state.clientWidth: 0;
-		if(Math.abs(dist) > .35) {
+		let dist = this.state.isActive !== STATUS_IS_IDLE ? (this.state.initX - this.state.currentX) / this.state.clientWidth : 0;
+		if (Math.abs(dist) > .35) {
 			dist = Math.sign(dist);
 		}
 
-		const {projectList} = this.context;
-
-		if(Math.abs(dist) == 1 && !this.state.leave) {
+		if (Math.abs(dist) == 1 && !this.state.leave) {
 			this.setState({
 				leave: true
 			}, _ => {
-				const [prev, curr, next] = this.context.getPrevNext(projectList, this.props.projectId);
-				route(`/projects/${dist < 0 ? prev[0]: next[0]}`);
+				const [prev, curr, next] = getPrevNext(projectList, this.props.projectId);
+				navigate(`/project/${dist < 0 ? prev[0]: next[0]}`);
 			});
 		}
 
-		return <div className="project" {...mouseEvents} ref={el => this.node = el} key={`key_${this.props.projectId}`}>
+		return <div className="project" style={{transform: `translateX(${this.state.show ? 0: -100}%)`}} {...mouseEvents} ref={el => this.node = el} key={`key_${this.props.projectId}`}>
 			<div className="project__canvas-wrapper">
-				<ProjectCanvas dist={dist} projectId={this.props.projectId} key={`key_canvas_${this.props.projectId}`} />
-				<img src={projectList.get(this.props.projectId).heroImage} style={{position: 'absolute', width: '80%', zIndex: 0}} />
+				<ProjectCanvas dist={dist} projectId={this.props.projectId} key={`key_canvas_${this.props.projectId}`}
+											 projectList={projectList} getPrevNext={getPrevNext}/>
+				<img src={projectList.get(this.props.projectId).heroImage}
+						 style={{position: 'absolute', width: '80%', zIndex: 0}}/>
 			</div>
 			<div className="project__title">
 				<Title dist={dist}>{projectList.get(this.props.projectId).projectName}</Title>
@@ -119,9 +132,9 @@ function Title({dist, children}) {
 }
 
 function easeOut(k) {
-	return k === 1 ? 1 : 1 - Math.pow(2, - 10 * k);
+	return k === 1 ? 1 : 1 - Math.pow(2, -10 * k);
 }
 
 function getEvent(e) {
-	return e['changedTouches'] ? e.changedTouches[0]: e;
+	return e['changedTouches'] ? e.changedTouches[0] : e;
 }

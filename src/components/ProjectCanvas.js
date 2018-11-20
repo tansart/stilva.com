@@ -1,4 +1,4 @@
-import {h, Component} from 'preact'; // eslint-disable-line no-unused-vars
+import React, {Component} from 'react'; // eslint-disable-line no-unused-vars
 
 import RectangleAnimation from '../utils/RectangleAnimation';
 import DragController from '../utils/DragController';
@@ -65,7 +65,7 @@ export default class Canvas extends Component {
 			this.projectMatrix.apply(new ImageData(new Uint8ClampedArray(arr), 1, this.controller.length));
 		};
 
-		const [prev, curr, next] = this.context.getPrevNext(this.context.projectList, this.props.projectId);
+		const [prev, curr, next] = this.props.getPrevNext(this.props.projectList, this.props.projectId);
 
 		const img = new Image();
 		img.src = curr[1].heroImage;

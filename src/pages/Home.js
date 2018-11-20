@@ -4,7 +4,7 @@ import ProjectListItem from '../components/ProjectListItem';
 import ProjectListMiddleItem from '../components/ProjectListMiddletem';
 import cx from 'classnames';
 
-import {AppContextConsumer} from '../components/AppContext';
+import {projectList} from '../data';
 
 export default class Home extends Component {
 	constructor(props) {
@@ -56,13 +56,11 @@ export default class Home extends Component {
 			'show': this.state.show
 		});
 
-		return <AppContextConsumer>
-			{({projectList}) => (<div className="home">
-				<div className={projectListClassname}>
-					{this.projectList(projectList)}
-				</div>
-				{props.state == 'entered' ? <Canvas projectId={this.state.projectId} />: null}
-			</div>)}
-		</AppContextConsumer>
+		return <div className="home">
+			<div className={projectListClassname}>
+				{this.projectList(projectList)}
+			</div>
+			{props.state == 'entered' ? <Canvas projectId={this.state.projectId} />: null}
+		</div>
 	}
 }

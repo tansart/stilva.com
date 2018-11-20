@@ -1,28 +1,15 @@
-import React, {createContext, Component, Fragment} from 'react';
-import {Router, Link, Location} from "@reach/router";
+import React, {Component, memo, Fragment} from 'react';
+import {Router, Location} from "@reach/router";
 import {Transition, TransitionGroup} from "react-transition-group";
 
-import {AppContextConsumer, AppContextProvider} from "./AppContext";
-
 import Home from '../pages/Home';
+import Project from '../pages/Project';
 import About from '../pages/About';
 
-import PROJECT_LIST from '../projectList'
-
+import Menu from './Menu';
 import TransitionMask from './TransitionMask';
 
-function getProps({isCurrent}) {
-	return isCurrent ? {style: {pointerEvents: 'none'}} : null;
-}
-
-let Menu = _ => <AppContextConsumer>
-	{({projectList}) => <nav style={{position: 'absolute', zIndex: 3, display: 'block', background: 'white'}}>
-		<Link to="/" getProps={getProps}>Home</Link>
-		<Link to={`/project/${projectList.keys().next().value}`} getProps={getProps}>Projects</Link>
-		<Link to="/lab" getProps={getProps}>Lab</Link>
-		<Link to="/about" getProps={getProps}>About</Link>
-	</nav>}
-</AppContextConsumer>;
+import {getIndex} from '../utils/menu';
 
 const style = {
 	display: 'block',
@@ -31,20 +18,6 @@ const style = {
 	top: 0,
 	left: 0,
 	width: '100vw'
-};
-
-const context = {
-	projectList: PROJECT_LIST,
-	getPrevNext: (projectList, projectId) => {
-		const keys = Array.from(projectList.keys());
-		const entries = Array.from(projectList.entries());
-		const index = keys.indexOf(projectId);
-
-		const prevIndex = index - 1 < 0 ? keys.length - 1 : index - 1;
-		const nextIndex = (index + 1) % keys.length;
-
-		return [entries[prevIndex], entries[index], entries[nextIndex]];
-	}
 };
 
 class Page extends Component {
@@ -72,7 +45,7 @@ class Page extends Component {
 
 		return <div style={Object.assign({}, style, {
 			background: colors[props.type],
-			transform: `translateX(${this.state.show ? 0: -100}%)`,
+			transform: `translateX(${this.state.show ? 0 : -100}%)`,
 			zIndex: props.state == 'entering' || props.state == 'entered' ? 1 : 0
 		})}>
 			<h1 style={{color: 'white', paddingTop: '100px', zIndex: 1, display: 'block', position: 'relative'}}>
@@ -89,44 +62,45 @@ class Page extends Component {
 	}
 }
 
-export default class App extends Component {
+class LocationTracker extends Component {
 	constructor(props) {
 		super(props);
+
+		this.prevLocation = null;
+	}
+
+	componentDidMount() {
+		this.prevLocation = this.props.location;
+	}
+
+	componentDidUpdate() {
+		this.prevLocation = this.props.location;
 	}
 
 	render() {
-		return <AppContextProvider value={context}>
-			<Menu/>
-			<TransitionRouter/>
-		</AppContextProvider>
+		return this.props.children(this.props.location, this.prevLocation);
 	}
 }
 
-class TransitionRouter extends Component {
-	shouldComponentUpdate(nextProps) {
-		console.log(this.props, nextProps);
-		return true;
-	}
-
-	render() {
-		return <Location>
-			{({location}) => (
-					<TransitionGroup component={null}>
-						<Transition key={location.key} timeout={500}>
-							{state => (
-									<Fragment>
-										<TransitionMask location={location} state={state}/>
-										<Router location={location} key={location.pathname}>
-											<Home path="/" type="home" state={state}/>
-											<Page path="/project/:projectSlug" type="project" state={state}/>
-											<Page path="/lab" type="lab" state={state}/>
-											<About path="/about" type="about" state={state}/>
-										</Router>
-									</Fragment>
-							)}
-						</Transition>
-					</TransitionGroup>
-			)}
-		</Location>;
-	}
-}
+export default memo(function App() {
+	return <Location>
+		{({location}) => (<LocationTracker location={location}>
+			{(location, prevLocation) => [<Menu key="menu" url={location.pathname} />,
+				<TransitionGroup component={null} key="transition-group" >
+					<Transition key={`transition-${getIndex(location.pathname)}`} timeout={500}>
+						{state => (
+								<Fragment>
+									<TransitionMask location={location} prevLocation={prevLocation} state={state}/>
+									<Router location={location} key={location.pathname}>
+										<Home path="/" type="home" state={state}/>
+										<Project path="/project/:projectId" type="project" prevLocation={prevLocation} state={state}/>
+										<Page path="/lab" type="lab" state={state}/>
+										<About path="/about" type="about" state={state}/>
+									</Router>
+								</Fragment>
+						)}
+					</Transition>
+				</TransitionGroup>]}
+		</LocationTracker>)}
+	</Location>;
+});
