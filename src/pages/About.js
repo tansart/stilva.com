@@ -1,7 +1,5 @@
 import React, {Component} from "react";
 
-import {AppContextConsumer} from '../components/AppContext';
-
 const style = {
 	display: 'block',
 	position: 'absolute',
@@ -41,19 +39,15 @@ export default class About extends Component {
 			about: 'green'
 		};
 
-		return <AppContextConsumer>
-			{c => {
-				return <div style={Object.assign({}, style, {
-					background: colors[props.type],
-					transform: `translateX(${this.state.show ? 0: -100}%)`,
-					zIndex: props.state == 'entering' ? 1 : 0
-				})}>
-					<h1 style={{color: 'white', paddingTop: '100px', zIndex: 1, display: 'block', position: 'relative'}}>
-						{Date.now()} {props.type} {props.state}
-					</h1>
-					{props.type}
-				</div>
-			}}
-		</AppContextConsumer>
+		return <div style={Object.assign({}, style, {
+			background: colors[props.type],
+			transform: `translateX(${this.state.show ? 0 : -100}%)`,
+			zIndex: props.state == 'entering' ? 1 : 0
+		})}>
+			<h1 style={{color: 'white', paddingTop: '100px', zIndex: 1, display: 'block', position: 'relative'}}>
+				{Date.now()} {props.type} {props.state}
+			</h1>
+			{props.type}
+		</div>
 	}
 }

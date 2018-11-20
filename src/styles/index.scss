@@ -12,6 +12,7 @@
 @import './project';
 @import './project-list';
 @import './hero-bg-canvas';
+@import './transition-mask';
 
 * {
   -webkit-font-smoothing: antialiased;
@@ -20,8 +21,8 @@
 
 html,
 body {
-	height: 100%;
-	margin: 0;
+  height: 100%;
+  margin: 0;
 }
 
 .app-wrapper {

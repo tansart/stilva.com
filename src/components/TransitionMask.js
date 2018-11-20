@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import {animated, Spring} from 'react-spring';
 
+import {isProject} from '../utils/menu';
+
 export default class TransitionMask extends Component {
 	constructor(props) {
 		super(props);
@@ -9,14 +11,17 @@ export default class TransitionMask extends Component {
 	render() {
 		const w = window.innerWidth;
 
-		return <svg viewBox={`0 0 ${window.innerWidth} ${window.innerHeight}`}
+		const {location, prevLocation} = this.props;
+
+		if(prevLocation === null || (isProject(prevLocation.pathname) && isProject(location.pathname))) {
+			return null;
+		}
+
+		return <svg className="transition-mask"
+								viewBox={`0 0 ${window.innerWidth} ${window.innerHeight}`}
 								style={{
-									top: 0,
-									position: 'absolute',
 									height: `${window.innerHeight}px`,
 									width: `${window.innerWidth}px`,
-									pointerEvents: 'none',
-									zIndex: 2
 								}}>
 			<Spring
 					from={{n: 0, b: 0}}
