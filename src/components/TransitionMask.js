@@ -26,7 +26,7 @@ export default class TransitionMask extends Component {
 			<Spring
 					from={{n: 0, b: 0}}
 					to={{n: w, b: w}}
-					config={key => key == 'n' ? {tension: 170, friction: 14, clamp: true}: {tension: 170, friction: 20, delay: 1650, clamp: true}}
+					config={key => key == 'n' ? {tension: 170, friction: 14, clamp: true}: {tension: 170, friction: 20, delay: 650, clamp: true}}
 			>
 				{p => <animated.path
 						d={`M${p.b} 0 L${p.n} 0 Q${p.n * 1.2} ${window.innerHeight / 2} ${p.n} ${window.innerHeight} L${p.b} ${window.innerHeight} Q${p.b * 1.2} ${window.innerHeight / 2} ${p.b} ${0} Z`}
