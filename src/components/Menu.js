@@ -46,17 +46,29 @@ export default class Menu extends Component {
 			</svg>
 
 			<ul className="menu--mobile" style={{opacity: 1.}}>
-				<li className={''}>
-					<Link to={MENU[0].url} style={{transform: `translateX(${100 - clampAboveZero(p.t, type == 'leave')}%)`}}>home</Link>
+				<li className={''} onClick={_ => {
+						console.log('>>')
+						this.setState({mobileMenuOpened: false});
+					}}>
+					<Link to={MENU[0].url} style={{opacity: clampAboveZero(p.t, type == 'leave')}}>home</Link>
 				</li>
-				<li className={''}>
-					<Link to={MENU[1].url} style={{transform: `translateX(${100 - clampAboveZero(p.t, type == 'enter')}%)`}}>lab</Link>
+				<li className={''} onClick={_ => {
+						console.log('>>')
+						this.setState({mobileMenuOpened: false});
+					}}>
+					<Link to={MENU[1].url} style={{opacity: clampAboveZero(p.t, type == 'enter')}}>lab</Link>
 				</li>
-				<li className={''}>
-					<Link to={`${MENU[2].url}/${firstKey}`} style={{transform: `translateX(${100 - clampAboveZero(p.t, type == 'enter')}%)`}}>projects</Link>
+				<li className={''} onClick={_ => {
+						console.log('>>')
+						this.setState({mobileMenuOpened: false});
+					}}>
+					<Link to={`${MENU[2].url}/${firstKey}`} style={{opacity: clampAboveZero(p.t, type == 'enter')}}>projects</Link>
 				</li>
-				<li className={''}>
-					<Link to={MENU[3].url} style={{transform: `translateX(${100 - clampAboveZero(p.t, type == 'leave')}%)`}}>about</Link>
+				<li className={''} onClick={_ => {
+						console.log('>>')
+						this.setState({mobileMenuOpened: false});
+					}}>
+					<Link to={MENU[3].url} style={{opacity: clampAboveZero(p.t, type == 'leave')}}>about</Link>
 				</li>
 			</ul>
 		</Fragment>;
@@ -103,19 +115,19 @@ export default class Menu extends Component {
 			return <div className="menu__wrapper">
 				<ul className="menu" style={{opacity: 1.}}>
 					<li className={getClassName(url, dir, isPrev(prevIndex, newIndex, 0), MENU[0])}>
-						<Link to={MENU[0].url}>home</Link>
+						<Link to={MENU[0].url} >home</Link>
 					</li>
 					{divider}
 					<li className={getClassName(url, dir, isPrev(prevIndex, newIndex, 1), MENU[1])}>
-						<Link to={MENU[1].url}>lab</Link>
+						<Link to={MENU[1].url} >lab</Link>
 					</li>
 					{divider}
 					<li className={getClassName(url, dir, isPrev(prevIndex, newIndex, 2), MENU[2])}>
-						<Link to={`${MENU[2].url}/${firstKey}`}>projects</Link>
+						<Link to={`${MENU[2].url}/${firstKey}`} >projects</Link>
 					</li>
 					{divider}
 					<li className={getClassName(url, dir, isPrev(prevIndex, newIndex, 3), MENU[3])}>
-						<Link to={MENU[3].url}>about</Link>
+						<Link to={MENU[3].url} >about</Link>
 					</li>
 				</ul>
 			</div>
@@ -140,7 +152,7 @@ export default class Menu extends Component {
 			<Transition
 					items={this.state.mobileMenuOpened}
 					from={{n: w, d: .7, t: 0}}
-					enter={{n: 0, d: .85, t: 100}}
+					enter={{n: 0, d: .85, t: 1}}
 					leave={{n: w, d: 1.25, t: 0}}
 					config={(_,type) => (
 							key => key == 't' ? {tension: type == 'enter' ? 170: 135, friction: type == 'enter' ? 14: 18, clamp: true, delay: type == 'enter' ? 250: 0} : {
