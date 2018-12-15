@@ -1,9 +1,16 @@
 {
   "sourceMaps": true,
   "presets": [
-  	"env"
-	],
+    [
+      "env",
+      {
+        "modules": false
+      }
+    ],
+    "react",
+    "stage-2"
+  ],
   "plugins": [
-    ["transform-react-jsx"]
+    "transform-object-rest-spread"
   ]
 }

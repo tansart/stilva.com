@@ -1,66 +1,53 @@
 import React, {Component} from 'react';
-import Canvas from '../components/Canvas';
-import ProjectListItem from '../components/ProjectListItem';
-import ProjectListMiddleItem from '../components/ProjectListMiddletem';
 import cx from 'classnames';
 
-import {projectList} from '../data';
+import Greetings from '../components/Greetings';
+import AnimatedLink from '../components/AnimatedLink';
+
+import clients from '../clients';
+
+const html = document.querySelector('html');
 
 export default class Home extends Component {
+
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			show: false,
-			projectId: -1
-		};
-
-		this.projectHover = this.projectHover.bind(this);
 	}
 
-	projectHover(projectId) {
-		this.setState({projectId});
-	}
+	getClientList(clients) {
+		return Array.from(clients)
+				.reduce((acc, [key, data], i, original) => {
 
-	componentDidMount() {
-		setTimeout(_ => this.setState({show: true}), 250)
-	}
+					acc.push(<AnimatedLink link={`client/${key}`} label={data.label} key={`client_list_${key}`} />);
 
-	shouldComponentUpdate(nextProps, nextState) {
-		const {state, props} = this;
-		return state.show !== nextState.show
-				|| state.projectId !== nextState.projectId
-				|| props.state !== nextProps.state;
-	}
+					if(i + 1 < original.length) {
+						acc.push(i + 2 === original.length ? ', and ': ', ');
+					}
 
-	projectList(projectList) {
-		let i = 0;
-		let list = [];
-		const entries = projectList.entries();
-
-		for (let [key, data] of entries) {
-			if (i % 3 === 1) {
-				list.push(<ProjectListMiddleItem key={`_${i}`} index={i} projectHover={this.projectHover} slug={key} {...data} />);
-			} else {
-				list.push(<ProjectListItem key={`_${i}`} index={i} projectHover={this.projectHover} slug={key} {...data} />);
-			}
-			i++;
-		}
-
-		return list;
+					return acc;
+				}, [])
 	}
 
 	render() {
-		const props = this.props;
-		const projectListClassname = cx('project-list', {
-			'show': this.state.show
-		});
-
-		return <div className="home">
-			<div className={projectListClassname}>
-				{this.projectList(projectList)}
+		return <div className={cx('home', 'page', `page--${this.props.transitionState}`)}>
+			<div className="content">
+				<p>
+					<Greetings /><br/>
+					I'm <AnimatedLink link="https://github.com/stilva" label="Thomas" target="_blank" />,
+					a principal developer currently working at <AnimatedLink link="https://bit.ly/2Mm1IYx" label="Firstborn" rel="nofollow" target="_blank" />,
+					New York.
+				</p>
+				<p>
+					My day job involves creating pixel perfect, and delightful UIs for clients,
+					such as {this.getClientList(clients)}.
+				</p>
+				<p>
+					At home, I spend my time actively exploring Machine Learning (tensorflow/Python), with my pug Nugget on my laps.
+				</p>
+				<p>
+					Always down to chat over a drink.
+				</p>
 			</div>
-			{props.state == 'entered' ? <Canvas projectId={this.state.projectId} />: null}
 		</div>
 	}
 }

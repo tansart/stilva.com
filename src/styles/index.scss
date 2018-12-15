@@ -1,43 +1,46 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:300');
 
-@mixin font-regular($fontSize: 14px) {
-  font-family: 'Montserrat', sans-serif;
+@mixin font-light($fontSize: 5.6vw) {
+  font-family: 'Roboto Mono', monospace;
   font-size: $fontSize;
   font-display: swap;
+  letter-spacing: -0.05em;
+  line-height: 1.28;
 }
 
 @import './media-queries';
 
-@import './menu';
-@import './project';
-@import './project-list';
-@import './hero-bg-canvas';
-@import './transition-mask';
+@import './home';
+@import './client';
+@import './page';
 
 * {
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
 }
 
-html,
-body {
-  height: 100%;
+html, body {
+  height: 100vh;
   margin: 0;
+  width: 100vw;
 }
 
-.app-wrapper {
-  padding-top: 3rem;
+.content {
+  margin: 0 auto;
+  max-width: 540px;
+
+  @media #{$laptop} {
+    max-width: 1024px;
+  }
 }
 
-.home {
-  align-items: center;
+.transition-canvas {
+  display: block;
   bottom: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   left: 0;
-  position: absolute;
+  pointer-events: none;
+  position: fixed;
   right: 0;
   top: 0;
-  z-index: 0;
+  z-index: 2;
 }

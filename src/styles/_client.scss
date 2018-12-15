@@ -1,0 +1,65 @@
+.client {
+  background: white;
+  color: black;
+  margin: 0 auto;
+  padding: 12vw 11vw;
+  position: relative;
+  z-index: 1;
+
+  @media #{$laptop} {
+    padding: 86px;
+  }
+
+  a {
+    @include font-light();
+    color: white;
+    text-decoration: none;
+  }
+
+  p {
+    margin: 7vw auto 0;
+  }
+
+  .client-name {
+    @include font-light(26px);
+    display: block;
+    letter-spacing: -.04vw;
+    margin: 0;
+    padding: 0 0 1.4vw 0;
+    position: relative;
+
+    @media #{$tablet} {
+      font-size: 6.4vw;
+    }
+
+    @media #{$laptop} {
+      font-size: 56px;
+    }
+  }
+
+  .blob {
+    font-size: 6.5vw;
+    padding: 1.6vw 0.6vw;
+
+    &__title {
+      @include font-light(14px);
+      margin: 0;
+
+      @media #{$tablet} {
+        font-size: 16px;
+      }
+
+      @media #{$laptop} {
+        font-size: 18px;
+      }
+    }
+
+    p {
+      @include font-light(14px);
+      letter-spacing: -0.03vw;
+      line-height: 1.5;
+      margin: .5em 0 1em;
+      word-spacing: 0.05vw;
+    }
+  }
+}

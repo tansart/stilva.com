@@ -1,0 +1,106 @@
+.home {
+  background: black;
+  padding: 4.8vw 11.2vw 20vw;
+  position: relative;
+  z-index: 1;
+
+  @media #{$laptop} {
+    padding: 36px 86px 128px;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  &,
+  a {
+    @include font-light(6.5vw);
+    line-height: 1.4;
+    color: white;
+
+    @media #{$tablet} {
+      font-size: 5.6vw;
+      line-height: 1.28;
+    }
+
+    @media #{$laptop} {
+      font-size: 56px;
+    }
+  }
+
+  p {
+    margin: 10vw auto 0;
+
+    @media #{$tablet} {
+      margin-top: 7vw;
+    }
+
+    @media #{$laptop} {
+      margin-top: 60px;
+    }
+  }
+}
+
+.home__animated-word {
+  border: 1px solid transparent;
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+}
+
+.animated-link {
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+  vertical-align: bottom;
+
+  &__text {
+    display: block;
+    position: relative;
+    transition: color 250ms ease-out;
+    z-index: 1;
+
+    &:after {
+      background: white;
+      content: "";
+      height: 100%;
+      left: 0;
+      position: absolute;
+      transform: translateX(-101%);
+      transition: transform 250ms ease-out;
+      top: 0;
+      width: 100%;
+      z-index: -1;
+    }
+  }
+
+  &__underline {
+    background: white;
+    bottom: 0;
+    display: block;
+    height: 1px;
+    left: 0;
+    position: absolute;
+    transform: translateX(-101%);
+    transition: transform 250ms ease-out;
+    width: 100%;
+
+    @media #{$tablet} {
+      height: 2px;
+    }
+
+    .visible & {
+      transform: translateX(0);
+    }
+  }
+
+  &:hover {
+    .animated-link__text {
+      color: black;
+
+      &:after {
+        transform: translateX(0);
+      }
+    }
+  }
+}
