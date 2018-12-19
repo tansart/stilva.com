@@ -1,0 +1,17 @@
+.picture {
+  display: block;
+  margin: 0 auto 15vw;
+  position: relative;
+  width: 100%;
+
+  @media #{$laptop} {
+    margin: 0 auto 80px;
+  }
+
+  img {
+    display: block;
+    height: auto;
+    position: relative;
+    width: 100%;
+  }
+}

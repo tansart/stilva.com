@@ -14,11 +14,31 @@ const autoprefixer = require('autoprefixer');
 const path = require('path');
 
 const ENV = process.env.NODE_ENV || 'development';
-const CSS_MAPS = ENV!=='production';
+const CSS_MAPS = ENV !== 'production';
 
-const baseConfig = {
+class PluginProxy {
+	apply(compiler) {
+	}
+}
+
+const devServerConfig = {
+	host: '0.0.0.0',
+	historyApiFallback: true,
+	port: process.env.PORT || 8080,
+	logLevel: 'debug'
+};
+
+module.exports = {
 	mode: ENV,
 	context: path.resolve(__dirname, "src"),
+
+	entry: './index.js',
+
+	output: {
+		path: path.resolve(__dirname, "dist"),
+		publicPath: '/',
+		filename: 'bundle.js'
+	},
 
 	resolve: {
 		extensions: ['.jsx', '.js', '.scss'],
@@ -27,8 +47,7 @@ const baseConfig = {
 			path.resolve(__dirname, "node_modules"),
 			'node_modules'
 		],
-		alias: {
-		}
+		alias: {}
 	},
 
 	module: {
@@ -54,20 +73,20 @@ const baseConfig = {
 					process.env.NODE_ENV !== 'production' ? 'style-loader' : MiniCssExtractPlugin.loader,
 					{
 						loader: 'css-loader',
-						options: { sourceMap: CSS_MAPS, importLoaders: 1, minimize: true }
+						options: {sourceMap: CSS_MAPS, importLoaders: 1, minimize: true}
 					},
 					{
 						loader: 'postcss-loader',
 						options: {
 							sourceMap: CSS_MAPS,
 							plugins: () => {
-								autoprefixer({ browsers: [ 'last 2 versions' ] });
+								autoprefixer({browsers: ['last 2 versions']});
 							}
 						}
 					},
 					{
 						loader: 'sass-loader',
-						options: { sourceMap: CSS_MAPS }
+						options: {sourceMap: CSS_MAPS}
 					}
 				]
 			}
@@ -75,134 +94,87 @@ const baseConfig = {
 	},
 
 	optimization: {
-		minimizer: prodOnly([
-			new UglifyJsPlugin({
-				uglifyOptions: {
-					output: {
-						beautify: false,
-						comments: false
-					},
-					compress: {
-						unsafe_comps: true,
-						properties: true,
-						keep_fargs: false,
-						pure_getters: true,
-						collapse_vars: true,
-						unsafe: true,
-						warnings: false,
-						sequences: true,
-						dead_code: true,
-						drop_debugger: true,
-						comparisons: true,
-						conditionals: true,
-						evaluate: true,
-						booleans: true,
-						loops: true,
-						unused: true,
-						hoist_funs: true,
-						if_return: true,
-						join_vars: true,
-						drop_console: true
+		minimizer: [prodOnly(
+				new UglifyJsPlugin({
+					uglifyOptions: {
+						output: {
+							beautify: false,
+							comments: false
+						},
+						compress: {
+							unsafe_comps: true,
+							properties: true,
+							keep_fargs: false,
+							pure_getters: true,
+							collapse_vars: true,
+							unsafe: true,
+							warnings: false,
+							sequences: true,
+							dead_code: true,
+							drop_debugger: true,
+							comparisons: true,
+							conditionals: true,
+							evaluate: true,
+							booleans: true,
+							loops: true,
+							unused: true,
+							hoist_funs: true,
+							if_return: true,
+							join_vars: true,
+							drop_console: true
+						}
 					}
-				}
-			})
-		])
+				})
+		)]
 	},
 
 	plugins: [
-		new webpack.NoEmitOnErrorsPlugin()
+		new webpack.NoEmitOnErrorsPlugin(),
+		prodOnly(
+				new webpack.DefinePlugin({
+					'process.env.NODE_ENV': JSON.stringify(ENV),
+					'__BE__': JSON.stringify(false),
+					'__FE__': JSON.stringify(true)
+				})
+		),
+		new MiniCssExtractPlugin({
+			filename: 'styles.css',
+			allChunks: true,
+			// disable: ENV !== 'production'
+		}),
+		new HtmlWebpackPlugin({
+			template: './index.ejs',
+			templateParameters: {
+				distPath: ENV === "production" ? "/dist" : null
+			},
+			minify: {collapseWhitespace: true}
+		}),
+		prodOnly(
+				new BundleAnalyzerPlugin({
+					analyzerMode: "disabled",
+					generateStatsFile: true,
+					openAnalyzer: false,
+					statsFilename: "./stats-fe.json"
+				})
+		)
 	],
 
-	stats: { colors: true },
+	stats: {colors: true},
 
 	devtool: ENV === 'production' ? 'source-map' : 'cheap-module-eval-source-map',
 
-	devServer : {
+	devServer: {
 		host: '0.0.0.0',
 		historyApiFallback: true,
 		port: process.env.PORT || 8080,
+		proxy: {
+			'/images': `http://${devServerConfig.host}:${devServerConfig.port}/dist`
+		},
+		logLevel: 'debug'
 		// content: path.join(__dirname, 'dist')
 	}
 };
 
-const backEnd = Object.assign({}, baseConfig, {
-	entry: '../app.js',
-
-	output: {
-		path: path.resolve(__dirname, "dist"),
-		publicPath: '/',
-		filename: 'bundle.server.js'
-	},
-
-	target: "node",
-
-	externals: [nodeExternals()]
-});
-
-[].unshift.apply(backEnd.plugins, prodOnly([
-	new webpack.DefinePlugin({
-		'process.env.NODE_ENV': JSON.stringify(ENV),
-		'__BE__': JSON.stringify(true),
-		'__FE__': JSON.stringify(false)
-	})
-]));
-
-backEnd.plugins = backEnd.plugins.concat(prodOnly([
-	new BundleAnalyzerPlugin({
-		analyzerMode: "disabled",
-		generateStatsFile: true,
-		openAnalyzer: false,
-		statsFilename: "./stats-be.json"
-	})
-]));
-
-const frontEnd = Object.assign({}, baseConfig, {
-	entry: './index.js',
-
-	output: {
-		path: path.resolve(__dirname, "dist"),
-		publicPath: '/',
-		filename: 'bundle.js'
-	}
-});
-
-
-[].unshift.apply(frontEnd.plugins, prodOnly([
-	new webpack.DefinePlugin({
-		'process.env.NODE_ENV': JSON.stringify(ENV),
-		'__BE__': JSON.stringify(false),
-		'__FE__': JSON.stringify(true)
-	})
-]));
-
-[].unshift.apply(frontEnd.plugins, [
-	new MiniCssExtractPlugin({
-		filename: 'styles.css',
-		allChunks: true,
-		// disable: ENV !== 'production'
-	}),
-	new HtmlWebpackPlugin({
-		template: './index.ejs',
-		templateParameters: {
-			distPath: ENV === "production" ? "/dist": null
-		},
-		minify: { collapseWhitespace: true }
-	})
-]);
-
-frontEnd.plugins = frontEnd.plugins.concat(prodOnly([
-	new BundleAnalyzerPlugin({
-		analyzerMode: "disabled",
-		generateStatsFile: true,
-		openAnalyzer: false,
-		statsFilename: "./stats-fe.json"
-	})
-]));
-
-module.exports = [
-	frontEnd
-].concat(prodOnly(backEnd));
-
 function prodOnly(arr) {
-	return ENV === "production" ? arr: [];
+	return ENV === "production" ? arr : new PluginProxy();
 }

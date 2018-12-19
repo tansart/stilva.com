@@ -25,9 +25,8 @@ export default new Map([
 				type: 'Paragraph',
 				title: 'Tech notes',
 				content: [
-					`A lot of tools were used and built – some custom, some open-sourced – along the last few years for Supercell.`,
-					`Due to its small size preact has been preferred over react in many of the projects. Similarly Rollup has been our go-to bundler for the inboxes. All front-end unit tests are written with jest.`,
-					`For the e-commerce website, we've written a lot of custom tools for better DX with shopify.`
+					`I've chosen preact over react over react in many of the projects, due to its smaller foot-print. For the same reasons I've picked Rollup as our go-to bundler for the inboxes. All front-end unit tests are written with jest.`,
+					`For the e-commerce website, I've written a lot of custom tools for better DX with shopify – per dev theme deployment on our CI server, better browser reload with Shopify etc.`
 				]
 			},
 		]
@@ -74,14 +73,16 @@ export default new Map([
 				type: 'Paragraph',
 				title: 'My role',
 				content: [
-					`While at firstborn, I was lucky to have worked on mountain dew projects, such as kickstart 2016 (Puppy Monkey Baby), the Dew label VR project,.`
+					`While at firstborn, I've lead multiple Mountain Dew projects, such as kickstart 2016 (Puppy Monkey Baby), the Dew label VR project, the "Q4" projects, etc.`
 				]
 			},
 			{
 				type: 'Paragraph',
 				title: 'Tech notes',
 				content: [
-					``
+					`Kickstart 2016 – react was used for this single page app, while the pipeline for pre-generating the few thousands of gifs from the static images from the content sudio was built with node.js, imagemagick and gifsicle.`,
+					`Dew label VR project – The VR video player for Samsung Galaxy was built in Java with Samsung's SDK`,
+					`Q4 projects – the 2015 version used react.js, rxjs, and clmtracker, while the 2016 version was based on react.js and rxjs`
 				]
 			},
 		]
@@ -92,22 +93,85 @@ export default new Map([
 			{
 				type: 'Paragraph',
 				title: 'Chevron',
-				content: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at arcu sed mi rutrum ultrices. Aenean pretium euismod neque, id lobortis quam laoreet ut. Nam laoreet bibendum quam in euismod. Quisque molestie hendrerit felis vitae condimentum. Cras purus est, pretium sit amet ex vel, pellentesque lobortis risus. Phasellus quis viverra orci. Integer eget ligula laoreet mi viverra porttitor.']
+				date: '2017',
+				content: [
+					`Chevron tasked firstborn to build an educational VR experience to show the St Malo deepwater oil project .`,
+					`I built a socket server that synchronised 50 Samsung VR headsets – initially built with firebase, then okHttp3 to connect to an express.js based node.js server. The VR was built atop Mountain Dew's VR project, which was built on top of Samsung VR SDK`
+				]
+			},
+			{
+				type: 'Picture',
+				title: 'Hello',
+				urls: [
+					['768', ['/images/chevron/desktop.png']],
+					['425', ['/images/chevron/tablet.png', '/images/chevron/desktop.png']],
+					['0', ['/images/chevron/small.png', '/images/chevron/small-retina.png']],
+					['preview', '/images/chevron/preview.png'],
+				]
 			},
 			{
 				type: 'Paragraph',
 				title: 'AWW online',
-				content: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at arcu sed mi rutrum ultrices. Aenean pretium euismod neque, id lobortis quam laoreet ut. Nam laoreet bibendum quam in euismod. Quisque molestie hendrerit felis vitae condimentum. Cras purus est, pretium sit amet ex vel, pellentesque lobortis risus. Phasellus quis viverra orci. Integer eget ligula laoreet mi viverra porttitor.']
+				date: '2014',
+				content: [
+					`In an effort to strengthen their online precense, Bauer Media had decided to move their wide range of Australian magazines online.`,
+					`I was part of a larger team that worked on the react.js based platform – while focusing on Australian Women's Weekly`
+				]
+			},
+			{
+				type: 'Picture',
+				title: 'Hello',
+				urls: [
+					['768', ['/images/aww/desktop.png']],
+					['425', ['/images/aww/tablet.png', '/images/aww/desktop.png']],
+					['0', ['/images/aww/small.png', '/images/aww/small-retina.png']],
+					['preview', '/images/aww/preview.png'],
+				]
 			},
 			{
 				type: 'Paragraph',
 				title: 'Fox Johnston',
-				content: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at arcu sed mi rutrum ultrices. Aenean pretium euismod neque, id lobortis quam laoreet ut. Nam laoreet bibendum quam in euismod. Quisque molestie hendrerit felis vitae condimentum. Cras purus est, pretium sit amet ex vel, pellentesque lobortis risus. Phasellus quis viverra orci. Integer eget ligula laoreet mi viverra porttitor.']
+				date: '2011',
+				awards: [
+					`Awwwards`,
+					`ADGA`
+				],
+				content: [
+						`Coming off of Flash, this was one of my first few Javascript project with wordpress as the CMS, along a custom plugin to output everything as JSON.`,
+						`Cufón was used for the webfonts, OBJS was used for `
+				]
+			},
+			{
+				type: 'Picture',
+				title: 'Hello',
+				urls: [
+					['768', ['/images/foxjohnston/desktop.png']],
+					['425', ['/images/foxjohnston/tablet.png', '/images/foxjohnston/desktop.png']],
+					['0', ['/images/foxjohnston/small.png', '/images/foxjohnston/small-retina.png']],
+					['preview', '/images/foxjohnston/preview.png'],
+				]
 			},
 			{
 				type: 'Paragraph',
 				title: 'JWI Louvres',
-				content: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at arcu sed mi rutrum ultrices. Aenean pretium euismod neque, id lobortis quam laoreet ut. Nam laoreet bibendum quam in euismod. Quisque molestie hendrerit felis vitae condimentum. Cras purus est, pretium sit amet ex vel, pellentesque lobortis risus. Phasellus quis viverra orci. Integer eget ligula laoreet mi viverra porttitor.']
+				date: '2011',
+				awards: [
+					`Awwwards`,
+					`ADGA`
+				],
+				content: [
+						``
+				]
+			},
+			{
+				type: 'Picture',
+				title: 'Hello',
+				urls: [
+					['768', ['/images/jwi/desktop.png']],
+					['425', ['/images/jwi/tablet.png', '/images/jwi/desktop.png']],
+					['0', ['/images/jwi/small.png', '/images/jwi/small-retina.png']],
+					['preview', '/images/jwi/preview.png'],
+				]
 			}
 		]
 	}]

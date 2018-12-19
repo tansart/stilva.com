@@ -3,8 +3,8 @@ import {Link} from '@reach/router';
 
 import cx from 'classnames';
 
-let windowHeight = window.innerHeight;
-document.addEventListener('resize', _ => windowHeight = window.innerHeight);
+let windowHeight = 0; //window.innerHeight;
+// document.addEventListener('resize', _ => windowHeight = window.innerHeight);
 
 export default class AnimatedLink extends Component {
 

@@ -1,0 +1,13 @@
+.built-in {
+  @include font-light(12px);
+  line-height: 2;
+  color: black;
+
+  @media #{$tablet} {
+    font-size: 14px;
+  }
+
+  @media #{$laptop} {
+    font-size: 14px;
+  }
+}

@@ -6,8 +6,6 @@ import AnimatedLink from '../components/AnimatedLink';
 
 import clients from '../clients';
 
-const html = document.querySelector('html');
-
 export default class Home extends Component {
 
 	constructor(props) {

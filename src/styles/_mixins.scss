@@ -1,0 +1,23 @@
+@mixin font-light($fontSize: 5.6vw) {
+  font-family: 'Roboto Mono', monospace;
+  font-size: $fontSize;
+  font-display: swap;
+  letter-spacing: -0.05em;
+  line-height: 1.28;
+}
+
+@mixin page-transition-out($animation, $easing: cubic-bezier(.76,.02,.42,.98)) {
+  animation: $animation 850ms $easing both reverse;
+
+  @media #{$tablet} {
+    //animation-duration: 1250ms;
+  }
+}
+
+@mixin page-transition-in($animation, $easing: cubic-bezier(.76,.02,.42,.98)) {
+  animation: $animation 850ms  $easing both;
+
+  @media #{$tablet} {
+    //animation-duration: 1250ms;
+  }
+}

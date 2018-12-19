@@ -1,18 +1,17 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto+Mono:300');
 
-@mixin font-light($fontSize: 5.6vw) {
-  font-family: 'Roboto Mono', monospace;
-  font-size: $fontSize;
-  font-display: swap;
-  letter-spacing: -0.05em;
-  line-height: 1.28;
-}
+$client-background-colour: #f1f1f1;
 
 @import './media-queries';
+@import './mixins';
 
 @import './home';
 @import './client';
 @import './page';
+
+@import './picture';
+@import './built-in';
+@import './awards';
 
 * {
   -webkit-font-smoothing: antialiased;
@@ -20,8 +19,11 @@
 }
 
 html, body {
+  background: $client-background-colour;
   height: 100vh;
   margin: 0;
+  max-height: 100vh;
+  overflow: hidden;
   width: 100vw;
 }
 
@@ -32,15 +34,4 @@ html, body {
   @media #{$laptop} {
     max-width: 1024px;
   }
-}
-
-.transition-canvas {
-  display: block;
-  bottom: 0;
-  left: 0;
-  pointer-events: none;
-  position: fixed;
-  right: 0;
-  top: 0;
-  z-index: 2;
 }

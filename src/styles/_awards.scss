@@ -1,0 +1,26 @@
+.awards {
+  @include font-light(14px);
+
+  &__title {
+    @include font-light(12px);
+    font-weight: 400;
+
+    @media #{$tablet} {
+      font-size: 14px;
+    }
+
+    @media #{$laptop} {
+      font-size: 16px;
+    }
+  }
+
+  &__list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0 0 0 1rem;
+
+    li {
+      line-height: 1.5;
+    }
+  }
+}

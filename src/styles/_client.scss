@@ -1,5 +1,5 @@
 .client {
-  background: white;
+  background: $client-background-colour;
   color: black;
   margin: 0 auto;
   padding: 12vw 11vw;
@@ -8,6 +8,15 @@
 
   @media #{$laptop} {
     padding: 86px;
+  }
+
+  &.page--entering {
+    @include page-transition-in(client-animation);
+  }
+
+  &.page--exiting {
+    @include page-transition-out(client-animation);
+    animation-delay: 0ms;
   }
 
   a {
@@ -62,4 +71,9 @@
       word-spacing: 0.05vw;
     }
   }
+}
+
+@keyframes client-animation {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
 }

@@ -12,7 +12,8 @@ export default class Project extends Component {
 	render() {
 		const data = clients.get(this.props.clientId);
 
-		return <div className={cx('client', 'page', `page--${this.props.transitionState}`)}>
+		return <div
+				className={cx('client', 'page', `page--${this.props.transitionState}`)}>
 			<div className="content">
 				<h1 className="client-name">{data.label}</h1>
 				{data.content.map((data, i) => {
