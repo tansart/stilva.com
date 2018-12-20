@@ -1,7 +1,9 @@
 .page {
   display: block;
-  overflow: auto;
-  height: 100vh;
+}
+
+.page--exited {
+  display: none;
 }
 
 .page--entering {

@@ -1,9 +1,15 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import {render} from 'react-dom';
-/* eslint-enable no-unused-vars */
+import {canUseDOM} from './utils/dom';
 
 import './styles/index.scss';
+
+if(canUseDOM) {
+	// this isn't great. Heavy, and it breaks on iOS
+	require('intersection-observer');
+	history && (history.scrollRestoration = 'manual');
+}
 
 function init() {
   const App = require('./components/app').default;

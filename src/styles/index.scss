@@ -20,18 +20,15 @@ $client-background-colour: #f1f1f1;
 
 html, body {
   background: $client-background-colour;
-  height: 100vh;
   margin: 0;
-  max-height: 100vh;
-  overflow: hidden;
   width: 100vw;
 }
 
 .content {
   margin: 0 auto;
-  max-width: 540px;
+  max-width: 70vw;
 
   @media #{$laptop} {
-    max-width: 1024px;
+    max-width: 960px;
   }
 }

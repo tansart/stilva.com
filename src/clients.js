@@ -7,9 +7,9 @@ export default new Map([
 				title: 'Overview',
 				content: [
 					`Since late 2015 firstborn has been handling a lot of Supercell's non-game web presence, with project such as
-				Clash of clans website, clash royale's blog site, supercell's merchandise e-commerce store etc. Starting with Supercell's Boombeach game, 
-				we got the chance to be in charge of building their inboxes: in-game news platform.`,
-					`In late 2018, we've built a e-sport fantasy deck submission platform which amassed 6M+ submissions form gamers around the world.`
+				Clash of clans' website, clash royale's blog site, supercell's merchandise e-commerce store etc. Starting with Supercell's Boombeach game, 
+				we got the chance to be in charge of building their games "inboxes" – an in-game news platform.`,
+					`In late 2018, we've built an e-sport fantasy deck submission platform which amassed 6M+ submissions form gamers around the world.`
 				]
 			},
 			{
@@ -137,8 +137,8 @@ export default new Map([
 					`ADGA`
 				],
 				content: [
-						`Coming off of Flash, this was one of my first few Javascript project with wordpress as the CMS, along a custom plugin to output everything as JSON.`,
-						`Cufón was used for the webfonts, OBJS was used for `
+					`Coming off of Flash, this was one of my first few HTML/CSS/Javascript project while at Canvas Group in Sydney. The CMS was wordpress with pods, along a custom plugin to output everything as JSON.`,
+					`Cufón was used for the webfonts, Objs was used to reflect the MVC architecture from my Flash projects, LESS for the stylesheets etc. The usual libraries such as jQuery, modernizr, and a tweening engine were also used.`
 				]
 			},
 			{
@@ -160,7 +160,9 @@ export default new Map([
 					`ADGA`
 				],
 				content: [
-						``
+					`Also at Canvas Group in Sydney, JWI Louvres was assigned to me following the successful launch of Fox Johnston's website.`,
+					`To try and push my CSS knowledge I had decided to use CSS features such as 3d transformations etc. Given the need to support IE8 the website was obviously progressively enhanced.`,
+					`The tech stack was very similar to FoxJohnston's: jQuery, Objs, modernizr etc. I may have switched from LESS to SCSS around that time.`
 				]
 			},
 			{

@@ -1,10 +1,6 @@
 import React, {Component} from "react";
 import {Link} from '@reach/router';
-
 import cx from 'classnames';
-
-let windowHeight = 0; //window.innerHeight;
-// document.addEventListener('resize', _ => windowHeight = window.innerHeight);
 
 export default class AnimatedLink extends Component {
 
@@ -34,7 +30,7 @@ export default class AnimatedLink extends Component {
 
 	render() {
 		const {link, label, ...extra} = this.props;
-		const external = link.indexOf('http') > -1;
+		const external = !link || link.indexOf('http') > -1;
 
 		const className = cx('animated-link', {visible: this.state.visible});
 

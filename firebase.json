@@ -6,15 +6,17 @@
       "**/.*",
       "**/node_modules/**",
       "dist/*.map",
-      "dist/bundle.server.js",
-      "dist/stats-be.json",
       "dist/stats-fe.json"
     ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "index.html"
-      }
-    ]
+    "cleanUrls": true,
+    "headers": {
+      "source": "**/*.@(html)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "max-age=60"
+        }
+      ]
+    }
   }
 }

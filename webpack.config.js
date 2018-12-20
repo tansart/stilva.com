@@ -132,9 +132,7 @@ module.exports = {
 		new webpack.NoEmitOnErrorsPlugin(),
 		prodOnly(
 				new webpack.DefinePlugin({
-					'process.env.NODE_ENV': JSON.stringify(ENV),
-					'__BE__': JSON.stringify(false),
-					'__FE__': JSON.stringify(true)
+					'process.env.NODE_ENV': JSON.stringify(ENV)
 				})
 		),
 		new MiniCssExtractPlugin({
@@ -169,9 +167,7 @@ module.exports = {
 		port: process.env.PORT || 8080,
 		proxy: {
 			'/images': `http://${devServerConfig.host}:${devServerConfig.port}/dist`
-		},
-		logLevel: 'debug'
-		// content: path.join(__dirname, 'dist')
+		}
 	}
 };
 
