@@ -29,10 +29,6 @@ export default new Map([
 					`For the e-commerce website, I've written a lot of custom tools for better DX with shopify – per dev theme deployment on our CI server, better browser reload with Shopify etc.`
 				]
 			},
-			{
-				type: 'Video',
-				source: '/videos/supercell.mp4'
-			},
 		]
 	}],
 	['spglobal', {

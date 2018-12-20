@@ -2,12 +2,12 @@
   background: $client-background-colour;
   color: black;
   margin: 0 auto;
-  padding: 12vw 11vw;
+  padding: 86px 11vw 12vw;
   position: relative;
   z-index: 1;
 
   @media #{$laptop} {
-    padding: 86px;
+    padding: 140px 86px 86px;
   }
 
   &.page--entering {
@@ -25,13 +25,10 @@
     text-decoration: none;
   }
 
-  p {
-    margin: 7vw auto 0;
-  }
-
   .client-name {
     @include font-light(26px);
     display: block;
+    font-weight: 400;
     letter-spacing: -.04vw;
     margin: 0;
     padding: 0 0 1.4vw 0;
@@ -42,33 +39,49 @@
     }
 
     @media #{$laptop} {
-      font-size: 56px;
+      font-size: 84px;
     }
   }
+}
 
-  .blob {
-    font-size: 6.5vw;
-    padding: 1.6vw 0.6vw;
+.back-button {
+  display: block;
+  left: 20px;
+  line-height: 1;
+  position: absolute;
+  top: 20px;
+  z-index: 3;
 
-    &__title {
-      @include font-light(14px);
-      margin: 0;
+  @media #{$laptop} {
+    left: 36px;
+    top: 42px;
+  }
 
-      @media #{$tablet} {
-        font-size: 16px;
-      }
+  &__svg {
+    display: block;
+    height: 50px;
+    position: relative;
+    width: 50px;
+  }
 
-      @media #{$laptop} {
-        font-size: 18px;
-      }
+  &__arrow,
+  &__line,
+  &__square {
+    transition: all 550ms ease-out;
+    transition-property: fill, stroke;
+  }
+
+  &:hover {
+    .back-button__square {
+      fill: $client-background-colour;
+      stroke: black;
     }
 
-    p {
-      @include font-light(14px);
-      letter-spacing: -0.03vw;
-      line-height: 1.5;
-      margin: .5em 0 1em;
-      word-spacing: 0.05vw;
+    .back-button__arrow {
+      fill: black;
+    }
+    .back-button__line {
+      stroke: black;
     }
   }
 }

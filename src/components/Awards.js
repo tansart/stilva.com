@@ -6,9 +6,8 @@ export default function(props) {
 	}
 
 	return <div className="awards">
-		<h2 className="awards__title">Awards /</h2>
-		<ul className="awards__list">
-			{props.awards.map((a,i) => <li key={`award_${i}`}>{a}</li>)}
-		</ul>
+		<span className="awards__list">
+			{props.awards.join(', ')}
+		</span>
 	</div>;
 }

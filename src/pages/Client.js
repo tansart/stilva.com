@@ -4,6 +4,8 @@ import cx from "classnames";
 import clientComponents from '../utils/clientComponents';
 import clients from '../clients';
 
+import BackButton from '../components/BackButton';
+
 export default (function Project(props) {
 	const data = clients.get(props.clientId);
 
@@ -12,6 +14,8 @@ export default (function Project(props) {
 			className={cx('client', 'page', `page--${props.transitionState}`)}
 			style={{top: `-${scrollY}px`}}
 	>
+		<BackButton />
+
 		<div className="content">
 			<h1 className="client-name">{data.label}</h1>
 			{data.content.map((data, i) => {

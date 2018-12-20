@@ -19,7 +19,7 @@ export default (function Home(props) {
 			</p>
 			<p>
 				My day job involves creating pixel perfect, and delightful UIs for clients,
-				such as {getClientList(clients)}.
+				such as {getClientList(clients)}
 			</p>
 			<p>
 				At home, I spend my time actively exploring Machine Learning (tensorflow/Python), with my pug Nugget on my laps.
@@ -34,8 +34,7 @@ export default (function Home(props) {
 function onContact(e) {
 	e.preventDefault();
 
-	const email = atob(`dGhvbWFzLmFuc2FydEA=`);
-	location.href = `mailto:${email}${location.hostname}`;
+	location.href = `mailto:${atob('dGhvbWFzLmFuc2FydEA=')}${atob('c3RpbHZhLmNvbQ==')}`;
 }
 
 function getClientList(clients) {

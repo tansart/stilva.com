@@ -1,0 +1,60 @@
+.blob {
+  font-size: 6.5vw;
+  padding: 1.6vw 0.6vw;
+
+  &__title {
+    @include font-light(14px);
+    margin: 0;
+  }
+
+  p {
+    @include font-light(14px);
+    letter-spacing: -0.03vw;
+    line-height: 1.5;
+    margin: .5em 0 1em;
+    word-spacing: 0.05vw;
+  }
+}
+
+.built-in {
+  @include font-light(12px);
+  line-height: 2;
+  color: black;
+
+  @media #{$tablet} {
+    font-size: 14px;
+  }
+
+  @media #{$laptop} {
+    font-size: 14px;
+  }
+}
+
+.awards {
+  @include font-light(14px);
+  display: block;
+  margin: 0 0 1em;
+  position: relative;
+
+  &:before {
+    background: black;
+    content: '';
+    display: inline-block;
+    height: 1px;
+    position: relative;
+    max-width: 45px;
+    vertical-align: middle;
+    width: 5vw;
+  }
+
+  &__list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0 0 0 1rem;
+
+    li {
+      display: inline-block;
+      line-height: 1.5;
+    }
+  }
+}
