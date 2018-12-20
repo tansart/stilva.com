@@ -29,6 +29,10 @@ export default new Map([
 					`For the e-commerce website, I've written a lot of custom tools for better DX with shopify – per dev theme deployment on our CI server, better browser reload with Shopify etc.`
 				]
 			},
+			{
+				type: 'Video',
+				source: '/videos/supercell.mp4'
+			},
 		]
 	}],
 	['spglobal', {
@@ -84,6 +88,10 @@ export default new Map([
 					`Dew label VR project – The VR video player for Samsung Galaxy was built in Java with Samsung's SDK`,
 					`Q4 projects – the 2015 version used react.js, rxjs, and clmtracker, while the 2016 version was based on react.js and rxjs`
 				]
+			},
+			{
+				type: 'Video',
+				source: '/videos/mtndew.mp4'
 			},
 		]
 	}],

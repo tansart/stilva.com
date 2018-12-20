@@ -166,7 +166,8 @@ module.exports = {
 		historyApiFallback: true,
 		port: process.env.PORT || 8080,
 		proxy: {
-			'/images': `http://${devServerConfig.host}:${devServerConfig.port}/dist`
+			'/images': `http://${devServerConfig.host}:${devServerConfig.port}/dist`,
+			'/videos': `http://${devServerConfig.host}:${devServerConfig.port}/dist`
 		}
 	}
 };
