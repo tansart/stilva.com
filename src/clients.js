@@ -8,7 +8,7 @@ export default new Map([
 				content: [
 					`Since late 2015 firstborn has been handling a lot of Supercell's non-game web presence, with project such as
 				Clash of clans' website, clash royale's blog site, supercell's merchandise e-commerce store etc. Starting with Supercell's Boombeach game, 
-				we got the chance to be in charge of building their games "inboxes" – an in-game news platform.`,
+				we got the chance to be in charge of building their in-game news platform (hereon "inboxes").`,
 					`In late 2018, we've built an e-sport fantasy deck submission platform which amassed 6M+ submissions form gamers around the world.`
 				]
 			},
@@ -16,19 +16,29 @@ export default new Map([
 				type: 'Paragraph',
 				title: 'My role',
 				content: [
-					`Almost from day one, I've been involved with a lot of the projects with Supercell, as a lead or senior developer.`,
+					`Almost from day one, I've been involved with a lot of the projects with Supercell, as a front-end lead.`,
 					`I've successfully lead the front-end development for the internationalisation of the Clash Royale blog, followed by the Clash of Clans website, our first in-game news platform, the shopify based e-commerce website along multiple developer tools.`,
-					`I was also in charge of the building the backend (AWS lambda based) for a campaign to generate custom videos for millions of users. In 2018, I built the front-end for an e-sport fantasy deck submission, which gathered 6M+ votes within 2 weeks.`
+					`I was also in charge of building the backend (AWS lambda based) for a campaign to generate custom videos for millions of users. In 2018, I built the front-end for an e-sport fantasy deck submission, which gathered 6M+ votes within 2 weeks.`
 				]
 			},
 			{
 				type: 'Paragraph',
 				title: 'Tech notes',
 				content: [
-					`I've chosen preact over react over react in many of the projects, due to its smaller foot-print. For the same reasons I've picked Rollup as our go-to bundler for the inboxes. All front-end unit tests are written with jest.`,
+					`I've chosen preact over react in many of the projects, due to its smaller foot-print. For the same reasons I've picked Rollup as our go-to bundler for the inboxes. All front-end unit tests are written with jest.`,
 					`For the e-commerce website, I've written a lot of custom tools for better DX with shopify – per dev theme deployment on our CI server, better browser reload with Shopify etc.`
 				]
 			},
+			{
+				type: 'Picture',
+				title: 'Supercell',
+				urls: [
+					['768', ['/images/supercell/desktop.png']],
+					['425', ['/images/supercell/tablet.png', '/images/supercell/desktop.png']],
+					['0', ['/images/supercell/small.png', '/images/supercell/small-retina.png']],
+					['preview', '/images/supercell/preview.png'],
+				]
+			}
 		]
 	}],
 	['spglobal', {
@@ -57,6 +67,16 @@ export default new Map([
 					`SSR was out of the question given the doubts over which platform and CMS the final product would be built on.`
 				]
 			},
+			{
+				type: 'Picture',
+				title: 'S&P Global',
+				urls: [
+					['768', ['/images/spglobal/desktop.png']],
+					['425', ['/images/spglobal/tablet.png', '/images/spglobal/desktop.png']],
+					['0', ['/images/spglobal/small.png', '/images/spglobal/small-retina.png']],
+					['preview', '/images/spglobal/preview.png'],
+				]
+			}
 		]
 	}],
 	['mtndew', {
@@ -105,7 +125,7 @@ export default new Map([
 			},
 			{
 				type: 'Picture',
-				title: 'Hello',
+				title: 'Chevron',
 				urls: [
 					['768', ['/images/chevron/desktop.png']],
 					['425', ['/images/chevron/tablet.png', '/images/chevron/desktop.png']],
@@ -124,7 +144,7 @@ export default new Map([
 			},
 			{
 				type: 'Picture',
-				title: 'Hello',
+				title: 'Australian Women Weekly',
 				urls: [
 					['768', ['/images/aww/desktop.png']],
 					['425', ['/images/aww/tablet.png', '/images/aww/desktop.png']],
@@ -147,7 +167,7 @@ export default new Map([
 			},
 			{
 				type: 'Picture',
-				title: 'Hello',
+				title: 'Fox Johnston',
 				urls: [
 					['768', ['/images/foxjohnston/desktop.png']],
 					['425', ['/images/foxjohnston/tablet.png', '/images/foxjohnston/desktop.png']],
@@ -171,7 +191,7 @@ export default new Map([
 			},
 			{
 				type: 'Picture',
-				title: 'Hello',
+				title: 'JWI Louvres',
 				urls: [
 					['768', ['/images/jwi/desktop.png']],
 					['425', ['/images/jwi/tablet.png', '/images/jwi/desktop.png']],
