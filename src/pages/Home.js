@@ -23,6 +23,7 @@ export default (function Home(props) {
 			</p>
 			<p>
 				At home, I spend my time actively exploring Machine Learning (tensorflow/Python), with my pug Nugget on my laps.
+				Check out my <AnimatedLink link="lab" label="Lab" key="lab" />.
 			</p>
 			<p>
 				Always down for a <AnimatedLink onClick={onContact} label="chat" rel="nofollow"/> over a drink.

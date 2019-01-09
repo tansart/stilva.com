@@ -7,11 +7,13 @@ $client-background-colour: #f1f1f1;
 
 @import './home';
 @import './client';
+@import './lab';
 @import './page';
 
 @import './paragraph';
 @import './picture';
 @import './video';
+@import './code';
 
 * {
   -webkit-font-smoothing: antialiased;

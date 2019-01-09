@@ -4,6 +4,7 @@ import {render} from 'react-dom';
 import {canUseDOM} from './utils/dom';
 
 import './styles/index.scss';
+import 'prismjs/themes/prism.css';
 
 if(canUseDOM) {
 	// this isn't great. Heavy, and it breaks on iOS

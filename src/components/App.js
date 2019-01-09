@@ -4,6 +4,7 @@ import {Transition, TransitionGroup} from "react-transition-group";
 
 import Home from '../pages/Home';
 import Client from '../pages/Client';
+import Lab from '../pages/Lab';
 
 export default class App extends Component {
 	constructor(props) {
@@ -39,6 +40,7 @@ export default class App extends Component {
 							<Router location={location} key={location.pathname}>
 								<Home path="/" type="home" transitionState={state} scrollY={this.state.scrollY}/>
 								<Client path="/client/:clientId" type="client" transitionState={state} scrollY={this.state.scrollY}/>
+								<Lab path="/lab" type="lab" transitionState={state} scrollY={this.state.scrollY}/>
 							</Router>
 					)}
 				</Transition>

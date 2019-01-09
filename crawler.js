@@ -15,7 +15,7 @@ readFile('./src/index.ejs', (err, buff) => {
 	const tpl = ejs.compile(buff.toString());
 	const boundWriteToFile = writeToFile.bind(null, tpl);
 
-	['/'].concat(
+	['/', 'lab'].concat(
 			Array
 					.from(clients.keys())
 					.map(slug => `/client/${slug}`))

@@ -2,12 +2,8 @@ const webpack = require('webpack');
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const OfflinePlugin = require('offline-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
-
-const nodeExternals = require('webpack-node-externals');
 
 const autoprefixer = require('autoprefixer');
 
