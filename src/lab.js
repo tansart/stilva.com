@@ -56,5 +56,5 @@ glsl.render();`
 			`– Add a resize function, based on the canvas size.`,
 			`– Add the texel read/write option once I figure out the best API for it.`,
 		]
-	},
+	}
 ];

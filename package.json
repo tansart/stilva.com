@@ -17,6 +17,7 @@
     "@babel/plugin-proposal-class-properties": "^7.2.1",
     "@reach/router": "^1.2.1",
     "@stilva/glsl": "github:stilva/glsl",
+    "@stilva/markdown": "github:stilva/markdown",
     "autoprefixer": "^9.1.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
@@ -48,8 +49,8 @@
     "offline-plugin": "^5.0.5",
     "postcss-loader": "^2.1.6",
     "prismjs": "^1.15.0",
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3",
+    "react": "^16.8.0-alpha.1",
+    "react-dom": "^16.8.0-alpha.1",
     "react-spring": "^6.1.8",
     "react-transition-group": "^2.5.0",
     "sass-loader": "^7.1.0",
@@ -59,7 +60,7 @@
     "webpack": "^4.16.4",
     "webpack-bundle-analyzer": "^2.13.1",
     "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.9",
+    "webpack-dev-server": "^3.1.14",
     "webpack-node-externals": "^1.7.2"
   }
 }

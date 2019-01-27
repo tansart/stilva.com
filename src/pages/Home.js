@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, {memo, useEffect} from 'react';
 import cx from 'classnames';
 
 import Greetings from '../components/Greetings';
@@ -6,8 +6,18 @@ import AnimatedLink from '../components/AnimatedLink';
 
 import clients from '../clients';
 
-export default (function Home(props) {
+export default memo(function Home(props) {
 	const scrollY = props.transitionState === 'exiting' ? props.scrollY : 0;
+
+	useEffect(_ => {
+		const html = document.querySelector('html');
+		html.style.background = '#000';
+
+		return function clean() {
+			html.style.background = '';
+		}
+	}, []);
+
 	return <div className={cx('home', 'page', `page--${props.transitionState}`)} style={{top: `-${scrollY}px`}}>
 		<div className="content">
 			<p>
@@ -23,7 +33,7 @@ export default (function Home(props) {
 			</p>
 			<p>
 				At home, I spend my time actively exploring Machine Learning (tensorflow/Python), with my pug Nugget on my laps.
-				Check out my <AnimatedLink link="lab" label="Lab" key="lab" />.
+				Check out my <AnimatedLink link="lab" label="Lab" key="lab"/>.
 			</p>
 			<p>
 				Always down for a <AnimatedLink onClick={onContact} label="chat" rel="nofollow"/> over a drink.

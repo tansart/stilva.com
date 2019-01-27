@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Router, Location} from "@reach/router";
 import {Transition, TransitionGroup} from "react-transition-group";
 
@@ -6,45 +6,36 @@ import Home from '../pages/Home';
 import Client from '../pages/Client';
 import Lab from '../pages/Lab';
 
-export default class App extends Component {
-	constructor(props) {
-		super(props);
+export default function App() {
 
-		this.state = {
-			scrollY: 0
-		}
-	}
+	const [scrollY, setScrollY] = useState(0);
 
-	componentDidMount() {
-		document.addEventListener('scroll', this.onScroll);
-	}
+	const onScroll = _ => setScrollY(window.scrollY);
 
-	componentWillUnmount() {
-		document.removeEventListener('scroll', this.onScroll);
-	}
-
-	onScroll = _ => {
-		this.scrollY = window.scrollY;
-	}
-
-	onEnter = _ => {
-		this.setState({scrollY: this.scrollY});
+	const onEnter = _ => {
+		setScrollY(scrollY);
 		window.scrollTo(0,0);
-	}
+	};
 
-	render() {
-		return <Location>
-			{({location}) => (<TransitionGroup component={null} key="transition-group">
-				<Transition key={location.key} timeout={875} onEnter={this.onEnter}>
-					{state => (
-							<Router location={location} key={location.pathname}>
-								<Home path="/" type="home" transitionState={state} scrollY={this.state.scrollY}/>
-								<Client path="/client/:clientId" type="client" transitionState={state} scrollY={this.state.scrollY}/>
-								<Lab path="/lab" type="lab" transitionState={state} scrollY={this.state.scrollY}/>
-							</Router>
-					)}
-				</Transition>
-			</TransitionGroup>)}
-		</Location>;
-	}
+	useEffect(_ => {
+		document.addEventListener('scroll', onScroll);
+
+		return function cleanup() {
+			document.removeEventListener('scroll', onScroll);
+		}
+	}, []);
+
+	return <Location>
+		{({location}) => (<TransitionGroup component={null} key="transition-group">
+			<Transition key={location.key} timeout={875} onEnter={onEnter}>
+				{state => (
+						<Router location={location} key={location.pathname}>
+							<Home path="/" type="home" transitionState={state} scrollY={scrollY}/>
+							<Client path="/client/:clientId" type="client" transitionState={state} scrollY={scrollY}/>
+							<Lab path="/lab" type="lab" transitionState={state} scrollY={scrollY}/>
+						</Router>
+				)}
+			</Transition>
+		</TransitionGroup>)}
+	</Location>;
 }
