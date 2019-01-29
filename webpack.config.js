@@ -128,11 +128,10 @@ module.exports = {
 
 	plugins: [
 		new webpack.NoEmitOnErrorsPlugin(),
-		prodOnly(
-				new webpack.DefinePlugin({
-					'process.env.NODE_ENV': JSON.stringify(ENV)
-				})
-		),
+		new webpack.DefinePlugin({
+			'process.env.NODE_ENV': JSON.stringify(ENV),
+			__DEV__: JSON.stringify(ENV !== 'production')
+		}),
 		new MiniCssExtractPlugin({
 			filename: 'styles.css',
 			allChunks: true,

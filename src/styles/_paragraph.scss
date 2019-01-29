@@ -33,6 +33,29 @@
     right: 0;
     width: 100%;
   }
+
+  ul {
+    list-style-type: none;
+    line-height: 2;
+    margin: 0;
+    padding: 0;
+
+    li {
+      @include font-light(14px);
+      color: black;
+      letter-spacing: -0.03vw;
+      line-height: 1.5;
+      margin-bottom: .5rem;
+      word-spacing: 0.05vw;
+
+      &:before {
+        content: '–';
+        display: inline-block;
+        position: relative;
+        margin-right: 1rem;
+      }
+    }
+  }
 }
 
 .built-in {

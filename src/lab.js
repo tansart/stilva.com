@@ -1,10 +1,31 @@
 export default [
 	{
 		type: 'Title',
+		content: `Markdown / January 2019`
+	},
+	{
+		type: 'Markdown',
+		cacheid: 'markdown',
+		content: `In adding entries to this lab, I realised I needed an inline link component. However, that would have complicated my JSON like data structure. Instead, I decided to build a small markdown component, so I could write my articles in markdown, and publish them.
+
+It's on github: [@stilva/markdown](https://www.github.com/stilva/markdown), check it out.
+
+There's a few performance tests I'd like to run:
+* What are the performance implications in creating DOM elements vs building string representations and using \`dangerouslySetInnerHTML\`
+* Same for using createElement as a building block
+* Avoiding regexp, and having a more abstract representation of the markdown. e.g. new Node(), new Leaf()
+
+I initially had decided to use RegExp to keep the code simple, and to worry about performance when needed.
+The only performance optimisation I have done this far, is to cache the rendered HTML string in the SessionStorage.
+At the moment the only way to invalidate it is by passing a new key.`
+	},
+	{
+		type: 'Title',
 		content: `GLSL / September 2018`
 	},
 	{
 		type: 'Markdown',
+		cacheid: 'glsl_intro',
 		content: `Writing fragment shaders is a lot of fun. Setting up everything to easily write a shader is much less so.
 
 Having had to go through the whole ceremony on more than one occasion in the last few months, I've decided to finally write a small library to ease the pain.
