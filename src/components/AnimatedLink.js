@@ -8,11 +8,15 @@ export default class AnimatedLink extends Component {
 		super(props);
 
 		this.state = {
-			visible: false
+			visible: typeof IntersectionObserver !== 'undefined' ? false: true
 		}
 	}
 
 	componentDidMount() {
+		if(typeof IntersectionObserver === 'undefined') {
+			return
+		}
+
 		this.observer = new IntersectionObserver(([entry]) => {
 			const {intersectionRatio} = entry;
 
@@ -25,7 +29,7 @@ export default class AnimatedLink extends Component {
 	}
 
 	componentWillUnmount() {
-		this.observer.unobserve(this.node);
+		this.observer && this.observer.unobserve(this.node);
 	}
 
 	render() {

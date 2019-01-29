@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React from 'react';
 import {render} from 'react-dom';
 import {canUseDOM} from './utils/dom';
@@ -7,8 +6,6 @@ import './styles/index.scss';
 import 'prismjs/themes/prism.css';
 
 if(canUseDOM) {
-	// this isn't great. Heavy, and it breaks on iOS
-	require('intersection-observer');
 	history && (history.scrollRestoration = 'manual');
 }
 
