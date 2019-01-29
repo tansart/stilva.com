@@ -1,11 +1,12 @@
 import {useEffect} from 'react';
 
 const keyScrollMap = {};
+const _global = typeof window !== 'undefined' ? window: {scrollY:0};
 
 export default function useOnScroll(transitionState, key) {
-	if (transitionState === 'entered' && window.scrollY) {
-		keyScrollMap[key] = window.scrollY;
-		window.scrollTo(0, 0);
+	if (transitionState === 'entered' && _global.scrollY) {
+		keyScrollMap[key] = _global.scrollY;
+		_global.scrollTo(0, 0);
 	}
 
 	useEffect(_ => {
