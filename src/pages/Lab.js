@@ -1,16 +1,19 @@
 import React, {memo, createElement} from 'react'; // eslint-disable-line no-unused-vars
 import cx from "classnames";
 
+import useOnScroll from '../hooks/useOnScroll';
+
 import clientComponents from '../utils/clientComponents';
 import data from '../lab';
 
 import BackButton from '../components/BackButton';
 
 export default memo(function Lab(props) {
-	const scrollY = props.transitionState === 'exiting' ? props.scrollY : 0;
+	const scrollY = useOnScroll(props.transitionState, props.locationKey);
+
 	return <div
-			className={cx('client', 'lab', 'page', `page--${props.transitionState}`)}
-			style={{top: `-${scrollY}px`}}
+			className={cx('client', 'lab')}
+			style={{transform: `translate3d(0,-${scrollY}px,0)`}}
 	>
 		<BackButton/>
 

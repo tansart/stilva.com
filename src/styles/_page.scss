@@ -2,6 +2,27 @@
   display: block;
 }
 
+.page--left {
+  &.page--entering {
+    @include page-transition-in(home-animation);
+  }
+
+  &.page--exiting {
+    @include page-transition-out(home-animation);
+  }
+}
+
+.page--right {
+  &.page--entering {
+    @include page-transition-in(client-animation);
+  }
+
+  &.page--exiting {
+    @include page-transition-out(client-animation);
+    animation-delay: 0ms;
+  }
+}
+
 .page--exited {
   display: none;
 }
@@ -13,4 +34,14 @@
   position: absolute;
   right: 0;
   top: 0;
+}
+
+@keyframes client-animation {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes home-animation {
+  from { transform: translate3d(-100%, 0, 0); }
+  to { transform: translate3d(0, 0, 0); }
 }

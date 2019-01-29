@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "analyse": "npm run build && webpack-bundle-analyzer ./dist/stats-fe.json -p 8080",
+    "analyse": "npm run build && webpack-bundle-analyzer ./dist/stats-fe.json -p 8000",
     "build": "NODE_ENV=production webpack --config webpack.config.js",
     "crawl": "NODE_ENV=production babel-node ./crawler.js --presets=env,react,stage-2",
     "deploy": "npm run build && npm run crawl && firebase deploy",
@@ -42,7 +42,6 @@
     "firebase-tools": "^5.1.1",
     "glsl": "github:stilva/glsl",
     "html-webpack-plugin": "^3.2.0",
-    "intersection-observer": "^0.5.1",
     "mini-css-extract-plugin": "^0.4.1",
     "mkdirp": "^0.5.1",
     "node-sass": "^4.9.2",

@@ -8,23 +8,12 @@
     padding: 36px 86px 128px;
   }
 
-  &.page--entering {
-    @include page-transition-in(home-animation);
-  }
-
-  &.page--exiting {
-    @include page-transition-out(home-animation);
-  }
-
-  a {
-    text-decoration: none;
-  }
-
   &,
   a {
     @include font-light(6.5vw);
     line-height: 1.4;
     color: white;
+    text-decoration: none;
 
     @media #{$tablet} {
       font-size: 5.6vw;
@@ -47,11 +36,6 @@
       margin-top: 60px;
     }
   }
-}
-
-@keyframes home-animation {
-  from { transform: translateX(-100%); }
-  to { transform: translateX(0); }
 }
 
 .home__animated-word {

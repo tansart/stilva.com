@@ -43,7 +43,9 @@ module.exports = {
 			path.resolve(__dirname, "node_modules"),
 			'node_modules'
 		],
-		alias: {}
+		alias: {
+			// '@stilva/markdown': path.join(__dirname, '..', 'markdown')
+		}
 	},
 
 	module: {

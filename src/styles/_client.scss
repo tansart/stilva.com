@@ -10,15 +10,6 @@
     padding: 140px 86px 86px;
   }
 
-  &.page--entering {
-    @include page-transition-in(client-animation);
-  }
-
-  &.page--exiting {
-    @include page-transition-out(client-animation);
-    animation-delay: 0ms;
-  }
-
   a {
     @include font-light();
     color: white;
@@ -84,9 +75,4 @@
       stroke: black;
     }
   }
-}
-
-@keyframes client-animation {
-  from { transform: translateX(100%); }
-  to { transform: translateX(0); }
 }

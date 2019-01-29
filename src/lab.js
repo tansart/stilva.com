@@ -1,12 +1,14 @@
 export default [
 	{
-		type: 'Paragraph',
-		title: 'GLSL',
-		date: 'September 2018',
-		content: [
-			`Writing fragment shaders is a lot of fun. Setting up everything to easily write a shader is much less so.`,
-			`Having had to go through the whole ceremony on more than one occasion in the last few months, I've decided to finally write a small library to ease the pain.`,
-		]
+		type: 'Title',
+		content: `GLSL / September 2018`
+	},
+	{
+		type: 'Markdown',
+		content: `Writing fragment shaders is a lot of fun. Setting up everything to easily write a shader is much less so.
+
+Having had to go through the whole ceremony on more than one occasion in the last few months, I've decided to finally write a small library to ease the pain.
+It's on github: [@stilva/glsl](https://www.github.com/stilva/glsl), check it out.`
 	},
 	{
 		type: 'CanvasComponent',

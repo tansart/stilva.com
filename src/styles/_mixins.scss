@@ -7,7 +7,7 @@
 }
 
 @mixin page-transition-out($animation, $easing: cubic-bezier(.76,.02,.42,.98)) {
-  animation: $animation 850ms $easing both reverse;
+  animation: 850ms $animation $easing both reverse;
 
   @media #{$tablet} {
     //animation-duration: 1250ms;
@@ -15,7 +15,7 @@
 }
 
 @mixin page-transition-in($animation, $easing: cubic-bezier(.76,.02,.42,.98)) {
-  animation: $animation 850ms  $easing both;
+  animation: 850ms $animation $easing both;
 
   @media #{$tablet} {
     //animation-duration: 1250ms;

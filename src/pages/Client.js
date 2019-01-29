@@ -5,14 +5,16 @@ import clientComponents from '../utils/clientComponents';
 import clients from '../clients';
 
 import BackButton from '../components/BackButton';
+import useOnScroll from "../hooks/useOnScroll";
 
 export default memo(function Client(props) {
 	const data = clients.get(props.clientId);
 
-	const scrollY = props.transitionState === 'exiting' ? props.scrollY : 0;
+	const scrollY = useOnScroll(props.transitionState, props.locationKey);
+
 	return <div
-			className={cx('client', 'page', `page--${props.transitionState}`)}
-			style={{top: `-${scrollY}px`}}
+			className={cx('client', 'page')}
+			style={{transform: `translate3d(0,-${scrollY}px,0)`}}
 	>
 		<BackButton />
 

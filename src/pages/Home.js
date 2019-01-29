@@ -1,13 +1,14 @@
 import React, {memo, useEffect} from 'react';
-import cx from 'classnames';
 
 import Greetings from '../components/Greetings';
 import AnimatedLink from '../components/AnimatedLink';
 
+import useOnScroll from '../hooks/useOnScroll';
+
 import clients from '../clients';
 
 export default memo(function Home(props) {
-	const scrollY = props.transitionState === 'exiting' ? props.scrollY : 0;
+	const scrollY = useOnScroll(props.transitionState, props.locationKey);
 
 	useEffect(_ => {
 		const html = document.querySelector('html');
@@ -18,7 +19,7 @@ export default memo(function Home(props) {
 		}
 	}, []);
 
-	return <div className={cx('home', 'page', `page--${props.transitionState}`)} style={{top: `-${scrollY}px`}}>
+	return <div className="home" style={{transform: `translate3d(0,-${scrollY}px,0)`}}>
 		<div className="content">
 			<p>
 				<Greetings/><br/>
