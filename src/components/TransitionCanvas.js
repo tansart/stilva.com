@@ -3,92 +3,93 @@ import cx from 'classnames';
 
 export default class TransitionCanvas extends Component {
 
-	static animationTime = 250;
+  static animationTime = 250;
 
-	constructor(props) {
-		super(props);
+  constructor(props) {
+    super(props);
 
-		this.node = createRef();
-	}
+    this.node = createRef();
+  }
 
-	componentDidMount() {
-		if(!this.props.previousLocation) {
-			return;
-		}
+  componentDidMount() {
+    if (!this.props.previousLocation) {
+      return;
+    }
 
-		this.gl = this.node.current.getContext('webgl', {antialias: true});
+    this.gl = this.node.current.getContext('webgl', {antialias: true});
 
-		let toColor = [1., 1., 1., 1.];
+    let toColor = [1., 1., 1., 1.];
 
-		if(this.props.location.pathname == '/') {
-			toColor = [0., 0., 0., 1.];
-		}
+    if (this.props.location.pathname == '/') {
+      toColor = [0., 0., 0., 1.];
+    }
 
-		if (!this.gl) {
-			return null;
-		}
+    if (!this.gl) {
+      return null;
+    }
 
-		this.gl.viewport(0, 0, this.gl.drawingBufferWidth, this.gl.drawingBufferHeight);
+    this.gl.viewport(0, 0, this.gl.drawingBufferWidth, this.gl.drawingBufferHeight);
 
-		const {vertex, fragment} = getShaders();
+    const {vertex, fragment} = getShaders();
 
-		const program = setupProgram(this.gl, vertex, fragment);
+    const program = setupProgram(this.gl, vertex, fragment);
 
-		const positionLocation = this.gl.getAttribLocation(program, "a_position");
-		this.gl.enableVertexAttribArray(positionLocation);
-		this.gl.vertexAttribPointer(positionLocation, 2, this.gl.FLOAT, false, 0, 0);
+    const positionLocation = this.gl.getAttribLocation(program, "a_position");
+    this.gl.enableVertexAttribArray(positionLocation);
+    this.gl.vertexAttribPointer(positionLocation, 2, this.gl.FLOAT, false, 0, 0);
 
-		const timeLocation = this.gl.getUniformLocation(program, "u_time");
-		const resolutionLocation = this.gl.getUniformLocation(program, "u_resolution");
-		const colorToLocation = this.gl.getUniformLocation(program, "u_to_color");
+    const timeLocation = this.gl.getUniformLocation(program, "u_time");
+    const resolutionLocation = this.gl.getUniformLocation(program, "u_resolution");
+    const colorToLocation = this.gl.getUniformLocation(program, "u_to_color");
 
-		let delta = 0;
-		let initTime = Date.now();
+    let delta = 0;
+    let initTime = Date.now();
 
-		this.render = () => {
-			if (!this.kill && delta <= 1) {
-				requestAnimationFrame(this.render);
-			}
+    this.render = () => {
+      if (!this.kill && delta <= 1) {
+        requestAnimationFrame(this.render);
+      }
 
-			delta = (Date.now() - initTime)/TransitionCanvas.animationTime;
+      delta = (Date.now() - initTime) / TransitionCanvas.animationTime;
 
-			this.gl.clear(this.gl.COLOR_BUFFER_BIT);
-			this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
+      this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+      this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
 
-			this.gl.uniform1f(timeLocation, delta);
-			this.gl.uniform2fv(resolutionLocation, [window.innerWidth, window.innerHeight]);
+      this.gl.uniform1f(timeLocation, delta);
+      this.gl.uniform2fv(resolutionLocation, [window.innerWidth, window.innerHeight]);
 
-			this.gl.uniform4fv(colorToLocation, toColor);
-		};
+      this.gl.uniform4fv(colorToLocation, toColor);
+    };
 
-		requestAnimationFrame(this.render);
-	}
+    requestAnimationFrame(this.render);
+  }
 
-	componentWillUnmount() {
-		this.kill = true;
+  componentWillUnmount() {
+    this.kill = true;
 
-		this.render = _ => {};
+    this.render = _ => {
+    };
 
-		this.gl && this.gl.getExtension('WEBGL_lose_context').loseContext();
-	}
+    this.gl && this.gl.getExtension('WEBGL_lose_context').loseContext();
+  }
 
-	render() {
-		return <canvas ref={this.node}
-									 className='transition-canvas'
-									 width={window.innerWidth}
-									 height={window.innerHeight}
-		/>;
-	}
+  render() {
+    return <canvas ref={this.node}
+                   className='transition-canvas'
+                   width={window.innerWidth}
+                   height={window.innerHeight}
+    />;
+  }
 }
 
 function getShaders() {
-	const vertex = `
+  const vertex = `
 		attribute vec2 a_position;
 		void main() {
 			gl_Position = vec4(a_position, 0, 1);
 		}`;
 
-	const fragment = `
+  const fragment = `
 		precision highp float;
 		
 		uniform vec2 u_resolution;
@@ -141,37 +142,37 @@ function getShaders() {
 			gl_FragColor = mix(u_to_color, vec4(0.), outside);
 		}`;
 
-	return {vertex, fragment};
+  return {vertex, fragment};
 }
 
 function setupProgram(gl, vertex, fragment) {
-	const buffer = gl.createBuffer();
-	gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-	gl.bufferData(
-			gl.ARRAY_BUFFER,
-			new Float32Array([
-				-1.0, -1.0,
-				1.0, -1.0,
-				-1.0, 1.0,
-				-1.0, 1.0,
-				1.0, -1.0,
-				1.0, 1.0
-			]), gl.STATIC_DRAW
-	);
+  const buffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+  gl.bufferData(
+    gl.ARRAY_BUFFER,
+    new Float32Array([
+      -1.0, -1.0,
+      1.0, -1.0,
+      -1.0, 1.0,
+      -1.0, 1.0,
+      1.0, -1.0,
+      1.0, 1.0
+    ]), gl.STATIC_DRAW
+  );
 
-	const vertexShader = gl.createShader(gl.VERTEX_SHADER);
-	gl.shaderSource(vertexShader, vertex);
-	gl.compileShader(vertexShader);
+  const vertexShader = gl.createShader(gl.VERTEX_SHADER);
+  gl.shaderSource(vertexShader, vertex);
+  gl.compileShader(vertexShader);
 
-	const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
-	gl.shaderSource(fragmentShader, fragment);
-	gl.compileShader(fragmentShader);
+  const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+  gl.shaderSource(fragmentShader, fragment);
+  gl.compileShader(fragmentShader);
 
-	const program = gl.createProgram();
-	gl.attachShader(program, vertexShader);
-	gl.attachShader(program, fragmentShader);
-	gl.linkProgram(program);
-	gl.useProgram(program);
+  const program = gl.createProgram();
+  gl.attachShader(program, vertexShader);
+  gl.attachShader(program, fragmentShader);
+  gl.linkProgram(program);
+  gl.useProgram(program);
 
-	return program;
+  return program;
 }

@@ -5,15 +5,15 @@ import {canUseDOM} from './utils/dom';
 import './styles/index.scss';
 import 'prismjs/themes/prism.css';
 
-if(canUseDOM) {
-	history && (history.scrollRestoration = 'manual');
+if (canUseDOM) {
+  history && (history.scrollRestoration = 'manual');
 }
 
 function init() {
   const App = require('./components/app').default;
   const node = document.getElementById('app');
 
-	render(<App />, node)
+  render(<App/>, node)
 }
 
 if (module.hot) {

@@ -7,11 +7,11 @@ import CanvasComponent from '../components/CanvasComponent';
 import Code from '../components/Code';
 
 export default {
-	Paragraph,
-	Picture,
-	Video,
-	Title,
-	Markdown,
-	CanvasComponent,
-	Code
+  Paragraph,
+  Picture,
+  Video,
+  Title,
+  Markdown,
+  CanvasComponent,
+  Code
 }
