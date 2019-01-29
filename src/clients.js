@@ -18,7 +18,7 @@ export default new Map([
 				content: [
 					`Almost from day one, I've been involved with a lot of the projects with Supercell, as a front-end lead.`,
 					`I've successfully lead the front-end development for the internationalisation of the Clash Royale blog, followed by the Clash of Clans website, our first in-game news platform, the shopify based e-commerce website along multiple developer tools.`,
-					`I was also in charge of building the backend (AWS lambda based) for a campaign to generate custom videos for millions of users. In 2018, I built the front-end for an e-sport fantasy deck submission, which gathered 6M+ votes within 2 weeks.`
+					`I was also in charge of building the backend (AWS lambda) for a campaign to generate custom videos for millions of users. In 2018, I built the front-end for an e-sport fantasy deck submission, which gathered 6M+ votes within 2 weeks.`
 				]
 			},
 			{
@@ -26,7 +26,7 @@ export default new Map([
 				title: 'Tech notes',
 				content: [
 					`I've chosen preact over react in many of the projects, due to its smaller foot-print. For the same reasons I've picked Rollup as our go-to bundler for the inboxes. All front-end unit tests are written with jest.`,
-					`For the e-commerce website, I've written a lot of custom tools for better DX with shopify – per dev theme deployment on our CI server, better browser reload with Shopify etc.`
+					`For the e-commerce website, I've written a lot of custom tools for better DX with shopify – a per-developer theme deployment system, CI server theme push with history, better browser reload with Shopify etc.`
 				]
 			},
 			{
@@ -93,7 +93,7 @@ export default new Map([
 				type: 'Paragraph',
 				title: 'My role',
 				content: [
-					`While at firstborn, I've lead multiple Mountain Dew projects, such as kickstart 2016 (Puppy Monkey Baby), the Dew label VR project, the "Q4" projects, etc.`
+					`While at firstborn, I've lead multiple Mountain Dew projects, such as kickstart 2016 (Puppy Monkey Baby), the Dew label VR project, two "Q4" projects, etc.`
 				]
 			},
 			{
@@ -138,8 +138,8 @@ export default new Map([
 				title: 'AWW online',
 				date: '2014',
 				content: [
-					`In an effort to strengthen their online precense, Bauer Media had decided to move their wide range of Australian magazines online.`,
-					`I was part of a larger team that worked on the react.js based platform – while focusing on Australian Women's Weekly`
+					`In an effort to strengthen their online presence, Bauer Media had decided to move their wide range of Australian magazines online.`,
+					`I was part of a larger team that worked on the platform (react.js, with SSR and .NET as the backend tech) – while focusing on Australian Women's Weekly`
 				]
 			},
 			{
@@ -154,29 +154,6 @@ export default new Map([
 			},
 			{
 				type: 'Paragraph',
-				title: 'Fox Johnston',
-				date: '2011',
-				awards: [
-					`Awwwards`,
-					`ADGA`
-				],
-				content: [
-					`Coming off of Flash, this was one of my first few HTML/CSS/Javascript project while at Canvas Group in Sydney. The CMS was wordpress with pods, along a custom plugin to output everything as JSON.`,
-					`Cufón was used for the webfonts, Objs was used to reflect the MVC architecture from my Flash projects, LESS for the stylesheets etc. The usual libraries such as jQuery, modernizr, and a tweening engine were also used.`
-				]
-			},
-			{
-				type: 'Picture',
-				title: 'Fox Johnston',
-				urls: [
-					['768', ['/images/foxjohnston/desktop.png']],
-					['425', ['/images/foxjohnston/tablet.png', '/images/foxjohnston/desktop.png']],
-					['0', ['/images/foxjohnston/small.png', '/images/foxjohnston/small-retina.png']],
-					['preview', '/images/foxjohnston/preview.png'],
-				]
-			},
-			{
-				type: 'Paragraph',
 				title: 'JWI Louvres',
 				date: '2011',
 				awards: [
@@ -184,8 +161,8 @@ export default new Map([
 					`ADGA`
 				],
 				content: [
-					`Also at Canvas Group in Sydney, JWI Louvres was assigned to me following the successful launch of Fox Johnston's website.`,
-					`To try and push my CSS knowledge I had decided to use CSS features such as 3d transformations etc. Given the need to support IE8 the website was obviously progressively enhanced.`,
+					`While switching between AS3 (a few Adobe Air projects) and the HTML/CSS/JS stack projects at Canvas Group, I got the change to work on Fox Johnston's new Wordpress based website.`,
+					`I tried to push what was possible with CSS at that time, and I had decided to use some "cutting edge" CSS features, while making sure everything was progressively enhanced to support IE8.`,
 					`The tech stack was very similar to FoxJohnston's: jQuery, Objs, modernizr etc. I may have switched from LESS to SCSS around that time.`
 				]
 			},
@@ -197,6 +174,29 @@ export default new Map([
 					['425', ['/images/jwi/tablet.png', '/images/jwi/desktop.png']],
 					['0', ['/images/jwi/small.png', '/images/jwi/small-retina.png']],
 					['preview', '/images/jwi/preview.png'],
+				]
+			},
+			{
+				type: 'Paragraph',
+				title: 'Fox Johnston',
+				date: '2011',
+				awards: [
+					`Awwwards`,
+					`ADGA`
+				],
+				content: [
+					`Coming off of Flash, this was one of my first few HTML/CSS/Javascript project while at Canvas Group in Sydney. The CMS was wordpress with podsCMS, along a custom plugin to output everything as JSON.`,
+					`Cufón was used for the webfonts, Objs was used to reflect the MVC architecture from my Flash projects, LESS for the stylesheets etc. The usual libraries such as jQuery, modernizr, and a tweening engine were also used.`
+				]
+			},
+			{
+				type: 'Picture',
+				title: 'Fox Johnston',
+				urls: [
+					['768', ['/images/foxjohnston/desktop.png']],
+					['425', ['/images/foxjohnston/tablet.png', '/images/foxjohnston/desktop.png']],
+					['0', ['/images/foxjohnston/small.png', '/images/foxjohnston/small-retina.png']],
+					['preview', '/images/foxjohnston/preview.png'],
 				]
 			}
 		]

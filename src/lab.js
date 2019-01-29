@@ -12,7 +12,7 @@ It's on github: [@stilva/markdown](https://www.github.com/stilva/markdown), chec
 
 There's a few performance tests I'd like to run:
 * What are the performance implications in creating DOM elements vs building string representations and using \`dangerouslySetInnerHTML\`
-* Same for using createElement as a building block
+* Same for using createElement as a building block (I'm not convinced there's much to gain by converting the input as actual react components, given the static nature of markdowns)
 * Avoiding regexp, and having a more abstract representation of the markdown. e.g. new Node(), new Leaf()
 
 I initially had decided to use RegExp to keep the code simple, and to worry about performance when needed.
