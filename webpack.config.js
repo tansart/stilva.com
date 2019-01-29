@@ -12,11 +12,6 @@ const path = require('path');
 const ENV = process.env.NODE_ENV || 'development';
 const CSS_MAPS = ENV !== 'production';
 
-class PluginProxy {
-	apply(compiler) {
-	}
-}
-
 const devServerConfig = {
 	host: '0.0.0.0',
 	historyApiFallback: true,
@@ -130,7 +125,7 @@ module.exports = {
 		new webpack.NoEmitOnErrorsPlugin(),
 		new webpack.DefinePlugin({
 			'process.env.NODE_ENV': JSON.stringify(ENV),
-			__DEV__: JSON.stringify(ENV !== 'production')
+			'__DEV__': JSON.stringify(ENV !== 'production')
 		}),
 		new MiniCssExtractPlugin({
 			filename: 'styles.css',
@@ -168,6 +163,11 @@ module.exports = {
 		}
 	}
 };
+
+class PluginProxy {
+	apply(compiler) {
+	}
+}
 
 function prodOnly(arr) {
 	return ENV === "production" ? arr : new PluginProxy();
