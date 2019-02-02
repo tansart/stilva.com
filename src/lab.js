@@ -5,7 +5,6 @@ export default [
   },
   {
     type: 'Markdown',
-    cacheid: 'markdown',
     content: `In adding entries to this lab, I realised I needed an inline link component. However, that would have complicated my JSON like data structure. Instead, I decided to build a small markdown component, so I could write my articles in markdown, and publish them.
 
 It's on github: [@stilva/markdown](https://www.github.com/stilva/markdown), check it out.
@@ -25,7 +24,6 @@ At the moment the only way to invalidate it is by passing a new key.`
   },
   {
     type: 'Markdown',
-    cacheid: 'glsl_intro',
     content: `Writing fragment shaders is a lot of fun. Setting up everything to easily write a shader is much less so.
 
 Having had to go through the whole ceremony on more than one occasion in the last few months, I've decided to finally write a small library to ease the pain.
@@ -72,12 +70,10 @@ glsl.fragment\`void main() {
 glsl.render();`
   },
   {
-    type: 'Paragraph',
-    content: [
-      `Still very much a WIP, and here's my to-do list:`,
-      `– Add tests, maybe jest + puppeteer, or just jest + Karma runner.`,
-      `– Add a resize function, based on the canvas size.`,
-      `– Add the texel read/write option once I figure out the best API for it.`,
-    ]
+    type: 'Markdown',
+    content: `Still very much a WIP, and here's my to-do list:
+* Add tests, maybe jest + puppeteer, or just jest + Karma runner.
+* Add a resize function, based on the canvas size.
+* Add the texel read/write option once I figure out the best API for it.`
   }
 ];

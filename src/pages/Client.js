@@ -21,7 +21,7 @@ export default memo(function Client(props) {
     <div className="content">
       <h1 className="client-name">{data.label}</h1>
       {data.content.map((data, i) => {
-        const props = {key: `content_${i}`, ...data};
+        const props = {key: `content_${i}`, index:i, ...data};
         return createElement(clientComponents[data.type], props);
       })}
     </div>

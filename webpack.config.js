@@ -164,9 +164,8 @@ module.exports = {
 	}
 };
 
-class PluginProxy {
-	apply(compiler) {
-	}
+function PluginProxy() {
+	this.apply = _ => {};
 }
 
 function prodOnly(arr) {

@@ -20,7 +20,7 @@ export default memo(function Lab(props) {
     <div className="content">
       <h1 className="client-name">Lab</h1>
       {data.map((data, i) => {
-        const props = {key: `content_${i}`, ...data};
+        const props = {key: `content_${i}`, index:i, ...data};
         return createElement(clientComponents[data.type], props);
       })}
     </div>
