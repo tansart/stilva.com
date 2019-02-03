@@ -1,10 +1,30 @@
-import React from 'react';
+import React, {memo, useRef, useEffect, Fragment} from 'react';
 import Markdown from '@stilva/markdown';
 
-export default function ({content: data, index}) {
-  return <Markdown className="markdown" data={data} cacheid={isDev() ? '' : `markdown_${index}`}/>;
-}
+export default memo(function ({content: data, index}) {
+
+  const mRef = useRef(null);
+
+  useEffect(function () {
+    const node = mRef.current.nextSibling.querySelector('[class*=language]');
+
+    if(!node) return;
+
+    import(/* webpackChunkName: "prismjs" */ 'prismjs').then(({default:hi}) => {
+      console.log(hi)
+    })
+  }, []);
+
+  return <Fragment>
+    <span ref={mRef}></span>
+    <Markdown
+      className="markdown"
+      data={data}
+      cacheid={isDev() ? null : `markdown_${index}`}
+    />
+  </Fragment>
+})
 
 function isDev() {
-  typeof __DEV__ === 'boolean' ? __DEV__ : false;
+  return typeof __DEV__ === 'boolean' ? __DEV__ : false;
 }

@@ -1,7 +1,12 @@
-code {
-  white-space: pre-wrap;
+.markdown {
+  code {
+    display: block;
+    font-size: 12px;
+    line-height: 1.75 !important;
+    white-space: pre-wrap !important;
 
-  .token.operator {
-    background: transparent;
+    .token.operator {
+      background: transparent;
+    }
   }
 }

@@ -1,12 +1,7 @@
 {
   "sourceMaps": true,
   "presets": [
-    [
-      "env",
-      {
-        "modules": false
-      }
-    ],
+    "env",
     "react",
     "stage-2"
   ],

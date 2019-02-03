@@ -23,11 +23,14 @@ module.exports = {
 	mode: ENV,
 	context: path.resolve(__dirname, "src"),
 
-	entry: './index.js',
+	entry: {
+	  bundle: './index.js'
+  },
 
 	output: {
 		path: path.resolve(__dirname, "dist"),
 		publicPath: '/',
+    chunkFilename: '[name].js',
 		filename: 'bundle.js'
 	},
 

@@ -47,15 +47,13 @@ It's on github: [@stilva/glsl](https://www.github.com/stilva/glsl), check it out
     }
   },
   {
-    type: 'Paragraph',
-    content: [
-      `This library allows for a much more concise way of writing shaders.`,
-      `The clearing of the buffer in the rendering loop, setting the vertex shader, uniform locations etc are all taken care of for you.`
-    ]
-  },
-  {
-    type: 'Code',
-    content: `
+    type: 'Markdown',
+    content:
+      `This library allows for a much more concise way of writing shaders.
+
+The clearing of the buffer in the rendering loop, setting the vertex shader, uniform locations etc are all taken care of for you.
+
+\`\`\`javascript
 const GLSL = require('@stilva/glsl');
 
 const glsl = new GLSL(node);
@@ -66,8 +64,7 @@ glsl.fragment\`void main() {
   vec3 col = 0.5 + 0.5 * cos(u_time + uv.xyx + u_delta);
   gl_FragColor = vec4(col, 1.0);
 }\`;
-
-glsl.render();`
+glsl.render();\`\`\``
   },
   {
     type: 'Markdown',
