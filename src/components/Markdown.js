@@ -10,8 +10,8 @@ export default memo(function ({content: data, index}) {
 
     if(!node) return;
 
-    import(/* webpackChunkName: "prismjs" */ 'prismjs').then(({default:hi}) => {
-      console.log(hi)
+    import(/* webpackChunkName: "prismjs" */ /* webpackMode: "lazy" */ 'prismjs').then(({default:prism}) => {
+      prism.highlightElement(node, false);
     })
   }, []);
 
