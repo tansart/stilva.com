@@ -5,11 +5,10 @@ import {mkdirp} from 'mkdirp';
 
 import React from 'react';
 import {renderToString} from 'react-dom/server';
-import {ServerLocation} from "@reach/router"
 
 import clients from './src/clients';
 
-import App from './src/components/App.js';
+import {App, ServerSideRouter} from './src/components/App.js';
 
 readFile('./src/index.ejs', (err, buff) => {
   const tpl = ejs.compile(buff.toString());
@@ -25,9 +24,9 @@ readFile('./src/index.ejs', (err, buff) => {
 function writeToFile(tpl, path) {
   const out = tpl({
     distPath: '/dist',
-    rendered: renderToString(<ServerLocation url={path}>
+    rendered: renderToString(<ServerSideRouter route={path}>
       <App/>
-    </ServerLocation>)
+    </ServerSideRouter>)
   });
 
   const filename = join(`${path === '/' ? 'index' : path}.html`);

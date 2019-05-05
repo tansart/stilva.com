@@ -23,14 +23,15 @@ export default memo(function Home(props) {
     <div className="content">
       <p>
         <Greetings/><br/>
-        I'm <AnimatedLink link="https://github.com/stilva" label="Thomas" target="_blank"/>,
-        a principal developer currently working at <AnimatedLink link="https://bit.ly/2Mm1IYx" label="Firstborn"
-                                                                 rel="nofollow" target="_blank"/>,
-        New York.
+        I'm <AnimatedLink link="https://github.com/stilva" label="Thomas Ansart" target="_blank"/>,
+        a senior software engineer in NY. Previously principal developer at <AnimatedLink link="https://bit.ly/2Mm1IYx" label="Firstborn" rel="nofollow" target="_blank" />
       </p>
       <p>
-        My day job involves creating pixel perfect, and delightful UIs for clients,
-        such as {getClientList(clients)}
+        My day job involves maintaining and building new features, on a product with over 100 million users worldwide.
+        I enjoy creating pixel perfect, and delightful UIs.
+      </p>
+      <p>
+        Since 2007 I've worked at various agencies around the world, for multiple major clients: {getClientList(clients)}
       </p>
       <p>
         At home, I spend my time actively exploring Machine Learning (tensorflow/Python), with my pug Nugget on my laps.
