@@ -1,15 +1,15 @@
 import React, {memo, createElement} from 'react'; // eslint-disable-line no-unused-vars
 import cx from "classnames";
-import { Link } from "@reach/router";
+import {Link} from '../../utils/TransitionableRoute';
 
 import data from '../../lab';
 
 export default memo(function LabList(props) {
-
-  return <div key={props.locationKey}>
+  console.log(data)
+  return <div key={props.subCategory}>
     {Object.keys(data)
       .map(k => {
-        return <Link key={`title_${k}`} to={`/lab/${k}`}>
+        return <Link key={`title_${k}`} path={`/lab/${k}`}>
           {data[k].title}
         </Link>
       })

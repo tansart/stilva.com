@@ -14,7 +14,7 @@ readFile('./src/index.ejs', (err, buff) => {
   const tpl = ejs.compile(buff.toString());
   const boundWriteToFile = writeToFile.bind(null, tpl);
 
-  ['/', 'lab'].concat(
+  ['/', '/lab'].concat(
     Array
       .from(clients.keys())
       .map(slug => `/client/${slug}`))
@@ -24,7 +24,7 @@ readFile('./src/index.ejs', (err, buff) => {
 function writeToFile(tpl, path) {
   const out = tpl({
     distPath: '/dist',
-    rendered: renderToString(<ServerSideRouter route={path}>
+    rendered: renderToString(<ServerSideRouter path={path}>
       <App/>
     </ServerSideRouter>)
   });

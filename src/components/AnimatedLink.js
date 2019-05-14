@@ -1,6 +1,7 @@
-import React, {Component} from "react";
-import {Link} from '@reach/router';
+import React, {Component, useRef} from "react";
 import cx from 'classnames';
+
+import {Link} from '../utils/TransitionableRoute';
 
 export default class AnimatedLink extends Component {
 
@@ -46,8 +47,8 @@ export default class AnimatedLink extends Component {
       </a>
     }
 
-    return <Link to={link} ref={node => this.node = node}>
-      <AnimatedLinkDecorator {...props} />
+    return <Link path={`/${link}`.replace('//', '/')} _ref={node => this.node = node}>
+        <AnimatedLinkDecorator {...props} />
     </Link>
   }
 }

@@ -8,9 +8,9 @@ import BackButton from '../components/BackButton';
 import useOnScroll from "../hooks/useOnScroll";
 
 export default memo(function Client(props) {
-  const data = clients.get(props.clientId);
+  const data = clients.get(props.subCategory);
 
-  const scrollY = useOnScroll(props.transitionState, props.locationKey);
+  const scrollY = useOnScroll(props.transitionState, props.subCategory);
 
   return <div
     className={cx('client', 'page')}

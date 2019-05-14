@@ -10,14 +10,14 @@ if (canUseDOM) {
 }
 
 function init() {
-  const App = require('./components/app').default;
+  const App = require('./components/App').default;
   const node = document.getElementById('app');
 
   render(<App/>, node)
 }
 
 if (module.hot) {
-  module.hot.accept('./components/app', () => requestAnimationFrame(init));
+  module.hot.accept('./components/App', () => requestAnimationFrame(init));
 }
 
 init();

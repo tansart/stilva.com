@@ -9,15 +9,15 @@ import LabList from './LabList';
 import LabEntry from './LabEntry';
 
 export default memo(function Lab(props) {
-  const scrollY = useOnScroll(props.transitionState, props.locationKey);
+  const scrollY = useOnScroll(props.transitionState, props.subCategory);
 
   return <div
-    key={props.locationKey}
+    key={props.subCategory}
     className={cx('client', 'lab')}
     style={{transform: `translate3d(0,-${scrollY}px,0)`}}
   >
     <BackButton/>
-    {props.children}
+    {props.subCategory ? <LabEntry labId={props.subCategory} />: <LabList />}
   </div>
 });
 
