@@ -1,6 +1,6 @@
 export default {
   'markdown': {
-    title: `Markdown / January 2019`,
+    title: `Markdown/January 2019`,
     content: [
       {
         type: 'Markdown',
@@ -21,7 +21,7 @@ At the moment the only way to invalidate it is by passing a new key.`
   },
   'glsl': {
     link: 'glsl',
-    title: `GLSL / September 2018`,
+    title: `GLSL/September 2018`,
     content: [
       {
         type: 'Markdown',

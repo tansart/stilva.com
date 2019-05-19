@@ -16,6 +16,8 @@ $client-background-colour: #f1f1f1;
 @import './video';
 @import './code';
 
+@import './category-link';
+
 * {
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;

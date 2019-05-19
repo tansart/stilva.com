@@ -37,32 +37,22 @@ export default class AnimatedLink extends Component {
 
   render() {
     const {link, label, ...extra} = this.props;
-    const external = !link || link.indexOf('http') > -1;
-
-    const className = cx('animated-link', {visible: this.state.visible});
-
+    const className = cx('category-link', {visible: this.state.visible});
     const props = {className, label};
-
-    if (external) {
-      return <a href={link} {...extra} ref={node => this.node = node}>
-        <AnimatedLinkDecorator {...props} />
-      </a>
-    }
-
     const onClick = e => {
       e.preventDefault();
-      this.context.setRoute(link);
+      this.context.setRoute(link)
     };
 
-    return <a href={link} ref={node => this.node = node} onClick={onClick}>
-        <AnimatedLinkDecorator {...props} />
-    </a>
+    return <a href={link} onClick={onClick} {...extra} ref={node => this.node = node} className="category-link__wrapper">
+      <CategoryLinkDecorator {...props} />
+    </a>;
   }
 }
 
-function AnimatedLinkDecorator({className, label}) {
+function CategoryLinkDecorator({className, label}) {
   return <span className={className}>
-		<span className={'animated-link__text'}>{label}</span>
-		<span className={'animated-link__underline'}/>
+		<span className={'category-link__text'}>{label}</span>
+		<span className={'category-link__underline'}/>
 	</span>
 }
