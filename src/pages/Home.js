@@ -7,6 +7,7 @@ import AnimatedLink from '../components/AnimatedLink';
 import useOnScroll from '../hooks/useOnScroll';
 
 import clients from '../clients';
+import BackButton from "../components/BackButton";
 
 export default memo(function Home(props) {
   const scrollY = useOnScroll(props.transitionState, props.subCategory);
@@ -28,10 +29,10 @@ export default memo(function Home(props) {
         a senior software engineer at <AnimatedLink link="https://bit.ly/1tx8iPZ" label="Paperless Post" rel="nofollow" target="_blank" />, NY. Previously principal developer at <AnimatedLink link="https://bit.ly/2Mm1IYx" label="Firstborn" rel="nofollow" target="_blank" />
       </p>
       <p>
-        During the day I creating pixel perfect, and delightful UIs.
+        My day job involves engineering solutions, creating pixel perfect, and delightful UIs.
       </p>
       <p>
-        At home, I spend my time actively exploring Machine Learning (tensorflow/Python), with my pug Nugget on my laps.
+        At night, I spend my time building UIs, writing code, or actively exploring Machine Learning (tensorflow/Python), with my pug Nugget on my laps.
         Check out my <AnimatedLink link="lab" label="Lab" key="lab"/>.
       </p>
       <p>

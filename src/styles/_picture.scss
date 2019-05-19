@@ -8,6 +8,10 @@
     margin: 0 auto 80px;
   }
 
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
   img {
     display: block;
     height: auto;

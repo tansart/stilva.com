@@ -1,10 +1,10 @@
 import React, {useState, useEffect, useContext, createContext, Component} from 'react';
 import TransitionableRoute, {Link} from '../utils/TransitionableRoute';
+import {RouterContext} from "../RouterContext";
+
 import Home from '../pages/Home';
 import Client from '../pages/Client';
 import Lab from '../pages/Lab';
-
-export const RouterContext = createContext();
 
 export function ServerSideRouter({path, children}) {
   return <RouterContext.Provider value={{currentRoute: path}}>
@@ -12,60 +12,40 @@ export function ServerSideRouter({path, children}) {
   </RouterContext.Provider>
 }
 
-class Router extends Component {
-  constructor(props) {
-    super(props);
+const isSSR = typeof window === 'undefined';
 
-    this.isSSR = typeof window === 'undefined';
+function Router({children}) {
+  const [state, setState] = useState({currentRoute: window.location.pathname, previousRoute: ''});
 
-    this.state = {
-      currentRoute: window.location.pathname,
-      previousRoute: null,
-      goTo: this.goTo.bind(this)
-    };
-  }
-
-  updateRoute = path => {
-    this.setState({
-      currentRoute: path,
-      previousRoute: this.state.currentRoute
-    });
-  };
-
-  on(callback) {
-    if(this._callback) {
-      window.removeEventListener('popstate', this._callback);
-    }
-
-    this._callback = callback;
-    if(!this.isSSR) {
-      window.addEventListener('popstate', callback);
-    }
-  }
-
-  normalize(_path) {
-    return `/${_path}`.replace('//', '/');
-  }
-
-  goTo(_path) {
-    const path = this.normalize(_path);
-
-    if(!this.isSSR) {
+  const setRoute = path => {
+    if(!isSSR) {
       window.history.pushState({}, null, path);
     }
 
-    this.updateRoute(_path);
-  }
+    setState({
+      currentRoute: window.location.pathname,
+      previousRoute: state.currentRoute
+    });
+  };
 
-  componentDidMount() {
-    this.on(e => this.updateRoute(location.pathname));
-  }
+  useEffect(() => {
+    function onPopState(e) {
+      setState({
+        currentRoute: `/${window.location.pathname}`.replace('//', '/'),
+        previousRoute: state.currentRoute
+      });
+    }
 
-  render() {
-    return <RouterContext.Provider value={this.state}>
-      {this.props.children}
-    </RouterContext.Provider>
-  }
+    window.addEventListener('popstate', onPopState);
+
+    return function() {
+      window.removeEventListener('popstate', onPopState);
+    }
+  }, []);
+
+  return <RouterContext.Provider value={{setRoute, ...state}}>
+    {children}
+  </RouterContext.Provider>;
 }
 
 export const App = React.memo(function AppFactory() {
@@ -79,5 +59,5 @@ export const App = React.memo(function AppFactory() {
 export default function() {
   return <Router>
     <App />
-  </Router>
+  </Router>;
 }

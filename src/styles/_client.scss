@@ -8,7 +8,7 @@
   z-index: 1;
 
   @media #{$laptop} {
-    padding: 140px 86px 86px;
+    padding: 86px 86px 86px;
   }
 
   a {
@@ -31,7 +31,7 @@
     }
 
     @media #{$laptop} {
-      font-size: 84px;
+      font-size: 48px;
     }
   }
 }
@@ -43,11 +43,6 @@
   position: absolute;
   top: 20px;
   z-index: 3;
-
-  @media #{$laptop} {
-    left: 36px;
-    top: 42px;
-  }
 
   &__svg {
     display: block;

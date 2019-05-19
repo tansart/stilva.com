@@ -1,11 +1,11 @@
 .home {
   background: black;
-  padding: 4.8vw 11.2vw 20vw;
+  padding: 86px 11vw 12vw;
   position: relative;
   z-index: 2;
 
   @media #{$laptop} {
-    padding: 36px 86px 128px;
+    padding: 86px 86px 86px;
   }
 
   &,
@@ -21,7 +21,7 @@
     }
 
     @media #{$laptop} {
-      font-size: 56px;
+      font-size: 42px;
     }
   }
 
@@ -35,6 +35,10 @@
     @media #{$laptop} {
       margin-top: 60px;
     }
+  }
+
+  p:first-of-type {
+    margin-top: 0;
   }
 }
 

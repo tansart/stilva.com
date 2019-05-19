@@ -1,7 +1,7 @@
 import React, {useContext, Component} from 'react';
 import {Transition, TransitionGroup} from "react-transition-group";
 
-import {RouterContext} from '../components/App';
+import {RouterContext} from "../RouterContext";
 
 function mapToRegExp([pattern, component]) {
   const mUrl = pattern.split('/');
@@ -32,10 +32,10 @@ export class Link extends Component {
     const {path, children, _ref, ...props} = this.props;
 
     return <RouterContext.Consumer>
-      {router => {
+      {({setRoute}) => {
         return <a href={path} onClick={e => {
           e.preventDefault();
-          router.goTo(path);
+          setRoute(path);
         }} {...props} ref={_ref}>{children}</a>
       }}
     </RouterContext.Consumer>

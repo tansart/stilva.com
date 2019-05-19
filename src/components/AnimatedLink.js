@@ -2,8 +2,11 @@ import React, {Component, useRef} from "react";
 import cx from 'classnames';
 
 import {Link} from '../utils/TransitionableRoute';
+import {RouterContext} from "../RouterContext";
 
 export default class AnimatedLink extends Component {
+
+  static contextType = RouterContext;
 
   constructor(props) {
     super(props);
@@ -47,9 +50,14 @@ export default class AnimatedLink extends Component {
       </a>
     }
 
-    return <Link path={`/${link}`.replace('//', '/')} _ref={node => this.node = node}>
+    const onClick = e => {
+      e.preventDefault();
+      this.context.setRoute(link);
+    };
+
+    return <a href={link} ref={node => this.node = node} onClick={onClick}>
         <AnimatedLinkDecorator {...props} />
-    </Link>
+    </a>
   }
 }
 
