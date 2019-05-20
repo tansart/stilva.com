@@ -111,8 +111,8 @@ export default new Map([
       },
     ]
   }],
-  ['more', {
-    label: 'Other clients',
+  ['chevron', {
+    label: 'Chevron',
     content: [
       {
         type: 'Paragraph',
@@ -133,6 +133,11 @@ export default new Map([
           ['preview', '/images/chevron/preview.png'],
         ]
       },
+    ]
+  }],
+  ['aww', {
+    label: 'AWW',
+    content: [
       {
         type: 'Paragraph',
         title: 'AWW online',
@@ -152,6 +157,11 @@ export default new Map([
           ['preview', '/images/aww/preview.png'],
         ]
       },
+    ]
+  }],
+  ['jwi', {
+    label: 'JWI Louvers',
+    content: [
       {
         type: 'Paragraph',
         title: 'JWI Louvres',
@@ -176,6 +186,11 @@ export default new Map([
           ['preview', '/images/jwi/preview.png'],
         ]
       },
+    ]
+  }],
+  ['foxjohnston', {
+    label: 'Fox Johnston',
+    content: [
       {
         type: 'Paragraph',
         title: 'Fox Johnston',

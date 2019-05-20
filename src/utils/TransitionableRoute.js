@@ -18,7 +18,7 @@ function mapToRegExp([pattern, component]) {
       return [`${acc[0]}\\/(${curr})`, isDynamic];
     }
     return [`${acc[0]}(${curr})`, isDynamic];
-  }, ['\\/', []]);
+  }, ['^\\/', []]);
 
   return [new RegExp(`${regExpPattern}$`, 'ig'), isDynamic, component];
 }

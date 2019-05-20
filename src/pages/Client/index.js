@@ -5,23 +5,23 @@ import useOnScroll from '../../hooks/useOnScroll';
 
 import BackButton from '../../components/BackButton';
 
-import LabList from './LabList';
-import LabEntry from './LabEntry';
+import ClientList from './ClientIndex';
+import ClientEntry from './ClientEntry';
 
-export default memo(function Lab(props) {
-  const scrollY = useOnScroll(props.transitionState, props.subCategory);
+export default memo(function Client({subCategory, transitionState}) {
+  const scrollY = useOnScroll(transitionState, subCategory);
 
   return <div
-    key={props.subCategory}
+    key={subCategory}
     className={cx('client', 'lab')}
     style={{transform: `translate3d(0,-${scrollY}px,0)`}}
   >
     <BackButton/>
-    {props.subCategory ? <LabEntry labId={props.subCategory} />: <LabList />}
+    {subCategory ? <ClientEntry clientId={subCategory} />: <ClientList />}
   </div>
 });
 
 export {
-  LabList,
-  LabEntry
-}
+  ClientList,
+  ClientEntry
+};

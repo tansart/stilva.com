@@ -36,7 +36,7 @@ export default memo(function Home(props) {
         Check out my <AnimatedLink link="lab" label="Lab" key="lab"/>.
       </p>
       <p>
-        From 2007 to early 2019, I worked at various web agencies around the world, for multiple major clients: {getClientList(clients)}
+        From 2007 to early 2019, I worked at various web agencies around the world, for multiple <AnimatedLink link="client" label="major clients" key="client" />
       </p>
       <p>
         Always down for a <AnimatedLink onClick={onContact} label="chat" rel="nofollow"/> over a drink.

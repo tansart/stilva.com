@@ -33,6 +33,14 @@
     @media #{$laptop} {
       font-size: 48px;
     }
+
+    .category-link__wrapper {
+      display: inline-block;
+    }
+
+    .category-link__text {
+      padding: 0 4px;
+    }
   }
 }
 
