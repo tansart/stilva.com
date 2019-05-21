@@ -6,6 +6,7 @@ import {mkdirp} from 'mkdirp';
 import React from 'react';
 import {renderToString} from 'react-dom/server';
 
+import labs from './src/lab';
 import clients from './src/clients';
 
 import {App, ServerSideRouter} from './src/components/App.js';
@@ -14,12 +15,24 @@ readFile('./src/index.ejs', (err, buff) => {
   const tpl = ejs.compile(buff.toString());
   const boundWriteToFile = writeToFile.bind(null, tpl);
 
-  ['/', '/lab'].concat(
-    Array
-      .from(clients.keys())
-      .map(slug => `/client/${slug}`))
+  ['/', '/lab', '/client'].concat(
+    getLabs(),
+    getClients()
+  )
     .forEach(boundWriteToFile);
 });
+
+function getClients() {
+  return Array
+    .from(clients.keys())
+    .map(slug => `/client/${slug}`)
+}
+
+function getLabs() {
+  return Object
+    .keys(labs)
+    .map(slug => `/lab/${slug}`)
+}
 
 function writeToFile(tpl, path) {
   const out = tpl({

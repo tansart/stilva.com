@@ -6,9 +6,6 @@ import AnimatedLink from '../components/AnimatedLink';
 
 import useOnScroll from '../hooks/useOnScroll';
 
-import clients from '../clients';
-import BackButton from "../components/BackButton";
-
 export default memo(function Home(props) {
   const scrollY = useOnScroll(props.transitionState, props.subCategory);
 
@@ -21,26 +18,28 @@ export default memo(function Home(props) {
     }
   }, []);
 
-  return <div className={cx('home', `page--${props.transitionState}`)} style={{transform: `translate3d(0,-${scrollY}px,0)`}}>
-    <div className="content">
-      <p>
-        <Greetings/><br/>
-        I'm <AnimatedLink link="https://github.com/stilva" label="Thomas Ansart" target="_blank"/>,
-        a senior software engineer at <AnimatedLink link="https://bit.ly/1tx8iPZ" label="Paperless Post" rel="nofollow" target="_blank" />, NY. Previously principal developer at <AnimatedLink link="https://bit.ly/2Mm1IYx" label="Firstborn" rel="nofollow" target="_blank" />
-      </p>
-      <p>
-        My day job involves engineering solutions, creating pixel perfect, and delightful UIs.
-      </p>
-      <p>
-        At night, I spend my time building UIs, writing code, or actively exploring Machine Learning (tensorflow/Python), with my pug Nugget on my laps.
-        Check out my <AnimatedLink link="lab" label="Lab" key="lab"/>.
-      </p>
-      <p>
-        From 2007 to early 2019, I worked at various web agencies around the world, for multiple <AnimatedLink link="client" label="major clients" key="client" />
-      </p>
-      <p>
-        Always down for a <AnimatedLink onClick={onContact} label="chat" rel="nofollow"/> over a drink.
-      </p>
+  return <div className={cx('page--left', `page--${props.transitionState}`)}>
+    <div className="home" style={{transform: `translate3d(0,-${scrollY}px,0)`}}>
+      <div className="content">
+        <p>
+          <Greetings/><br/>
+          I'm <AnimatedLink link="https://github.com/stilva" label="Thomas Ansart" target="_blank"/>,
+          a senior software engineer at <AnimatedLink link="https://bit.ly/1tx8iPZ" label="Paperless Post" rel="nofollow" target="_blank" />, NY. Previously principal developer at <AnimatedLink link="https://bit.ly/2Mm1IYx" label="Firstborn" rel="nofollow" target="_blank" />
+        </p>
+        <p>
+          My day job involves engineering solutions, creating pixel perfect, and delightful UIs.
+        </p>
+        <p>
+          At night, I spend my time building UIs, writing code, or actively exploring Machine Learning (tensorflow/Python), with my pug Nugget on my laps.
+          Check out my <AnimatedLink link="lab" label="Lab" key="lab"/>.
+        </p>
+        <p>
+          From 2007 to early 2019, I worked at various web agencies around the world, for multiple <AnimatedLink link="client" label="major clients" key="client" />
+        </p>
+        <p>
+          Always down for a <AnimatedLink onClick={onContact} label="chat" rel="nofollow"/> over a drink.
+        </p>
+      </div>
     </div>
   </div>
 });

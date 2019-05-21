@@ -1,10 +1,8 @@
 import React, {memo, createElement} from 'react'; // eslint-disable-line no-unused-vars
-import cx from "classnames";
 
 import clientComponents from '../../utils/clientComponents';
 import clients from '../../clients';
 
-import BackButton from '../../components/BackButton';
 import useOnScroll from "../../hooks/useOnScroll";
 
 export default memo(function Client(props) {

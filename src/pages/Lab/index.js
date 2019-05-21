@@ -8,16 +8,18 @@ import BackButton from '../../components/BackButton';
 import LabList from './LabList';
 import LabEntry from './LabEntry';
 
-export default memo(function Lab(props) {
-  const scrollY = useOnScroll(props.transitionState, props.subCategory);
+export default memo(function Lab({transitionState, subCategory}) {
+  const scrollY = useOnScroll(transitionState, subCategory);
 
-  return <div
-    key={props.subCategory}
-    className={cx('client', 'lab')}
-    style={{transform: `translate3d(0,-${scrollY}px,0)`}}
-  >
-    <BackButton/>
-    {props.subCategory ? <LabEntry labId={props.subCategory} />: <LabList />}
+  return <div className={cx('page--right', `page--${transitionState}`)}>
+    <div
+      key={subCategory}
+      className={cx('client', 'lab')}
+      style={{transform: `translate3d(0,-${scrollY}px,0)`}}
+    >
+      <BackButton/>
+      {subCategory ? <LabEntry labId={subCategory} />: <LabList />}
+    </div>
   </div>
 });
 
