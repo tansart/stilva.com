@@ -11,6 +11,7 @@
   &,
   a {
     @include font-light(6.5vw);
+    @include font-rl;
     line-height: 1.4;
     color: white;
     text-decoration: none;
@@ -86,7 +87,7 @@
     transition: transform 250ms ease-out;
     width: 100%;
 
-    @media #{$tablet} {
+    @media #{$tablet-large} {
       height: 2px;
     }
 

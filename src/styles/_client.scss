@@ -12,27 +12,20 @@
   }
 
   a {
-    @include font-light();
+    @include font-light;
     color: white;
     text-decoration: none;
   }
 
   .client-name {
-    @include font-light(26px);
+    @include font-light;
+    @include font-rl;
     display: block;
     font-weight: 400;
     letter-spacing: -.04vw;
     margin: 0;
     padding: 0 0 1.4vw 0;
     position: relative;
-
-    @media #{$tablet} {
-      font-size: 6.4vw;
-    }
-
-    @media #{$laptop} {
-      font-size: 48px;
-    }
 
     .category-link__wrapper {
       display: inline-block;

@@ -6,6 +6,22 @@
   line-height: 1.28;
 }
 
+@mixin font-rl() {
+  font-size: 22px;
+
+  @media #{$mobile-medium} {
+    font-size: 6.5vw;
+  }
+
+  @media #{$tablet} {
+    font-size: 5.6vw;
+  }
+
+  @media #{$laptop} {
+    font-size: 42px;
+  }
+}
+
 @mixin page-transition-out($animation, $easing: cubic-bezier(.76,.02,.42,.98)) {
   animation: 850ms $animation $easing both reverse;
 

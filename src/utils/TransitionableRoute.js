@@ -88,7 +88,7 @@ export default (function TransitionableRouteIIFE() {
     return <TransitionGroup component={null} key="transition-group">
       {React.createElement(
         Transition,
-        {key, timeout: 475, component: null},
+        {key, timeout: 855, component: null},
         state => React.createElement(mComponent.type, {subCategory, transitionState: state})
       )}
     </TransitionGroup>

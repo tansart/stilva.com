@@ -17,7 +17,7 @@ export default memo(function Client({subCategory, transitionState}) {
       className={cx('client', 'lab')}
       style={{transform: `translate3d(0,-${scrollY}px,0)`}}
     >
-      <BackButton/>
+      <BackButton path={subCategory ? `/client/`: '/'} />
       {subCategory ? <ClientEntry clientId={subCategory} />: <ClientList />}
     </div>
   </div>

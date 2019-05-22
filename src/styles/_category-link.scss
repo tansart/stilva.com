@@ -1,16 +1,19 @@
+a.category-link__wrapper {
+  @include font-rl;
+  display: block;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
 .category-link {
+  @include font-rl;
   display: inline-block;
   overflow: hidden;
   position: relative;
   vertical-align: bottom;
 
-  &__wrapper {
-    display: block;
-    margin-bottom: 1rem;
-    position: relative;
-  }
-
   &__text {
+    @include font-rl;
     color: black;
     display: block;
     position: relative;
