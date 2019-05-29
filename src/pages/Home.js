@@ -6,8 +6,8 @@ import AnimatedLink from '../components/AnimatedLink';
 
 import useOnScroll from '../hooks/useOnScroll';
 
-export default memo(function Home(props) {
-  const scrollY = useOnScroll(props.transitionState, props.subCategory);
+export default memo(function Home({transitionState}) {
+  const scrollY = useOnScroll(transitionState, '/home');
 
   useEffect(_ => {
     const html = document.querySelector('html');
@@ -18,7 +18,7 @@ export default memo(function Home(props) {
     }
   }, []);
 
-  return <div className={cx('page--left', `page--${props.transitionState}`)}>
+  return <div className={cx('page--left', `page--${transitionState}`)}>
     <div className="home" style={{transform: `translate3d(0,-${scrollY}px,0)`}}>
       <div className="content">
         <p>

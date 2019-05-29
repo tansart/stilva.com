@@ -8,17 +8,17 @@ import BackButton from '../../components/BackButton';
 import LabList from './LabList';
 import LabEntry from './LabEntry';
 
-export default memo(function Lab({transitionState, subCategory}) {
-  const scrollY = useOnScroll(transitionState, subCategory);
+export default memo(function Lab({transitionState, labId}) {
+  const scrollY = useOnScroll(transitionState, labId);
 
   return <div className={cx('page--right', `page--${transitionState}`)}>
     <div
-      key={subCategory}
+      key={labId}
       className={cx('client', 'lab')}
       style={{transform: `translate3d(0,-${scrollY}px,0)`}}
     >
-      <BackButton path={subCategory ? `/lab/`: '/'} />
-      {subCategory ? <LabEntry labId={subCategory} />: <LabList />}
+      <BackButton path={labId ? `/lab/`: '/'} />
+      {labId ? <LabEntry labId={labId} />: <LabList />}
     </div>
   </div>
 });

@@ -1,6 +1,5 @@
 import React, {memo, useContext} from 'react';
 import {RouterContext} from '../RouterContext';
-import {Link} from '../utils/TransitionableRoute';
 
 export default memo(function ({path}) {
   const {setRoute} = useContext(RouterContext);

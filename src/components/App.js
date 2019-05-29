@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useContext, createContext, Component} from 'react';
-import TransitionableRoute, {Link} from '../utils/TransitionableRoute';
+import React, {useState, useEffect} from 'react';
+import {TransitionA} from '../utils/TransitionableRoute';
 import {RouterContext} from "../RouterContext";
 
 import Home from '../pages/Home';
@@ -49,11 +49,11 @@ function Router({children}) {
 }
 
 export const App = React.memo(function AppFactory() {
-  return <TransitionableRoute>
+  return <TransitionA key="root" path={'/'} debug={true} timeout={850}>
     <Home path='/' />
     <Client path='/client/:clientId' />
     <Lab path='/lab/:labId' />
-  </TransitionableRoute>;
+  </TransitionA>;
 });
 
 export default function() {

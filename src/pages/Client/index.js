@@ -8,17 +8,22 @@ import BackButton from '../../components/BackButton';
 import ClientList from './ClientIndex';
 import ClientEntry from './ClientEntry';
 
-export default memo(function Client({subCategory, transitionState}) {
-  const scrollY = useOnScroll(transitionState, subCategory);
+import {TransitionA} from '../../utils/TransitionableRoute';
+
+export default memo(function Client({clientId, transitionState}) {
+  const scrollY = useOnScroll(transitionState, clientId);
 
   return <div className={cx('page--right', `page--${transitionState}`)}>
     <div
-      key={subCategory}
       className={cx('client', 'lab')}
       style={{transform: `translate3d(0,-${scrollY}px,0)`}}
     >
-      <BackButton path={subCategory ? `/client/`: '/'} />
-      {subCategory ? <ClientEntry clientId={subCategory} />: <ClientList />}
+      <BackButton path={clientId ? `/client/`: '/'} />
+
+      <TransitionA path={'/client'} timeout={850}>
+        <ClientList path={`/`} />
+        <ClientEntry path={`/:clientId`} />
+      </TransitionA>
     </div>
   </div>
 });
