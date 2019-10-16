@@ -5,10 +5,10 @@ $client-background-colour: #f1f1f1;
 @import './media-queries';
 @import './mixins';
 
+@import './page';
 @import './home';
 @import './client';
 @import './lab';
-@import './page';
 
 @import './paragraph';
 @import './title';
@@ -27,6 +27,7 @@ $client-background-colour: #f1f1f1;
 html, body {
   background: $client-background-colour;
   margin: 0;
+  overflow-x: hidden;
   padding: 0;
   width: 100vw;
 }

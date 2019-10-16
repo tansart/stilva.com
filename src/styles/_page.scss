@@ -1,55 +1,101 @@
 .page {
   display: block;
+  min-width: 100vw;
+  overflow: hidden;
+  width: 100vw;
+
+  .content {
+    display: block;
+    position: relative;
+  }
+
+  &.home ~ .page .back-button {
+    animation: fade-in 250ms ease-out 750ms both;
+  }
 }
 
-.page--left {
-  &.page--entering {
-    @include page-transition-in(home-animation);
-  }
-
-  &.page--exiting {
-    @include page-transition-out(home-animation);
-  }
+.page.page--entering {
+  background: transparent;
+  bottom: 0;
+  left: 0;
+  min-height: 100vh;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 3;
 }
 
-.page--right {
-  &.page--entering {
-    @include page-transition-in(client-animation);
-  }
-
-  &.page--exiting {
-    @include page-transition-out(client-animation);
-    animation-delay: 0ms;
-  }
+.page.page--exiting {
+  background: transparent;
+  bottom: 0;
+  left: 0;
+  min-height: 100vh;
+  position: relative;
+  right: 0;
+  top: 0;
 }
 
 .page--exited {
   display: none;
 }
 
-.page--entering {
-  bottom: 0;
-  left: 0;
-  min-height: 100vh;
-  position: fixed;
-  right: 0;
-  top: 0;
+.page--rl.page--entering .content {
+  animation: 850ms animation-rl cubic-bezier(.6,0,.4,1) both;
 }
 
-@keyframes client-animation {
+.page--rl.page--exiting .content {
+  animation: animation-rl-out 550ms ease-out 250ms both;
+}
+
+.page--lr.page--entering .content {
+  animation: 850ms animation-lr cubic-bezier(.6,0,.4,1) both;
+}
+
+.page--lr.page--exiting .content {
+  animation: animation-lr-out 550ms ease-out 250ms both;
+}
+
+@keyframes fade-in {
   from {
-    transform: translateX(100%);
+    opacity: 0;
   }
   to {
-    transform: translateX(0);
+    opacity: 1;
   }
 }
 
-@keyframes home-animation {
+@keyframes animation-rl {
   from {
-    transform: translate3d(-100%, 0, 0);
+    transform: translate3d(100vw, 0, 0);
   }
   to {
     transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes animation-rl-out {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-100vw, 0, 0);
+  }
+}
+
+@keyframes animation-lr {
+  from {
+    transform: translate3d(-100vw, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes animation-lr-out {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(100vw, 0, 0);
   }
 }

@@ -1,7 +1,7 @@
 import React, {Component, useRef} from "react";
 import cx from 'classnames';
 
-import {RouterContext} from "../RouterContext";
+import {RouterContext} from "@stilva/transitionable-react-router";
 
 export default class AnimatedLink extends Component {
 

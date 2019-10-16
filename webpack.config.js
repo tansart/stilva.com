@@ -40,10 +40,7 @@ module.exports = {
 			path.resolve(__dirname, "src/lib"),
 			path.resolve(__dirname, "node_modules"),
 			'node_modules'
-		],
-		alias: {
-			// '@stilva/markdown': path.join(__dirname, '..', 'markdown')
-		}
+		]
 	},
 
 	module: {
@@ -55,7 +52,7 @@ module.exports = {
 				use: 'source-map-loader'
 			},
 			{
-				test: /\.jsx?$/,
+        test: /\.jsx?$/,
 				exclude: /node_modules/,
 				use: 'babel-loader'
 			},
@@ -76,7 +73,7 @@ module.exports = {
 						options: {
 							sourceMap: CSS_MAPS,
 							plugins: () => {
-								autoprefixer({browsers: ['last 2 versions']});
+								autoprefixer();
 							}
 						}
 					},

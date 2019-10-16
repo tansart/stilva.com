@@ -5,21 +5,22 @@ import clientComponents from '../../utils/clientComponents';
 import clients from '../../clients';
 
 import useOnScroll from "../../hooks/useOnScroll";
+import useTransitionDirection from "../../hooks/useTransitionDirection";
+import BackButton from "../../components/BackButton";
 
-export default memo(function Client({dir, state, clientId, transitionState}) {
+export default memo(function Client({dir, state, transitionstate, query : {clientId}}) {
   const data = clients.get(clientId);
+  const offset = useOnScroll(transitionstate);
+  const direction = useTransitionDirection('client-entry', transitionstate);
 
-  if(!data) {
-    return <h1>out</h1>;
-  }
-
-  const scrollY = useOnScroll(transitionState, clientId);
-
-  return  <div className={cx('content', 'page--right', `page--${state}`)}>
-    <h1 className="client-name">{data.label}</h1>
-    {data.content.map((data, i) => {
-      const props = {key: `content_${i}`, index:i, ...data};
-      return createElement(clientComponents[data.type], props);
-    })}
+  return  <div className={cx('client', 'page', `page--${transitionstate}`, direction)}>
+    <BackButton path={'/client'} />
+    <div className="content" style={{ top: `-${offset}px`}}>
+      <h1 className="client-name">{data.label}</h1>
+      {data.content.map((data, i) => {
+        const props = {key: `content_${i}`, index:i, ...data};
+        return createElement(clientComponents[data.type], props);
+      })}
+    </div>
   </div>
 });

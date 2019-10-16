@@ -1,23 +1,43 @@
 .lab {
+  background: $client-background-colour;
+  color: black;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 86px 11vw 12vw;
+  position: relative;
+  z-index: 1;
+
+  @media #{$laptop} {
+    padding: 86px 86px 86px;
+  }
+
+  a {
+    @include font-light;
+    color: white;
+    text-decoration: none;
+  }
+
+  .client-name {
+    @include font-light;
+    @include font-rl;
+    display: block;
+    font-weight: 400;
+    letter-spacing: -.04vw;
+    margin: 0;
+    padding: 0 0 1.4vw 0;
+    position: relative;
+
+    .category-link__wrapper {
+      display: inline-block;
+    }
+
+    .category-link__text {
+      padding: 0 4px;
+    }
+  }
+
   canvas {
     max-height: 70vw;
     max-width: 70vw;
-  }
-}
-
-.stayyyyyyyyyyyyyy {
-
-  &.page--entering {
-  }
-
-  &.page--exiting {
-    /*background: red;
-    opacity: .5;
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 2;*/
   }
 }

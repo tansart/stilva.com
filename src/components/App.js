@@ -1,59 +1,27 @@
-import React, {useState, useEffect} from 'react';
-import {TransitionA} from '../utils/TransitionableRoute';
-import {RouterContext} from "../RouterContext";
+import React from 'react';
+import {Router, TransitionableReactRoute} from "@stilva/transitionable-react-router";
 
 import Home from '../pages/Home';
-import Client from '../pages/Client';
-import Lab from '../pages/Lab';
 
-export function ServerSideRouter({path, children}) {
-  return <RouterContext.Provider value={{currentRoute: path}}>
-    {children}
-  </RouterContext.Provider>
-}
+import ClientList from '../pages/Client/ClientList';
+import ClientEntry from '../pages/Client/ClientEntry';
 
-const isSSR = typeof window === 'undefined';
-
-function Router({children}) {
-  const [state, setState] = useState({currentRoute: window.location.pathname, previousRoute: ''});
-
-  const setRoute = path => {
-    if(!isSSR) {
-      window.history.pushState({}, null, path);
-    }
-
-    setState({
-      currentRoute: window.location.pathname,
-      previousRoute: state.currentRoute
-    });
-  };
-
-  useEffect(() => {
-    function onPopState(e) {
-      setState({
-        currentRoute: `/${window.location.pathname}`.replace('//', '/'),
-        previousRoute: state.currentRoute
-      });
-    }
-
-    window.addEventListener('popstate', onPopState);
-
-    return function() {
-      window.removeEventListener('popstate', onPopState);
-    }
-  }, []);
-
-  return <RouterContext.Provider value={{setRoute, ...state}}>
-    {children}
-  </RouterContext.Provider>;
-}
+import LabList from '../pages/Lab/LabList';
+import LabEntry from '../pages/Lab/LabEntry';
 
 export const App = React.memo(function AppFactory() {
-  return <TransitionA key="root" path={'/'} debug={true} timeout={850}>
-    <Home path='/' />
-    <Client path='/client/:clientId' />
-    <Lab path='/lab/:labId' />
-  </TransitionA>;
+  return <TransitionableReactRoute
+    timeout={850}
+    animateOnMount={true}
+  >
+    <LabList path="/lab" />
+    <LabEntry path="/lab/:labId" />
+
+    <ClientList path="/client" />
+    <ClientEntry path="/client/:clientId" />
+
+    <Home defaultpath />
+  </TransitionableReactRoute>;
 });
 
 export default function() {

@@ -1,7 +1,8 @@
 .markdown {
-  code {
+  code.language-javascript {
+    background: transparent;
     display: block;
-    font-size: 12px;
+    font-size: 12px !important;
     line-height: 1.75 !important;
     white-space: pre-wrap !important;
 

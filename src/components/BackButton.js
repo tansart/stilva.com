@@ -1,5 +1,5 @@
 import React, {memo, useContext} from 'react';
-import {RouterContext} from '../RouterContext';
+import {RouterContext} from "@stilva/transitionable-react-router";
 
 export default memo(function ({path}) {
   const {setRoute} = useContext(RouterContext);

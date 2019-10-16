@@ -13,7 +13,7 @@ export default memo(function ({content: data, index}) {
     import(/* webpackChunkName: "prismjs" */ /* webpackMode: "lazy" */ 'prismjs').then(({default:prism}) => {
       prism.highlightElement(node, false);
     })
-  }, []);
+  }, [data]);
 
   return <Fragment>
     <span ref={mRef}></span>

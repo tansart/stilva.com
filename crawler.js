@@ -9,7 +9,8 @@ import {renderToString} from 'react-dom/server';
 import labs from './src/lab';
 import clients from './src/clients';
 
-import {App, ServerSideRouter} from './src/components/App.js';
+import {App} from './src/components/App.js';
+import {RouterContext} from "@stilva/transitionable-react-router";
 
 readFile('./src/index.ejs', (err, buff) => {
   const tpl = ejs.compile(buff.toString());
@@ -37,9 +38,9 @@ function getLabs() {
 function writeToFile(tpl, path) {
   const out = tpl({
     distPath: '/dist',
-    rendered: renderToString(<ServerSideRouter path={path}>
+    rendered: renderToString(<RouterContext.Provider value={{currentRoute: path}}>
       <App/>
-    </ServerSideRouter>)
+    </RouterContext.Provider>)
   });
 
   const filename = join(`${path === '/' ? 'index' : path}.html`);

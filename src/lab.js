@@ -1,6 +1,31 @@
 export default {
+  'transitionable-react-router': {
+    link: 'transitionable-react-router',
+    title: `React Transitionable Route`,
+    date: `October 2019`,
+    content: [
+      {
+        type: 'Markdown',
+        content: `With both Reach Router and react-transition-group this simple blog had a bit too much JavaScript, so decided to build my own react router, with transitionable routes.`
+      },
+      {
+        type: 'Markdown',
+        content:`For lack of better name I've named it [@stilva/transitionable-react-router](https://www.github.com/stilva/transitionable-react-router).`
+      },
+      {
+        type: 'Markdown',
+        content:`Admittedly, there's a lot more I could have done to minimise the weight of this blog, and improve render time – such as not using a framework, using a smaller framework (preact) and so on.
+        For the time being, I thought I'd write a router with hooks, make it SSR proof, and add some sort of transitioning logic to it.`
+      },
+      {
+        type: 'Markdown',
+        content:`My website runs with this router, so check out how I've hacked it together here [@stilva/stilva.com](https://www.github.com/stilva/stilva.com).`
+      }
+    ]
+  },
   'markdown': {
-    title: `Markdown/January 2019`,
+    title: `Markdown`,
+    date: `January 2019`,
     content: [
       {
         type: 'Markdown',
@@ -21,13 +46,15 @@ At the moment the only way to invalidate it is by passing a new key.`
   },
   'glsl': {
     link: 'glsl',
-    title: `GLSL/September 2018`,
+    title: `GLSL`,
+    date: `September 2018`,
     content: [
       {
         type: 'Markdown',
         content: `Writing fragment shaders is a lot of fun. Setting up everything to easily write a shader is much less so.
 
 Having had to go through the whole ceremony on more than one occasion in the last few months, I've decided to finally write a small library to ease the pain.
+This is based on code from back in 2016, and I've updated it to use the template literals so it looks nicer. 
 It's on github: [@stilva/glsl](https://www.github.com/stilva/glsl), check it out.`
       },
       {
