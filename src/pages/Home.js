@@ -1,6 +1,7 @@
-import React, {memo, Component} from 'react';
+import React, {memo, useContext, Component} from 'react';
 
 import GLSL from '@stilva/glsl';
+import {RouterContext} from '@stilva/transitionable-react-router';
 
 import Greetings from '../components/Greetings';
 import AnimatedLink from '../components/AnimatedLink';
@@ -10,28 +11,73 @@ import useTransitionDirection from "../hooks/useTransitionDirection";
 
 class Background extends Component {
   componentDidMount() {
-    const glsl = new GLSL(this.el);
+    this.glsl = new GLSL(this.el);
 
-    glsl.fragment`void main() {
+    // < 0 hide
+    // 0. no animation
+    // > 0. show
+    this.updateDirection = this.glsl.addVariable('u_dir', [!!this.props.previousRoute ? 1.: 0.]);
+    this.updateOffset = this.glsl.addVariable('u_offset', [0.]);
+
+    this.glsl.fragment`float easing(float k) {
+      // Quintic
+      // return --k * k * k * k * k + 1.;
+      // Exponential
+      return k == 1. ? 1. : 1. - pow(2., - 10. * k);
+    }
+    
+    float easeOut(float k) {
+      return k == 0. ? 0. : pow(1024., k - 1.);
+    }
+    
+    float rect(float t, vec2 uv) {
+      vec2 zero = vec2(0., 0.);
+      vec2 translate = vec2(t);
+      vec2 pt = step(zero, uv + translate);
+      return 1. - pt.x * pt.y * step(0., 1.0 - (uv.x + translate.x));
+    }
+
+    void main() {
 				vec2 uv = gl_FragCoord.xy/u_resolution.xy;
+				float color1, color2, color3 = 0.;
         
-        vec2 zero = vec2(0., 0.);
-        // vec2 translate = vec2(sin(u_time) * .5 - .5, 0.);
-        vec2 translate = vec2(1., 0.);
+        if(u_dir > 0.) {
+          color1 = rect(1. - easing(min((u_time)/1., 1.)), uv);
+          color2 = rect(1. - easing(min((u_time)/1.5, 1.)), uv);
+          color3 = rect(1. - easing(min((u_time)/1.75, 1.)), uv);
+        }
         
-        vec2 lb = step(zero, uv + translate);
-        vec2 rt = step(zero, 1.0 - (uv + translate));
+        if(u_dir == 0.) {
+          color1 = rect(0., uv);
+          color2 = rect(0., uv);
+          color3 = rect(0., uv);
+        }
         
-        float color1 = lb.x * lb.y * rt.x * rt.y;
-        
-        gl_FragColor = vec4(color1,color1,color1,1.);
-				
+        if(u_dir < 0.) {
+          // 0 is full width, 1. is closed.
+          // we want to start from 1 and go to 0.
+          float adjusted_time = u_time - u_offset;
+          
+          color1 = rect(max(easeOut(adjusted_time * 1.5), 0.), uv);
+          color2 = rect(max(easeOut(adjusted_time * 1.75), 0.), uv);
+          color3 = rect(max(easeOut(adjusted_time * 2.), 0.), uv);
+        }
+
+        gl_FragColor = vec4(0., 0., 0., 1.);
+        gl_FragColor = mix(gl_FragColor, vec4(0., 0., 0., .9), color3);
+        gl_FragColor = mix(gl_FragColor, vec4(0., 0., 0., .15), color2);
+        gl_FragColor = mix(gl_FragColor, vec4(0., 0., 0., .0), color1);
 			}`;
 
-    glsl.render();
+    this.glsl.render();
   }
 
-  shouldComponentUpdate() {
+  shouldComponentUpdate({transitionstate}) {
+    if(transitionstate == 'exiting' && this.props.transitionstate == 'entered') {
+      this.updateDirection([-1.]);
+      this.updateOffset([(Date.now() - this.glsl._initTime - 250)/1000]);
+    }
+
     return false;
   }
 
@@ -48,6 +94,7 @@ class Background extends Component {
 export default memo(function Home({transitionstate}) {
   const offset = useOnScroll(transitionstate);
   const direction = useTransitionDirection('home', transitionstate);
+  const {previousRoute} = useContext(RouterContext);
 
   return <div className={cx('home', 'page', `page--${transitionstate}`, direction)}>
     <div className="content" style={{ top: `-${offset}px`}}>
@@ -70,7 +117,7 @@ export default memo(function Home({transitionstate}) {
         Always down for a <AnimatedLink onClick={onContact} label="chat" rel="nofollow"/> over a drink.
       </p>
     </div>
-    <Background />
+    <Background previousRoute={previousRoute} transitionstate={transitionstate} />
   </div>
 });
 
