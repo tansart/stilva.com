@@ -30,21 +30,36 @@ class Background extends Component {
       return k == 0. ? 0. : pow(1024., k - 1.);
     }
     
+    float noise(vec2 u) {
+        // return fract(sin(u.x * 7.)*92.*cos(u.y *9.)*39.);
+        return fract(dot(sin(cos(u.x * 3.14) * 123.12)*142.,cos(u.y *34.95)*165.47));
+    }
+    
+    vec2 bezier(float t, vec2 p0, vec2 p1) {
+      // return pow(1. - t, 3.0) * vec2(0.) + 3. * pow(1. - t, 2.) * t * vec2(.6, 0.) + 3. * (1. - t) * pow(t, 2.) * vec2(.4, 1.) + pow(t, 3.);
+      return 3. * pow(1. - t, 2.) * t * p0 + 3. * (1. - t) * pow(t, 2.) * p1 + pow(t, 3.);
+    }
+    
     float rect(float t, vec2 uv) {
       vec2 zero = vec2(0., 0.);
       vec2 translate = vec2(t);
       vec2 pt = step(zero, uv + translate);
       return 1. - pt.x * pt.y * step(0., 1.0 - (uv.x + translate.x));
     }
+    
+    vec2 bezier_pt0 = vec2(.6, .0);
+    vec2 bezier_pt1 = vec2(.4, 1.);
 
     void main() {
 				vec2 uv = gl_FragCoord.xy/u_resolution.xy;
 				float color1, color2, color3 = 0.;
+        float adjusted_time = clamp((u_time - u_offset) / .85, 0., 1.);
         
         if(u_dir > 0.) {
-          color1 = rect(1. - easing(min((u_time)/1., 1.)), uv);
-          color2 = rect(1. - easing(min((u_time)/1.5, 1.)), uv);
-          color3 = rect(1. - easing(min((u_time)/1.75, 1.)), uv);
+          // bezier(uv.x, vec2(.6, 0.), vec2(.4, 1.)).y
+          color1 = rect(clamp(1. - bezier(adjusted_time, bezier_pt0, bezier_pt1).y * 1.3, 0., 1.), uv);
+          color2 = rect(clamp(1. - bezier(adjusted_time, bezier_pt0, bezier_pt1).y * 1.15, 0., 1.), uv);
+          color3 = rect(clamp(1. - bezier(adjusted_time, bezier_pt0, bezier_pt1).y * 1., 0., 1.), uv);
         }
         
         if(u_dir == 0.) {
@@ -56,26 +71,28 @@ class Background extends Component {
         if(u_dir < 0.) {
           // 0 is full width, 1. is closed.
           // we want to start from 1 and go to 0.
-          float adjusted_time = u_time - u_offset;
-          
-          color1 = rect(max(easeOut(adjusted_time * 1.5), 0.), uv);
-          color2 = rect(max(easeOut(adjusted_time * 1.75), 0.), uv);
-          color3 = rect(max(easeOut(adjusted_time * 2.), 0.), uv);
+          color1 = rect(bezier(adjusted_time, bezier_pt0, bezier_pt1).y * 1., uv);
+          color2 = rect(bezier(adjusted_time, bezier_pt0, bezier_pt1).y * 1.15, uv);
+          color3 = rect(bezier(adjusted_time, bezier_pt0, bezier_pt1).y * 1.3, uv);
         }
 
         gl_FragColor = vec4(0., 0., 0., 1.);
-        gl_FragColor = mix(gl_FragColor, vec4(0., 0., 0., .9), color3);
-        gl_FragColor = mix(gl_FragColor, vec4(0., 0., 0., .15), color2);
-        gl_FragColor = mix(gl_FragColor, vec4(0., 0., 0., .0), color1);
+        gl_FragColor = mix(gl_FragColor, vec4(0., 0., 0., .85), color3);
+        gl_FragColor = mix(gl_FragColor, vec4(0., 0., 0., .75), color2);
+        gl_FragColor = mix(gl_FragColor, vec4(0., 0., 0., 0.), color1);
 			}`;
 
     this.glsl.render();
   }
 
+  componentWillUnmount() {
+    this.glsl.kill();
+  }
+
   shouldComponentUpdate({transitionstate}) {
     if(transitionstate == 'exiting' && this.props.transitionstate == 'entered') {
       this.updateDirection([-1.]);
-      this.updateOffset([(Date.now() - this.glsl._initTime - 250)/1000]);
+      this.updateOffset([(Date.now() - this.glsl._initTime)/1000]);
     }
 
     return false;
