@@ -16,7 +16,7 @@ export default memo(function Lab({query: {labId}, transitionstate}) {
     <div className="content" style={{ top: `-${offset}px`}}>
       <h1 className="client-name">{data[labId].title}</h1>
       {data[labId].content.map((data, i) => {
-        const props = {key: `content_${i}`, index: i, ...data};
+        const props = {key: `content_${i}`, index: `${labId}_${i}`, ...data};
         return createElement(clientComponents[data.type], props);
       })}
     </div>

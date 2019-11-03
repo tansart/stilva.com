@@ -18,7 +18,7 @@ export default memo(function Client({dir, state, transitionstate, query : {clien
     <div className="content" style={{ top: `-${offset}px`}}>
       <h1 className="client-name">{data.label}</h1>
       {data.content.map((data, i) => {
-        const props = {key: `content_${i}`, index:i, ...data};
+        const props = {key: `content_${i}`, index: `${clientId}_${i}`, ...data};
         return createElement(clientComponents[data.type], props);
       })}
     </div>
