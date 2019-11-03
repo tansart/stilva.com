@@ -88,7 +88,9 @@ export default class AnimatedLink extends Component {
     this.observer = new IntersectionObserver(([entry]) => {
       const {intersectionRatio} = entry;
       if(intersectionRatio >= 1) {
-        console.log(this.props.label)
+        this.node.classList.add('visible');
+      } else {
+        this.node.classList.remove('visible');
       }
     }, {
       threshold: [0., 1.0]
