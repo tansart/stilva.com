@@ -47,8 +47,8 @@ class Background extends Component {
       return 1. - pt.x * pt.y * step(0., 1.0 - (uv.x + translate.x));
     }
     
-    vec2 bezier_pt0 = vec2(.6, .0);
-    vec2 bezier_pt1 = vec2(.4, 1.);
+    vec2 bezier_pt0 = vec2(.73, .0);
+    vec2 bezier_pt1 = vec2(.51, .99);
 
     void main() {
 				vec2 uv = gl_FragCoord.xy/u_resolution.xy;
@@ -56,8 +56,7 @@ class Background extends Component {
         float adjusted_time = clamp((u_time - u_offset) / .85, 0., 1.);
         
         if(u_dir > 0.) {
-          // bezier(uv.x, vec2(.6, 0.), vec2(.4, 1.)).y
-          color1 = rect(clamp(1. - bezier(adjusted_time, bezier_pt0, bezier_pt1).y * 1.3, 0., 1.), uv);
+          color1 = rect(clamp(1. - bezier(adjusted_time, bezier_pt0, bezier_pt1).y * 1.25, 0., 1.), uv);
           color2 = rect(clamp(1. - bezier(adjusted_time, bezier_pt0, bezier_pt1).y * 1.15, 0., 1.), uv);
           color3 = rect(clamp(1. - bezier(adjusted_time, bezier_pt0, bezier_pt1).y * 1., 0., 1.), uv);
         }
@@ -69,16 +68,14 @@ class Background extends Component {
         }
         
         if(u_dir < 0.) {
-          // 0 is full width, 1. is closed.
-          // we want to start from 1 and go to 0.
           color1 = rect(bezier(adjusted_time, bezier_pt0, bezier_pt1).y * 1., uv);
-          color2 = rect(bezier(adjusted_time, bezier_pt0, bezier_pt1).y * 1.15, uv);
-          color3 = rect(bezier(adjusted_time, bezier_pt0, bezier_pt1).y * 1.3, uv);
+          color2 = rect(bezier(adjusted_time, bezier_pt0, bezier_pt1).y * 1.25, uv);
+          color3 = rect(bezier(adjusted_time, bezier_pt0, bezier_pt1).y * 1.75, uv);
         }
 
         gl_FragColor = vec4(0., 0., 0., 1.);
-        gl_FragColor = mix(gl_FragColor, vec4(0., 0., 0., .85), color3);
-        gl_FragColor = mix(gl_FragColor, vec4(0., 0., 0., .75), color2);
+        gl_FragColor = mix(gl_FragColor, vec4(0., 0., 0., .9), color3);
+        gl_FragColor = mix(gl_FragColor, vec4(0., 0., 0., .85), color2);
         gl_FragColor = mix(gl_FragColor, vec4(0., 0., 0., 0.), color1);
 			}`;
 
@@ -128,7 +125,7 @@ export default memo(function Home({transitionstate}) {
         Check out my <AnimatedLink link="lab" label="Lab" key="lab"/>.
       </p>
       <p>
-        From 2007 to early 2019, I worked at various web agencies around the world, for multiple <AnimatedLink link="client" label="major clients" key="client" />
+        From 2007 to early 2019, I worked at various web agencies around the world, for multiple <AnimatedLink link="client" label="clients" key="client" />
       </p>
       <p>
         Always down for a <AnimatedLink onClick={onContact} label="chat" rel="nofollow"/> over a drink.

@@ -15,11 +15,11 @@ export default {
       {
         type: 'Markdown',
         content:`Admittedly, there's a lot more I could have done to minimise the weight of this blog, and improve render time – such as not using a framework, using a smaller framework (preact) and so on.
-        For the time being, I thought I'd write a router with hooks, make it SSR proof, and add some sort of transitioning logic to it.`
+        For the time being, I thought I'd write a router with hooks, enable SSR, and add some sort of transitioning logic to it.`
       },
       {
         type: 'Markdown',
-        content:`My website runs with this router, so check out how I've hacked it together here [@stilva/stilva.com](https://www.github.com/stilva/stilva.com).`
+        content:`My website runs with this router, so check out how I've put it together here [@stilva/stilva.com](https://www.github.com/stilva/stilva.com).`
       }
     ]
   },

@@ -3,6 +3,10 @@
   font-size: 6.5vw;
   padding: 1.6vw 0.6vw;
 
+  @media #{$tablet} {
+    padding: 12px 0;
+  }
+
   &__title {
     @include font-light(14px);
     margin: 0;
@@ -18,21 +22,11 @@
   }
 
   a {
-    display: inline-block;
+    box-shadow: black 0 1px 0;
+    display: inline;
     margin: 0;
     position: relative;
     text-decoration: none;
-  }
-
-  a:after {
-    background: black;
-    bottom: -1px;
-    content: '';
-    height: 1px;
-    left: 0;
-    position: absolute;
-    right: 0;
-    width: 100%;
   }
 
   ul {
