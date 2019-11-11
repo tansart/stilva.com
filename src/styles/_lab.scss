@@ -3,9 +3,17 @@
   color: black;
   margin: 0 auto;
   min-height: 100vh;
-  padding: 86px 11vw 12vw;
+  padding: 86px 20px 12vw;
   position: relative;
   z-index: 1;
+
+  @media #{$tablet} {
+    padding: 86px 70px 12vw;
+  }
+
+  @media #{$tablet-large} {
+    padding: 86px 11vw 12vw;
+  }
 
   @media #{$laptop} {
     padding: 86px 86px 86px;
@@ -26,6 +34,10 @@
     margin: 0;
     padding: 0 0 1.4vw 0;
     position: relative;
+
+    @media #{$tablet} {
+      padding: 0 0 22px 0;
+    }
 
     .category-link__wrapper {
       display: inline-block;

@@ -1,6 +1,14 @@
 .home {
-  padding: 86px 11vw 12vw;
+  padding: 86px 20px 12vw;
   position: relative;
+
+  @media #{$tablet} {
+    padding: 86px 70px 12vw;
+  }
+
+  @media #{$tablet-large} {
+    padding: 86px 11vw 12vw;
+  }
 
   @media #{$laptop} {
     padding: 86px 86px 86px;

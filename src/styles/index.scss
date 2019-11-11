@@ -34,7 +34,15 @@ html, body {
 
 .content {
   margin: 0 auto;
-  max-width: 70vw;
+  max-width: 100%;
+
+  @media #{$tablet} {
+    max-width: 80vw;
+  }
+
+  @media #{$tablet-large} {
+    max-width: 70vw;
+  }
 
   @media #{$laptop} {
     max-width: 960px;
