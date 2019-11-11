@@ -5,8 +5,8 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**",
-      "dist/*.map",
-      "dist/stats-fe.json"
+      "*.map",
+      "stats-fe.json"
     ],
     "cleanUrls": true,
     "headers": {

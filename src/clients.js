@@ -25,7 +25,7 @@ export default new Map([
         type: 'Paragraph',
         title: 'Tech notes',
         content: [
-          `I've chosen preact over react in many of the projects, due to its smaller foot-print. For the same reasons I've picked Rollup as our go-to bundler for the inboxes. All front-end unit tests are written with jest.`,
+          `I've chosen preact over react in many of the projects, due to its smaller foot-print. For the same reasons I've picked Rollup as our go-to bundler for the inboxes. All front-end unit tests were written with jest.`,
           `For the e-commerce website, I've written a lot of custom tools for better DX with shopify – a per-developer theme deployment system, CI server theme push with history, better browser reload with Shopify etc.`
         ]
       },
