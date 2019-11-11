@@ -3,14 +3,11 @@ export default {
     link: 'transitionable-react-router',
     title: `React Transitionable Route`,
     date: `October 2019`,
+    categories: 'web',
     content: [
       {
         type: 'Markdown',
         content: `With both Reach Router and react-transition-group this simple blog had a bit too much JavaScript, so decided to build my own react router, with transitionable routes.`
-      },
-      {
-        type: 'Markdown',
-        content:`For lack of better name I've named it [@stilva/transitionable-react-router](https://www.github.com/stilva/transitionable-react-router).`
       },
       {
         type: 'Markdown',
@@ -19,13 +16,78 @@ export default {
       },
       {
         type: 'Markdown',
-        content:`My website runs with this router, so check out how I've put it together here [@stilva/stilva.com](https://www.github.com/stilva/stilva.com).`
-      }
+        content:`For lack of better name I've named it [@stilva/transitionable-react-router](https://www.github.com/stilva/transitionable-react-router).
+
+My website runs with this router, so check out how I've put it together here [@stilva/stilva.com](https://www.github.com/stilva/stilva.com).`
+      },
+      {
+        type: 'Markdown',
+        content:`I've built it with hooks and somewhat followed react-transition-group's latest API. I really like their v1 API which allowed the components to dictate when a transition is done, as opposed to hard-coding a timeout for all transitions.
+For routes, however, I wasn't convinced this feature was needed, so I opted for the components to receive a transition state prop.`
+      },
+      {
+        type: 'Markdown',
+        content:`I believe all the unit tests can serve as a great documentation, so I'd check these out [TransitionableReactRoute.test.js](https://github.com/stilva/transitionable-react-router/blob/master/src/TransitionableReactRoute.test.js).
+
+For now, here's a brief overview of how to use \`TransitionableReactRoute\`:
+
+\`\`\`jsx
+&lt;TransitionableReactRoute
+  timeout={850}
+  animateOnMount={true}
+&gt;
+  &lt;LabList path="/lab" /&gt;
+  &lt;LabEntry path="/lab/:labId" /&gt;
+  &lt;Home defaultpath /&gt;
+&lt;/TransitionableReactRoute&gt;
+\`\`\`
+
+Each path is transformed into a regular expression that is then matched against the URL. Consequently, path matching is eager, so the order in which your components are declared matters.
+`
+      },
+      {
+        type: 'Markdown',
+        content:`Like with all your React components, you can nest your \`TransitionableReactRoute\` components.
+
+\`\`\`jsx
+&lt;TransitionableReactRoute
+  timeout={850}
+  animateOnMount={true}
+&gt;
+  &lt;TransitionableReactRoute path="/nested" &gt;
+    &lt;One path="one" /&gt;  {{// will match /nested/one }}
+  &lt;/TransitionableReactRoute&gt;
+&lt;/TransitionableReactRoute&gt;
+\`\`\`
+
+`
+      },
+      {
+        type: 'Markdown',
+        content:`One of the few missing pieces with React-Transitionable-Router – apart from a better name – is a sort of Link component. For the time being, I'm just using the context as below:
+
+\`\`\`jsx
+import {useContext} from "react";
+import {RouterContext} from "@stilva/transitionable-react-router";
+
+export function Link({label, path}) {
+  const {setRouter} = useContext(RouterContext);
+  return &lt;a href="path" onClick={e => setRouter(path)}&gt;
+    {label}
+  &lt;/a&gt;;
+}
+
+\`\`\`
+
+`
+      },
     ]
   },
+
   'markdown': {
     title: `Markdown`,
     date: `January 2019`,
+    categories: 'web',
     content: [
       {
         type: 'Markdown',
@@ -48,10 +110,12 @@ At the moment the only way to invalidate it is by passing a new key.`
       },
     ]
   },
+
   'glsl': {
     link: 'glsl',
     title: `GLSL`,
     date: `September 2018`,
+    categories: 'web',
     content: [
       {
         type: 'Markdown',
