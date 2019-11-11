@@ -1,10 +1,10 @@
-import {useEffect, useRef} from 'react';
+import {useLayoutEffect, useRef} from 'react';
 
 export default function useOnScroll(transitionstate) {
   const offset = useRef(0);
   const prevTransition = useRef(transitionstate);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const body = document.querySelector('html, body');
     const cb = () => (offset.current = body.scrollTop);
 
