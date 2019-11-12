@@ -4,6 +4,59 @@ import cx from 'classnames';
 import {RouterContext} from "@stilva/transitionable-react-router";
 import lab from "../lab";
 
+class Animator {
+  constructor(time = 0, render) {
+    this._progress = 0;
+    this._direction = 0; // -1: hide, 0 : idle, 1: show
+    this._targetTime = 0;
+    this._time = time;
+    this._reference = null;
+    this._render = render;
+  }
+
+  onEnter = () => {
+    this._direction = 1;
+    this._targetTime = Date.now() + (1 - this._progress) * this._time;
+    // clearTimeout(this._reference);
+    cancelAnimationFrame(this._reference);
+    requestAnimationFrame(this._tick)
+  };
+
+  onLeave = () => {
+    this._direction = -1;
+    this._targetTime = Date.now() + this._progress * this._time;
+    console.log(Date.now() - this._targetTime)
+    // clearTimeout(this._reference);
+    requestAnimationFrame(this._tick)
+  };
+
+  _tick = () => {
+    if(this._direction === 0) {
+      return;
+    }
+
+    const now = Date.now();
+    if(this._direction > 0) {
+      this._progress = 1 - (this._targetTime - now)/this._time;
+    } else {
+      this._progress = (this._targetTime - now)/this._time;
+    }
+
+    if(this._progress >= 1) {
+      this._direction = 0;
+      this._progress = 1;
+    } else if(this._progress <= 0) {
+      this._direction = 0;
+      this._progress = 0;
+    }
+
+    this._render(this._progress);
+
+    // this._reference = setTimeout(this._tick, 250);
+    this._reference = requestAnimationFrame(this._tick);
+  };
+}
+
 export default class AnimatedLink extends Component {
 
   static contextType = RouterContext;
@@ -11,52 +64,24 @@ export default class AnimatedLink extends Component {
   constructor(props) {
     super(props);
 
+    this._animator = new Animator(250, this.update);
+
+    this.__rafRef = null;
+    this.__currentIndex = 0;
     this.__isHovering = false;
   }
 
-  onEnter = () => {
-    let currIndex = 0;
-    const {ratios} = this;
-    const maxTime = 250;
-    const initTime = Date.now();
-
-    this.__isHovering = true;
-
-    console.log(ratios)
-
-    const update = () => {
-      const now = Date.now();
-      const tick = (now - initTime)/maxTime;
-
-      if(!this.__isHovering) {
-        return null;
+  update = (t) => {
+    for(let r of this.ratios) {
+      if(t > r.max) {
+        r.t.style.transform = `translateX(0%)`;
+      } else if(t <= r.min) {
+        r.t.style.transform = `translateX(105%)`;
+      } else if(r.min < t && t <= r.max) {
+        const transform = (t - r.min)/r.time * 100 - 100;
+        r.t.style.transform = `translateX(${Math.min(transform, 0)}%)`;
       }
-
-      if(tick >= ratios[currIndex].max && ratios.length - 1 >= currIndex + 1) {
-        ratios[currIndex].t.style.transform = `translateX(0%)`;
-        currIndex++;
-      }
-
-      if(maxTime > (now - initTime)) {
-        requestAnimationFrame(update);
-
-        const transform = (tick - ratios[currIndex].min)/ratios[currIndex].time * 100 - 105;
-        ratios[currIndex].t.style.transform = `translateX(${Math.min(transform, 0)}%)`;
-      } else {
-        console.log(now - initTime);
-        ratios[currIndex].t.style.transform = `translateX(0%)`;
-      }
-    };
-
-    requestAnimationFrame(update);
-  };
-
-  onLeave = () => {
-    this.__isHovering = false;
-
-    this.ratios.forEach(({node}) => {
-      node.querySelector('.animated').style.transform = '';
-    })
+    }
   };
 
   componentDidMount() {
@@ -121,8 +146,10 @@ export default class AnimatedLink extends Component {
       {...extra}
       ref={node => this.node = node}
       className="category-link__wrapper"
-      onMouseEnter={this.onEnter}
-      onMouseLeave={this.onLeave}
+      onMouseEnter={this._animator.onEnter}
+      onMouseLeave={this._animator.onLeave}
+      onTouchStart={this._animator.onEnter}
+      onTouchEnd={this._animator.onLeave}
     >
       {splitLabel(label).map(({word}, i) => (
         <span className="category-link" key={`word_${i}`}>
@@ -135,6 +162,13 @@ export default class AnimatedLink extends Component {
       ))}
     </a>;
   }
+}
+
+function bezierEasing(t, p0, p1) {
+  return {
+    x: 3. * Math.pow(1. - t, 2.) * t * p0.x + 3. * (1. - t) * Math.pow(t, 2.) * p1.x + Math.pow(t, 3.),
+    y: 3. * Math.pow(1. - t, 2.) * t * p0.y + 3. * (1. - t) * Math.pow(t, 2.) * p1.y + Math.pow(t, 3.)
+  };
 }
 
 function splitLabel(label) {
