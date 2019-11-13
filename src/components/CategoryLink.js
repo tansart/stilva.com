@@ -15,18 +15,18 @@ class Animator {
   }
 
   onEnter = () => {
-    this._direction = 1;
-    this._targetTime = Date.now() + (1 - this._progress) * this._time;
     // clearTimeout(this._reference);
     cancelAnimationFrame(this._reference);
+    this._direction = 1;
+    this._targetTime = Date.now() + (1 - this._progress) * this._time;
     requestAnimationFrame(this._tick)
   };
 
   onLeave = () => {
+    // clearTimeout(this._reference);
+    cancelAnimationFrame(this._reference);
     this._direction = -1;
     this._targetTime = Date.now() + this._progress * this._time;
-    console.log(Date.now() - this._targetTime)
-    // clearTimeout(this._reference);
     requestAnimationFrame(this._tick)
   };
 
@@ -42,10 +42,10 @@ class Animator {
       this._progress = (this._targetTime - now)/this._time;
     }
 
-    if(this._progress >= 1) {
+    if(this._progress >= 1 && this._direction == 1) {
       this._direction = 0;
       this._progress = 1;
-    } else if(this._progress <= 0) {
+    } else if(this._progress <= 0 && this._direction == -1) {
       this._direction = 0;
       this._progress = 0;
     }
