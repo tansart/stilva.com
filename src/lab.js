@@ -18,7 +18,8 @@ export default {
         type: 'Markdown',
         content:`For lack of better name I've named it [@stilva/transitionable-react-router](https://www.github.com/stilva/transitionable-react-router).
 
-My website runs with this router, so check out how I've put it together here [@stilva/stilva.com](https://www.github.com/stilva/stilva.com).`
+My website runs with this router, so check out how I've put it together here [@stilva/stilva.com](https://www.github.com/stilva/stilva.com).
+`
       },
       {
         type: 'Markdown',
