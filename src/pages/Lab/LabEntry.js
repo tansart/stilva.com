@@ -17,6 +17,13 @@ export default memo(function Lab({query: {labId}, transitionstate}) {
       <h1 className="client-name">{data[labId].title}</h1>
       {data[labId].content.map((data, i) => {
         const props = {key: `content_${i}`, index: `${labId}_${i}`, ...data};
+        if(data.type === 'FunctionalComponent') {
+          const css = data.css && <style dangerouslySetInnerHTML={{__html: data.css}}/>;
+          return <div key={`content_css_${i}`}>
+            {css}
+            {createElement(data.component, props)}
+          </div>
+        }
         return createElement(clientComponents[data.type], props);
       })}
     </div>

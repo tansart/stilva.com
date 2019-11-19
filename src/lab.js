@@ -1,4 +1,204 @@
+import React from 'react';
+
 export default {
+  'splitting-cubic-bezier': {
+    link: 'splitting-cubic-bezier',
+    title: `Splitting a cubic bézier curve`,
+    date: `November 2019`,
+    categories: 'web',
+    content: [
+      {
+        type: 'Markdown',
+        content: `Before diving into how to split a cubic bezier curve into multiple chunks, let's take a step back for a little context.
+Let's write a very simple button component where we have a background animation.`
+      },
+      {
+        type: 'FunctionalComponent',
+        css: `.scb-button {
+          background: none;
+          border: none;
+          border-radius: 0;
+          color: #feb2a8;
+          cursor: pointer;
+          font-size: 16px;
+          outline: none;
+          overflow: hidden;
+          position: relative;
+        }
+        .scb-button:after {
+          background: white;
+          content: '';
+          display: block;
+          height: 100%;
+          left: 0;
+          position: absolute;
+          top: 0;
+          transform: translateX(-105%);
+          transition: transform 350ms ease-out;
+          width: 100%;
+          z-index: -1;
+        }
+        .scb-button:hover:after {
+          transform: translateX(0);
+        }`,
+        component: function component() {
+          return <button className='scb-button' type="button">
+            hover
+          </button>;
+        }
+      },
+      {
+        type: 'Markdown',
+        content: `There's a very straight-forward hover animation, with a pseudo element that has a \`transform: translateX();\` applied on hover.
+There's also a simple \`ease-out\` applied to the \`transition\` so it's nice a smooth.
+
+Things quickly get ugly when you need the button's animation to be split in two or more lines.`
+      },
+      {
+        type: 'FunctionalComponent',
+        css: `.max-width {
+          max-width: 100px;
+          text-align: left;
+        }`,
+        component: function component() {
+          return <button className='scb-button max-width' type="button">
+            Split in multiple lines.
+          </button>;
+        }
+      },
+      {
+        type: 'Markdown',
+        content: `First CSS property that came to mind was \`box-decoration-break: clone;\`. Unfortunately I needed the display element to be a \`block\`, or an \`inline-block\`.
+So this wouldn't work.
+
+The next step was splitting the button in smaller components and applying multiple \`transition-delay\` along sub-elements to offset the transition on each sub-elements.`
+      },
+      {
+        type: 'FunctionalComponent',
+        css: `.scb-button--split, .scb-button--split span {
+          background: none;
+          border: none;
+          border-radius: 0;
+          color: #feb2a8;
+          cursor: pointer;
+          display: block;
+          font-size: 16px;
+          outline: none;
+          overflow: hidden;
+          position: relative;
+        }
+        .scb-button--split span {
+          display: inline-block;
+        }
+        .scb-button--split span:after {
+          background: white;
+          content: '';
+          display: block;
+          height: 100%;
+          left: 0;
+          position: absolute;
+          top: 0;
+          transform: translateX(-105%);
+          transition: transform 150ms ease-out;
+          width: 100%;
+          z-index: -1;
+        }
+        .scb-button--split .one:after {
+          transition-delay: 300ms;
+        }
+        .scb-button--split .two:after {
+          transition-delay: 150ms;
+        }
+        .scb-button--split .three:after {
+          transition-delay: 0ms;
+        }
+        .scb-button--split:hover .one:after {
+          transition-delay: 0ms;
+        }
+        .scb-button--split:hover .two:after {
+          transition-delay: 150ms;
+        }
+        .scb-button--split:hover .three:after {
+          transition-delay: 300ms;
+        }
+        .scb-button--split:hover span:after {
+          transform: translateX(0%);
+        }`,
+        component: function component() {
+          return <button className='scb-button--split max-width' type="button">
+            <span className="one">One&nbsp;</span>
+            <span className="two">Two&nbsp;</span>
+            <span className="three">Three&nbsp;</span>
+          </button>;
+        }
+      },
+      {
+        type: 'Markdown',
+        content: `Since the ease is applied on a per-element basis, the momentum of the animation is lost.
+This finally brings me to splitting bezier curves: we want to find a \`transition-timing-function\` to be applied to each element. 
+
+First thing first, let's swap the ease-out with its cubic bezier curve equivalent: \`cubic-bezier(0,0,.58,1)\`, and let's keep each span to be exactly the same length:`
+      },
+      {
+        type: 'FunctionalComponent',
+        css: `.cb-easing span:after {
+          transition-timing-function: cubic-bezier(0,0,.58,1);
+        }`,
+        component: function component() {
+          return <button className='scb-button--split max-width cb-easing' type="button">
+            <span className="one">Word&nbsp;</span>
+            <span className="two">Word&nbsp;</span>
+            <span className="three">Word&nbsp;</span>
+          </button>;
+        }
+      },
+      {
+        type: 'Markdown',
+        content: `Given the animation of three words, let's split the function into three distinct functions. 
+See below for a visual representation of the \`ease-out\` function, where we can see y over time.
+`
+      },
+      {
+        type: 'FunctionalComponent',
+        css: `svg.cb-svg {
+          display: block;
+          height: 100px;
+          margin: 0 auto;
+          position: relative;
+          width: 100px;
+        }
+        
+        .cb-svg path {
+          fill: none;
+          stroke-width: 5;
+        }`,
+        component: function component() {
+
+          const points = [[0, 500], [0, 500], [290, 0], [500, 0]];
+
+          const splitted = [...Array(3)].reduce((acc, _, i) => {
+            return acc.concat([
+              points.map((pt, ii) => {
+                if(ii === 0 && i === 0) return pt;
+                return [pt[0]/3, pt[1]/3]
+              })
+            ]);
+          }, []);
+
+          // console.log(splitted)
+
+          return <svg viewBox="-5 -5 505 505" className="cb-svg">
+            <path d="M0,500 C0,500 290,0 500,0" stroke="black" style={{strokeWidth: 10}} />
+            {/*{splitted.map(pts => <path d={`M${pts[0][0]},${pts[0][1]} C${pts[1][0]},${pts[1][1]} ${pts[2][0]},${pts[2][1]} ${pts[3][0]},${pts[3][1]}`} stroke="red" />)}*/}
+          </svg>;
+        }
+      },
+      {
+        type: 'Markdown',
+        content: `... I'll write the rest on my flight to Bali :)`
+      },
+    ]
+  },
   'transitionable-react-router': {
     link: 'transitionable-react-router',
     title: `React Transitionable Route`,
