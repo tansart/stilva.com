@@ -1,7 +1,6 @@
 @mixin font-light($fontSize: 5.6vw) {
   font-family: 'Roboto Mono', monospace;
   font-size: $fontSize;
-  font-display: swap;
   letter-spacing: -0.05em;
   line-height: 1.28;
 }

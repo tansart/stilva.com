@@ -125,7 +125,7 @@ export default memo(function Home({transitionstate}) {
         Check out my <AnimatedLink link="lab" label="Lab" key="lab"/>.
       </p>
       <p>
-        From 2007 to early 2019, I worked at various web agencies around the world, for multiple <AnimatedLink link="client" label="clients" key="client" />
+        From 2007 to early 2019, I worked at different agencies around the world, for various <AnimatedLink link="client" label="clients" key="client" />
       </p>
       <p>
         Always down for a <AnimatedLink onClick={onContact} label="chat" rel="nofollow"/> over a drink.

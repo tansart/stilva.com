@@ -41,8 +41,7 @@ For now, here's a brief overview of how to use \`TransitionableReactRoute\`:
   &lt;LabList path="/lab" /&gt;
   &lt;LabEntry path="/lab/:labId" /&gt;
   &lt;Home defaultpath /&gt;
-&lt;/TransitionableReactRoute&gt;
-\`\`\`
+&lt;/TransitionableReactRoute&gt;\`\`\`
 
 Each path is transformed into a regular expression that is then matched against the URL. Consequently, path matching is eager, so the order in which your components are declared matters.
 `
@@ -61,7 +60,6 @@ Each path is transformed into a regular expression that is then matched against 
   &lt;/TransitionableReactRoute&gt;
 &lt;/TransitionableReactRoute&gt;
 \`\`\`
-
 `
       },
       {
@@ -77,10 +75,7 @@ export function Link({label, path}) {
   return &lt;a href="path" onClick={e => setRouter(path)}&gt;
     {label}
   &lt;/a&gt;;
-}
-
-\`\`\`
-
+}\`\`\`
 `
       },
     ]
