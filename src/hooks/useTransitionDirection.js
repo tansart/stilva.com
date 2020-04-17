@@ -4,7 +4,7 @@ import {RouterContext} from "@stilva/transitionable-react-router";
 const RL = 'page--rl';
 const LR = 'page--lr';
 
-export default function useTransitionDirection(type, transitionstate) {
+export default function useTransitionDirection(transitionstate) {
   const prevTransition = useRef('');
   const {currentRoute, previousRoute} = useContext(RouterContext);
 
@@ -29,30 +29,30 @@ export default function useTransitionDirection(type, transitionstate) {
     if(dirCurr === 'home') {
       return LR;
     }
-    if(dirCurr === 'client-list' || dirCurr === 'lab-list') {
-      if(dirPrev === 'client-entry' || dirPrev === 'lab-entry') {
+    if(dirCurr === 'list') {
+      if(dirPrev === 'entry') {
         return LR;
       }
       if(dirPrev === 'home') {
         return RL;
       }
     }
-    if(dirCurr === 'client-entry' || dirCurr === 'lab-entry') {
+    if(dirCurr === 'entry') {
       return RL;
     }
   } else if(transitionstate === 'exiting') {
     if(dirCurr === 'home') {
       return LR;
     }
-    if(dirCurr === 'client-list' || dirCurr === 'lab-list') {
-      if(dirPrev === 'client-entry' || dirPrev === 'lab-entry') {
+    if(dirCurr === 'list') {
+      if(dirPrev === 'entry') {
         return LR;
       }
       if(dirPrev === 'home') {
         return RL;
       }
     }
-    if(dirCurr === 'client-entry' || dirCurr === 'lab-entry') {
+    if(dirCurr === 'entry') {
       return RL;
     }
   }
@@ -65,8 +65,13 @@ function getSlug(route) {
   const match = pattern.exec(route);
 
   if(!match) {
-    return 'home';
+    switch(route) {
+      case '/paperlesspost':
+        return 'entry'
+      default:
+        return 'home'
+    }
   }
 
-  return !!match[2] ? `${match[1]}-entry`: `${match[1]}-list`;
+  return !!match[2] ? 'entry': 'list';
 }

@@ -9,7 +9,7 @@ import BackButton from "../../components/BackButton";
 
 export default memo(function LabList({transitionstate}) {
   const offset = useOnScroll(transitionstate);
-  const direction = useTransitionDirection('lab-list', transitionstate);
+  const direction = useTransitionDirection(transitionstate);
 
   return <div className={cx('lab', 'page', `page--${transitionstate}`, direction)}>
     <BackButton path={'/'} />

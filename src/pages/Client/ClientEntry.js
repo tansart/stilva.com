@@ -11,7 +11,7 @@ import BackButton from "../../components/BackButton";
 export default memo(function Client({dir, state, transitionstate, query : {clientId}}) {
   const data = clients.get(clientId);
   const offset = useOnScroll(transitionstate);
-  const direction = useTransitionDirection('client-entry', transitionstate);
+  const direction = useTransitionDirection(transitionstate);
 
   return  <div className={cx('client', 'page', `page--${transitionstate}`, direction)}>
     <BackButton path={'/client'} />

@@ -107,7 +107,7 @@ class Background extends Component {
 
 export default memo(function Home({transitionstate}) {
   const offset = useOnScroll(transitionstate);
-  const direction = useTransitionDirection('home', transitionstate);
+  const direction = useTransitionDirection(transitionstate);
   const {previousRoute} = useContext(RouterContext);
 
   return <div className={cx('home', 'page', `page--${transitionstate}`, direction)}>
@@ -121,11 +121,11 @@ export default memo(function Home({transitionstate}) {
         My day job involves engineering solutions, creating pixel perfect, and delightful UIs.
       </p>
       <p>
-        At night, I spend my time building UIs, writing code, or actively exploring Machine Learning (tensorflow/Python), with my pug Nugget on my laps.
-        Check out my <AnimatedLink link="lab" label="Lab" key="lab"/>.
+        From 2007 to early 2019, I worked at different agencies around the world, for various <AnimatedLink link="client" label="clients" key="client" />
       </p>
       <p>
-        From 2007 to early 2019, I worked at different agencies around the world, for various <AnimatedLink link="client" label="clients" key="client" />
+        At night, I spend my time building UIs, writing code, or actively exploring Machine Learning (tensorflow/Python), with my pug Nugget on my laps.
+        Check out my <AnimatedLink link="lab" label="Lab" key="lab"/>.
       </p>
       <p>
         Always down for a <AnimatedLink onClick={onContact} label="chat" rel="nofollow"/> over a drink.

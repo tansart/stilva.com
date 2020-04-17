@@ -11,7 +11,7 @@ import BackButton from "../../components/BackButton";
 export default memo(function ClientList({dir, transitionstate}) {
   const list = [];
   const offset = useOnScroll(transitionstate);
-  const direction = useTransitionDirection('client-list', transitionstate);
+  const direction = useTransitionDirection(transitionstate);
 
   for(const k of clients.keys()) {
     list.push(<CategoryLink key={`client_title_${k}`} link={`/client/${k}`} label={clients.get(k).label} />);

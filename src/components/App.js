@@ -9,6 +9,8 @@ import ClientEntry from '../pages/Client/ClientEntry';
 import LabList from '../pages/Lab/LabList';
 import LabEntry from '../pages/Lab/LabEntry';
 
+import PPEntry from '../pages/PPEntry';
+
 export const App = React.memo(function AppFactory() {
   return <TransitionableReactRoute
     timeout={850}
@@ -19,6 +21,8 @@ export const App = React.memo(function AppFactory() {
 
     <ClientList path="/client" />
     <ClientEntry path="/client/:clientId" />
+
+    <PPEntry path="/paperlesspost" />
 
     <Home defaultpath />
   </TransitionableReactRoute>;
