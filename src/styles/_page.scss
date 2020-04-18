@@ -1,8 +1,8 @@
 :root {
-  --page-transition-duration: 11850ms;
+  --page-transition-duration: 850ms;
 
   @media #{$tablet-large} {
-    --page-transition-duration: 11050ms;
+    --page-transition-duration: 1050ms;
   }
 }
 

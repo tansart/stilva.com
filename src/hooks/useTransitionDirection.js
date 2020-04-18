@@ -6,6 +6,7 @@ const LR = 'page--lr';
 
 export default function useTransitionDirection(transitionstate) {
   const prevTransition = useRef('');
+  const prevDirection = useRef('');
   const {currentRoute, previousRoute} = useContext(RouterContext);
 
   let dirty = prevTransition.current !== transitionstate;
@@ -18,9 +19,16 @@ export default function useTransitionDirection(transitionstate) {
   if(dirty) {
     prevTransition.current = transitionstate;
   } else {
-    return '';
+    return prevDirection.current;
   }
 
+  const direction = getDirection(transitionstate, previousRoute, currentRoute);
+  prevDirection.current = direction;
+
+  return direction;
+}
+
+function getDirection(transitionstate, previousRoute, currentRoute) {
   const dirCurr = getSlug(currentRoute);
   const dirPrev = getSlug(previousRoute);
 
