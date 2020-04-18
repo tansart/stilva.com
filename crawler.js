@@ -16,7 +16,7 @@ readFile('./src/index.ejs', (err, buff) => {
   const tpl = ejs.compile(buff.toString());
   const boundWriteToFile = writeToFile.bind(null, tpl);
 
-  ['/', '/lab', '/client'].concat(
+  ['/', '/lab', '/client', '/paperlesspost'].concat(
     getLabs(),
     getClients()
   )

@@ -111,10 +111,10 @@ export default memo(function Home({transitionstate}) {
       <p>
         <Greetings/><br/>
         I'm <AnimatedLink link="https://github.com/stilva" label="Thomas Ansart" target="_blank"/>,
-        a senior software engineer at <AnimatedLink link="https://bit.ly/1tx8iPZ" label="Paperless Post" rel="nofollow" target="_blank" />, NY. Previously principal developer at <AnimatedLink link="https://bit.ly/2Mm1IYx" label="Firstborn" rel="nofollow" target="_blank" />
+        a senior software engineer at Paperless Post, NY. Previously principal developer at Firstborn.
       </p>
       <p>
-        My <AnimatedLink link="paperlesspost" label="day job" key="paperlesspost" /> involves engineering solutions, creating pixel perfect, and delightful UIs.
+        At <AnimatedLink link="paperlesspost" label="Paperless Post" key="paperlesspost" />, my job involves engineering solutions, creating pixel perfect, and delightful UIs.
       </p>
       <p>
         From 2007 to early 2019, I worked at different agencies around the world, for various <AnimatedLink link="client" label="clients" key="client" />
