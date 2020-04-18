@@ -23,19 +23,14 @@ export default memo(function Home({transitionstate}) {
       <div className="blob">
         <h2 className="blob__title">Overview /</h2>
         <p>
-
+          After 13 years working in agencies I had decided to move to a product company to work on larger scale applications,
+          where I could build UIs and refine the work (both code and visual) based on user studies or A/B tests.
         </p>
       </div>
       <div className="blob">
         <h2 className="blob__title">My role /</h2>
         <p>
-
-        </p>
-      </div>
-      <div className="blob">
-        <h2 className="blob__title">Tech notes /</h2>
-        <p>
-
+          At Paperless Post, I work as a senior software engineer in the <b>pages</b> team. I've worked on multiple UI projects, including but not limited to unifying components across teams, build the payment UIs, revamped some UI and added animations for a more delightful user experience.
         </p>
       </div>
 

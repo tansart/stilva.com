@@ -35,9 +35,8 @@ class Background extends Component {
         return fract(dot(sin(cos(u.x * 3.14) * 123.12)*142.,cos(u.y *34.95)*165.47));
     }
     
-    vec2 bezier(float t, vec2 p0, vec2 p1) {
-      // return pow(1. - t, 3.0) * vec2(0.) + 3. * pow(1. - t, 2.) * t * vec2(.6, 0.) + 3. * (1. - t) * pow(t, 2.) * vec2(.4, 1.) + pow(t, 3.);
-      return 3. * pow(1. - t, 2.) * t * p0 + 3. * (1. - t) * pow(t, 2.) * p1 + pow(t, 3.);
+    vec2 bezier(float t, vec4 p) {
+      return 3. * pow(1. - t, 2.) * t * p.rg + 3. * (1. - t) * pow(t, 2.) * p.ba + pow(t, 3.);
     }
     
     float rect(float t, vec2 uv) {
@@ -46,9 +45,6 @@ class Background extends Component {
       vec2 pt = step(zero, uv + translate);
       return 1. - pt.x * pt.y * step(0., 1.0 - (uv.x + translate.x));
     }
-    
-    vec2 bezier_pt0 = vec2(.73, .0);
-    vec2 bezier_pt1 = vec2(.51, .99);
 
     void main() {
 				vec2 uv = gl_FragCoord.xy/u_resolution.xy;
@@ -56,9 +52,9 @@ class Background extends Component {
         float adjusted_time = clamp((u_time - u_offset) / .85, 0., 1.);
         
         if(u_dir > 0.) {
-          color1 = rect(clamp(1. - bezier(adjusted_time, bezier_pt0, bezier_pt1).y * 1.25, 0., 1.), uv);
-          color2 = rect(clamp(1. - bezier(adjusted_time, bezier_pt0, bezier_pt1).y * 1.15, 0., 1.), uv);
-          color3 = rect(clamp(1. - bezier(adjusted_time, bezier_pt0, bezier_pt1).y * 1., 0., 1.), uv);
+          color1 = rect(clamp(1. - bezier(adjusted_time, vec4(0., .68, 0., .99)).y, 0., 1.), uv);
+          color2 = rect(clamp(1. - bezier(adjusted_time, vec4(0., .31, 0., .82)).y, 0., 1.), uv);
+          color3 = rect(clamp(1. - bezier(adjusted_time, vec4(.73, .0, .51, .99)).y, 0., 1.), uv);
         }
         
         if(u_dir == 0.) {
@@ -68,9 +64,9 @@ class Background extends Component {
         }
         
         if(u_dir < 0.) {
-          color1 = rect(bezier(adjusted_time, bezier_pt0, bezier_pt1).y * 1., uv);
-          color2 = rect(bezier(adjusted_time, bezier_pt0, bezier_pt1).y * 1.25, uv);
-          color3 = rect(bezier(adjusted_time, bezier_pt0, bezier_pt1).y * 1.75, uv);
+          color1 = rect(clamp(bezier(adjusted_time, vec4(.73, .0, .51, .99)).y, 0., 1.), uv);
+          color2 = rect(clamp(bezier(adjusted_time, vec4(0., .31, 0., .82)).y, 0., 1.), uv);
+          color3 = rect(clamp(bezier(adjusted_time, vec4(0., .68, 0., .99)).y, 0., 1.), uv);
         }
 
         gl_FragColor = vec4(0., 0., 0., 1.);
@@ -118,7 +114,7 @@ export default memo(function Home({transitionstate}) {
         a senior software engineer at <AnimatedLink link="https://bit.ly/1tx8iPZ" label="Paperless Post" rel="nofollow" target="_blank" />, NY. Previously principal developer at <AnimatedLink link="https://bit.ly/2Mm1IYx" label="Firstborn" rel="nofollow" target="_blank" />
       </p>
       <p>
-        My day job involves engineering solutions, creating pixel perfect, and delightful UIs.
+        My <AnimatedLink link="paperlesspost" label="day job" key="paperlesspost" /> involves engineering solutions, creating pixel perfect, and delightful UIs.
       </p>
       <p>
         From 2007 to early 2019, I worked at different agencies around the world, for various <AnimatedLink link="client" label="clients" key="client" />

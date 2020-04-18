@@ -47,13 +47,21 @@ module.exports = {
 		rules: [
 			{
 				test: /\.jsx?$/,
-				exclude: path.resolve(__dirname, 'src'),
+				// exclude: path.resolve(__dirname, 'src'),
+        include: [
+          path.resolve(__dirname, 'node_modules', '@stilva'),
+          path.resolve(__dirname, 'src')
+        ],
 				enforce: 'pre',
 				use: 'source-map-loader'
 			},
 			{
         test: /\.jsx?$/,
-				exclude: /node_modules/,
+        include: [
+          path.resolve(__dirname, 'node_modules', '@stilva', 'transitionable-react-router'),
+          path.resolve(__dirname, 'src')
+        ],
+				// exclude: /node_modules/,
 				use: 'babel-loader'
 			},
 			{

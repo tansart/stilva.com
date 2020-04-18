@@ -1,3 +1,11 @@
+:root {
+  --page-transition-duration: 11850ms;
+
+  @media #{$tablet-large} {
+    --page-transition-duration: 11050ms;
+  }
+}
+
 .page {
   display: block;
   min-width: 100vw;
@@ -40,19 +48,31 @@
 }
 
 .page--rl.page--entering .content {
-  animation: 850ms animation-rl cubic-bezier(.73,0,.51,.99) both;
+  animation: var(--page-transition-duration) animation-rl both;
 }
 
 .page--rl.page--exiting .content {
-  animation: animation-rl-out 850ms cubic-bezier(.73,0,.51,.99) 0ms both;
+  animation: animation-rl-out var(--page-transition-duration) both;
 }
 
 .page--lr.page--entering .content {
-  animation: 850ms animation-lr cubic-bezier(.73,0,.51,.99) both;
+  animation: var(--page-transition-duration) animation-lr both;
 }
 
 .page--lr.page--exiting .content {
-  animation: animation-lr-out 850ms cubic-bezier(.73,0,.51,.99) 0ms both;
+  animation: animation-lr-out var(--page-transition-duration) both;
+}
+
+.page.page--entering .content {
+  animation-timing-function: cubic-bezier(.3,.86,.68,1);
+}
+
+.page.page--exiting .content {
+  animation-timing-function: cubic-bezier(.75,.43,.7,1);
+}
+
+.home.page--exiting .content {
+  animation: animation-rl-out var(--page-transition-duration) cubic-bezier(0,.3,.61,1) both;
 }
 
 @keyframes fade-in {
