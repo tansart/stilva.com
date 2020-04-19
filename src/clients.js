@@ -107,7 +107,7 @@ export default new Map([
       },
       {
         type: 'Video',
-        source: '/videos/mtndew.mp4'
+        src: '/videos/mtndew.mp4'
       },
     ]
   }],
