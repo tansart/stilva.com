@@ -26,10 +26,10 @@ export default memo(function Home({transitionstate}) {
       <div className="blob">
         <h2 className="blob__title">My role /</h2>
         <p>
-          At Paperless Post, I work as a senior software engineer – since April 2019 – as part of the Pages team. I've worked on multiple UI projects, including but not limited to unifying components across teams, building the payment UIs, revamped some UI and added animations for a more delightful user experience.
+          At Paperless Post, I work as a senior software engineer (since April 2019) as part of the Pages team. I've worked on multiple UI projects, including but not limited to unifying components across teams, building the payment UIs, revamped some UI and added animations for a more delightful user experience.
         </p>
         <p>
-          Moreover I've done a lot of work on improving bundle size (a lot of next.js/webpack config tweaks), improving and creating internal tools (internal temporar A/B testing framework, improving an old school rails sass build system process by 60+ folds), and much more.
+          Moreover I've done a lot of work on improving bundle size (a lot of next.js/webpack config tweaks), improving and creating internal tools (internal temporar A/B testing framework, improving an old school rails sass build system process by 60 times), and much more.
         </p>
       </div>
       <div className="blob">
