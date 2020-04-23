@@ -259,33 +259,6 @@ Here's the geometric representation of the algorithm:`
       content: `We're almost there. Given the text will vary in length, we'll need to split the Bézier curve on the y-axis. And here's the tricky part: how to find all the intersecting points between the line and the Bézier curve? Luckily, the heavy lifting was already done [here](https://www.particleincell.com/2013/cubic-line-intersection/)`
     },
     {
-      type: 'FunctionalComponent',
-      component: function() {
-        const targetPs = [1/3 * 500, 2/3 * 500];
-        const originalPoints = [[0, 0], [.75 * 500, 2 * 500], [0, -500], [500, 500]];
-        const c = getCurves(targetPs, originalPoints);
-        const COLORS = ['black', 'white', 'black', 'white'];
-        const THICKNESS = [2, 4, 2, 4];
-
-        function norm(pts) {
-          return pts.map((pt) => {
-            const xDiff = 1/((pt[3].x - pt[0].x)/500);
-            const yDiff = 1/((pt[3].y - pt[0].y)/500);
-
-            return pt.map(({x, y}) => ({x: (x - pt[0].x) * xDiff, y: (y - pt[0].y) * yDiff}))
-          });
-        }
-
-        return <div className="markdown">
-          <svg viewBox="-50 -50 600 600" className="cb-svg" xmlns="http://www.w3.org/2000/svg">
-            {c.map((pts, i) => drawCurveXY(pts[0], pts[1], pts[2], pts[3], COLORS[i], THICKNESS[i]))}
-
-            {targetPs.map(y => <line x1={0} y1={500 - y} x2={500} y2={500 - y} stroke="#f8205d" strokeWidth={1} shapeRendering="crispEdges" />)}
-          </svg>
-        </div>
-      }
-    },
-    {
       type: 'Markdown',
       content: `The first button below had the same ease applied across the three sub-elements, while the second button has the same ease split in three equal parts.`
     },
@@ -375,50 +348,42 @@ Here's the geometric representation of the algorithm:`
         }
 
         const targetTs = [1/3, 2/3];
-        // const cbPts = [0, 0, .58, 1];
-        const cbPts = [.75, 2, 0, -1];
+        const cbPts = [0, 0, .58, 1];
+        // const cbPts = [.75, 2, 0, -1];
         const originalPoints = [[0, 0], [cbPts[0], cbPts[1]], [cbPts[2], cbPts[3]], [1, 1]];
 
         const splitCurves = new SplitBZCurve(originalPoints, targetTs);
 
-        const cb = norm(getCurves(targetTs, originalPoints));
-
         const styleOneFixed = {
-          '--transition-duration': `${splitCurves.offsets[1] * 750}ms`,
-          '--transition-duration-hover': `${splitCurves.offsets[0] * 750}ms`,
-          '--transition-delay': `${splitCurves.offsets[1] * 750}ms`,
-          '--transition-delay-hover': `0ms`,
+          '--transition-duration': `${(splitCurves.offsets[2][1] - splitCurves.offsets[2][0]) * 750}ms`,
+          '--transition-duration-hover': `${(splitCurves.offsets[0][1] - splitCurves.offsets[0][0]) * 750}ms`,
+          '--transition-delay': `${splitCurves.offsets[2][0] * 750}ms`,
+          '--transition-delay-hover': `${splitCurves.offsets[0][0] * 750}ms`,
           '--transition-easing': splitCurves.getCSS(2),
           '--transition-easing-hover': splitCurves.getCSS(0)
         };
 
         const styleTwoFixed = {
-          '--transition-duration': `${(splitCurves.offsets[1] - splitCurves.offsets[0]) * 750}ms`,
-          '--transition-duration-hover': `${(splitCurves.offsets[1] - splitCurves.offsets[0]) * 750}ms`,
-          '--transition-delay': `${splitCurves.offsets[0] * 750}ms`,
-          '--transition-delay-hover': `${splitCurves.offsets[0] * 750}ms`,
+          '--transition-duration': `${(splitCurves.offsets[1][1] - splitCurves.offsets[1][0]) * 750}ms`,
+          '--transition-duration-hover': `${(splitCurves.offsets[1][1] - splitCurves.offsets[1][0]) * 750}ms`,
+          '--transition-delay': `${splitCurves.offsets[1][0] * 750}ms`,
+          '--transition-delay-hover': `${splitCurves.offsets[1][0] * 750}ms`,
           '--transition-easing': splitCurves.getCSS(1),
           '--transition-easing-hover': splitCurves.getCSS(1)
         };
 
         const styleThreeFixed = {
-          '--transition-duration': `${splitCurves.offsets[0] * 750}ms`,
-          '--transition-duration-hover': `${splitCurves.offsets[1] * 750}ms`,
-          '--transition-delay': `0ms`,
-          '--transition-delay-hover': `${splitCurves.offsets[1] * 750}ms`,
+          '--transition-duration': `${(splitCurves.offsets[0][1] - splitCurves.offsets[0][0]) * 750}ms`,
+          '--transition-duration-hover': `${(splitCurves.offsets[2][1] - splitCurves.offsets[2][0]) * 750}ms`,
+          '--transition-delay': `${splitCurves.offsets[0][0] * 750}ms`,
+          '--transition-delay-hover': `${splitCurves.offsets[2][0] * 750}ms`,
           '--transition-easing': splitCurves.getCSS(0),
           '--transition-easing-hover': splitCurves.getCSS(2)
         };
 
-        console.log(splitCurves)
-
         return <div className="wrapper__button-one">
           <svg viewBox="-50 -50 600 600" className="cb-svg" xmlns="http://www.w3.org/2000/svg">
             {drawCurve([0, 0], [cbPts[0] * 500, cbPts[1] * 500], [cbPts[2] * 500, cbPts[3] * 500], [500, 500])}
-
-            {splitCurves.offsets.map(py => {
-              return <line x1={py * 500} y1={0} x2={py * 500} y2={500} stroke="#f8205d" strokeWidth={1} shapeRendering="crispEdges" />
-            })}
 
             {targetTs.map(y => <line x1={0} y1={500 - y * 500} x2={500} y2={500 - y * 500} stroke="#f8205d" strokeWidth={1} shapeRendering="crispEdges" />)}
           </svg>
@@ -433,13 +398,6 @@ Here's the geometric representation of the algorithm:`
     },
   ]
 };
-
-function CubicBezierCurve(t, [p0, p1, p2, p3]) {
-  return [
-    Math.pow(1 - t, 3) * p0[0] + 3 * Math.pow(1 - t, 2) * t * p1[0] + 3 * (1 - t) * Math.pow(t, 2) * p2[0] + Math.pow(t, 3) * p3[0],
-    Math.pow(1 - t, 3) * p0[1] + 3 * Math.pow(1 - t, 2) * t * p1[1] + 3 * (1 - t) * Math.pow(t, 2) * p2[1] + Math.pow(t, 3) * p3[1]
-  ];
-}
 
 // de Casteljau's algorithm
 function calculateSubs(t, points) {
@@ -590,15 +548,19 @@ function normaliseCurves(pts) {
 }
 
 class SplitBZCurve {
+
+  static PRECISION = 100;
+
   constructor(pts, t) {
-    this.t = Array.isArray(t) ? t: [t];
     this.pts = pts;
 
-    this._init();
+    const interSections = this.intersect(Array.isArray(t) ? t: [t]);
+
+    this._init(interSections);
   }
 
-  intersect() {
-    return this.t.map(pt => computeIntersections(
+  intersect(ts) {
+    return ts.map(pt => computeIntersections(
       [this.pts[0][0], this.pts[1][0], this.pts[2][0], this.pts[3][0]],
       [this.pts[0][1], this.pts[1][1], this.pts[2][1], this.pts[3][1]],
       [this.pts[0][0], this.pts[3][0]],
@@ -610,9 +572,9 @@ class SplitBZCurve {
     return `cubic-bezier(${this.curves[curveIndex][1][0]}, ${this.curves[curveIndex][1][1]}, ${this.curves[curveIndex][2][0]}, ${this.curves[curveIndex][2][1]})`;
   }
 
-  _init() {
-    const c = [];
-    const interSections = this.intersect();
+  _init(interSections) {
+    const curves = [];
+    const offset = [];
     const startEndPts = [];
 
     for (let i = 0; i < interSections.length; i++) {
@@ -627,50 +589,18 @@ class SplitBZCurve {
     }
 
     for(let i = 0; i < startEndPts.length; i++) {
-      let p = splitCurveAt(startEndPts[i][0].t, this.pts);
-      p = splitCurveAt(startEndPts[i][1].t, p[1]);
-      c.push(p[0]);
+      let pts = splitCurveAt(startEndPts[i][0].t, this.pts);
+      pts = splitCurveAt(startEndPts[i][1].t, pts[1]);
+      curves.push(pts[0]);
+      offset.push([startEndPts[i][0].x, startEndPts[i][1].x]);
 
       if(i + 1 === startEndPts.length) {
-        c.push(p[1]);
+        curves.push(pts[1]);
+        offset.push([startEndPts[i][1].x, 1]);
       }
     }
 
-    this.curves = normaliseCurves(c);
-    this.offsets = startEndPts.map(ts => ts[1].x);
+    this.curves = normaliseCurves(curves);
+    this.offsets = offset;
   }
-}
-
-function getCurves(targetTs, points) {
-
-  const interSections = targetTs.map(pt => computeIntersections(
-    points.map(pts => pts[0]),
-    points.map(pts => pts[1]),
-    [0, 500],
-    [pt, pt]
-  ));
-
-  let startEndPts = [];
-  for (let i = 0; i < interSections.length; i++) {
-    const prevIndex = i - 1;
-    startEndPts.push(prevIndex === -1 ? [{t: 0, x: 0, y: 0}]: [interSections[prevIndex][0]]);
-    if(interSections[i].length > 1) {
-      startEndPts[i] = startEndPts[i].concat(interSections[i][2]);
-    } else {
-      startEndPts[i] = startEndPts[i].concat(interSections[i][0]);
-    }
-  }
-
-  let c = [];
-  for(let i = 0; i < startEndPts.length; i++) {
-    let p = splitCurveAt(startEndPts[i][0].t, points);
-    p = splitCurveAt(startEndPts[i][1].t, p[1]);
-    c.push(p[0].map(pt => ({x: pt[0], y: pt[1]})));
-
-    if(i + 1 === startEndPts.length) {
-      c.push(p[1].map(pt => ({x: pt[0], y: pt[1]})));
-    }
-  }
-
-  return c;
 }
