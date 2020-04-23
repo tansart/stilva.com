@@ -1,5 +1,5 @@
-.client {
-  background: $client-background-colour;
+.work {
+  background: $background-colour;
   color: black;
   margin: 0 auto;
   min-height: 100vh;
@@ -25,7 +25,7 @@
     text-decoration: none;
   }
 
-  .client-name {
+  .work-name {
     @include font-light;
     @include font-rl;
     display: block;
@@ -73,7 +73,7 @@
 
   &:hover {
     .back-button__square {
-      fill: $client-background-colour;
+      fill: $background-colour;
       stroke: black;
     }
 

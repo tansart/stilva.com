@@ -69,16 +69,11 @@ function getDirection(transitionstate, previousRoute, currentRoute) {
 }
 
 function getSlug(route) {
-  const pattern = /^\/(client|lab)\/?(.*)?$/i;
+  const pattern = /^\/(work|lab)\/?(.*)?$/i;
   const match = pattern.exec(route);
 
   if(!match) {
-    switch(route) {
-      case '/paperlesspost':
-        return 'entry'
-      default:
-        return 'home'
-    }
+    return 'home'
   }
 
   return !!match[2] ? 'entry': 'list';

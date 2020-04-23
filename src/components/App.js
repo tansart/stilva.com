@@ -3,13 +3,13 @@ import {Router, TransitionableReactRoute} from "@stilva/transitionable-react-rou
 
 import Home from '../pages/Home';
 
-import ClientList from '../pages/Client/ClientList';
-import ClientEntry from '../pages/Client/ClientEntry';
+import WorkList from '../pages/Work/WorkList';
+import WorkEntry from '../pages/Work/WorkEntry';
 
 import LabList from '../pages/Lab/LabList';
 import LabEntry from '../pages/Lab/LabEntry';
 
-import PPEntry from '../pages/PPEntry';
+import PPEntry from '../pages/Work/PPEntry';
 
 export const App = React.memo(function AppFactory() {
   const [timeout, setAnimationTimeout] = useState(850);
@@ -36,10 +36,9 @@ export const App = React.memo(function AppFactory() {
     <LabList path="/lab" />
     <LabEntry path="/lab/:labId" />
 
-    <ClientList path="/client" />
-    <ClientEntry path="/client/:clientId" />
-
-    <PPEntry path="/paperlesspost" />
+    <WorkList path="/work" />
+    <PPEntry path="/work/paperlesspost" />
+    <WorkEntry path="/work/:workId" />
 
     <Home defaultpath />
   </TransitionableReactRoute>;

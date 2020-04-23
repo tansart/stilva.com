@@ -114,10 +114,7 @@ export default memo(function Home({transitionstate}) {
         a senior software engineer at Paperless Post, NY. Previously principal developer at Firstborn.
       </p>
       <p>
-        At <AnimatedLink link="paperlesspost" label="Paperless Post" key="paperlesspost" />, my job involves engineering solutions, creating pixel perfect, and delightful UIs.
-      </p>
-      <p>
-        From 2007 to early 2019, I worked at different agencies around the world, for various <AnimatedLink link="client" label="clients" key="client" />
+        My day job involves engineering solutions, creating pixel perfect, and delightful UIs. Here's some of my <AnimatedLink link="work" label="work" key="lab"/>.
       </p>
       <p>
         At night, I spend my time building UIs, writing code, or actively exploring Machine Learning (tensorflow/Python), with my pug Nugget on my laps.

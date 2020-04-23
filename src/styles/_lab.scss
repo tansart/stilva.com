@@ -1,5 +1,5 @@
 .lab {
-  background: $client-background-colour;
+  background: $background-colour;
   color: black;
   margin: 0 auto;
   min-height: 100vh;
@@ -25,7 +25,7 @@
     text-decoration: none;
   }
 
-  .client-name {
+  .work-name {
     @include font-light;
     @include font-rl;
     display: block;

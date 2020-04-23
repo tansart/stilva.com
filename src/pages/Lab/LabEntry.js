@@ -2,7 +2,7 @@ import React, {memo, createElement} from 'react'; // eslint-disable-line no-unus
 import cx from "classnames";
 
 import data from '../../lab';
-import clientComponents from '../../utils/clientComponents';
+import parsingComponents from '../../utils/parsingComponents';
 import useOnScroll from "../../hooks/useOnScroll";
 import useTransitionDirection from "../../hooks/useTransitionDirection";
 import BackButton from "../../components/BackButton";
@@ -14,7 +14,7 @@ export default memo(function Lab({query: {labId}, transitionstate}) {
   return <div className={cx('lab', 'page', `page--${transitionstate}`, direction)}>
     <BackButton path={'/lab'} />
     <div className="content" style={{ top: `-${offset}px`}}>
-      <h1 className="client-name">{data[labId].title}</h1>
+      <h1 className="work-name">{data[labId].title}</h1>
       {data[labId].content.map((data, i) => {
         const props = {key: `content_${i}`, index: `${labId}_${i}`, ...data};
         if(data.type === 'FunctionalComponent') {
@@ -24,7 +24,7 @@ export default memo(function Lab({query: {labId}, transitionstate}) {
             {createElement(data.component, props)}
           </div>
         }
-        return createElement(clientComponents[data.type], props);
+        return createElement(parsingComponents[data.type], props);
       })}
     </div>
   </div>

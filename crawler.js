@@ -7,7 +7,7 @@ import React from 'react';
 import {renderToString} from 'react-dom/server';
 
 import labs from './src/lab';
-import clients from './src/clients';
+import work from './src/work';
 
 import {App} from './src/components/App.js';
 import {RouterContext} from "@stilva/transitionable-react-router";
@@ -16,7 +16,7 @@ readFile('./src/index.ejs', (err, buff) => {
   const tpl = ejs.compile(buff.toString());
   const boundWriteToFile = writeToFile.bind(null, tpl);
 
-  ['/', '/lab', '/client', '/paperlesspost'].concat(
+  ['/', '/lab', '/work'].concat(
     getLabs(),
     getClients()
   )
@@ -25,8 +25,8 @@ readFile('./src/index.ejs', (err, buff) => {
 
 function getClients() {
   return Array
-    .from(clients.keys())
-    .map(slug => `/client/${slug}`)
+    .from(work.keys())
+    .map(slug => `/work/${slug}`)
 }
 
 function getLabs() {

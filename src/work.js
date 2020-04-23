@@ -1,4 +1,7 @@
 export default new Map([
+  ['paperlesspost', {
+    label: 'Paperless Post'
+  }],
   ['supercell', {
     label: 'Supercell',
     content: [

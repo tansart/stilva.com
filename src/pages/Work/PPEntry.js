@@ -1,10 +1,10 @@
 import React, {memo, useEffect, useRef, useState} from 'react';
 import cx from "classnames";
 
-import useOnScroll from "../hooks/useOnScroll";
-import useTransitionDirection from "../hooks/useTransitionDirection";
+import useOnScroll from "../../hooks/useOnScroll";
+import useTransitionDirection from "../../hooks/useTransitionDirection";
 
-import BackButton from "../components/BackButton";
+import BackButton from "../../components/BackButton";
 
 export default memo(function Home({transitionstate}) {
   const offset = useOnScroll(transitionstate);
@@ -13,9 +13,9 @@ export default memo(function Home({transitionstate}) {
   const isVideoEnabled = transitionstate === 'entered';
 
   return <div className={cx('lab', 'page', `page--${transitionstate}`, direction)}>
-    <BackButton path={'/'}/>
+    <BackButton path={'/work'}/>
     <div className="content" style={{top: `-${offset}px`}}>
-      <h1 className="client-name">Paperless Post</h1>
+      <h1 className="work-name">Paperless Post</h1>
       <div className="blob">
         <h2 className="blob__title">Overview /</h2>
         <p>

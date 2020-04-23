@@ -255,7 +255,8 @@ Here's the geometric representation of the algorithm:`
       type: 'Markdown',
       content: `We're almost there. Given the text will vary in length, we'll need to split the Bézier curve on the y-axis. And here's the tricky part: how to find all the intersecting points between the line and the Bézier curve? Luckily, the heavy lifting was already done [here](https://www.particleincell.com/2013/cubic-line-intersection/)
 
-Below we have our final component which has the \`transition-timing-function\`, \`transition-delay\` etc, tweaked and applied on a per element basis.`
+Below we have our tweaked component which has the \`transition-timing-function\`, \`transition-delay\` etc, tweaked and applied on a per element basis.
+The red line is a pseudo element on the button, with the same \`transition-timing-function: cubic-bezier(0,0,0,1);\``
     },
     {
       type: 'FunctionalComponent',
