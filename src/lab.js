@@ -1,4 +1,5 @@
 export default {
+  'spring-animation': require('./labs/springAnimation').default,
   'splitting-cubic-bezier': require('./labs/splittingCubicBezier').default,
   'transitionable-react-router': {
     link: 'transitionable-react-router',

@@ -19,7 +19,7 @@ export default memo(function Lab({query: {labId}, transitionstate}) {
         const props = {key: `content_${i}`, index: `${labId}_${i}`, ...data};
         if(data.type === 'FunctionalComponent') {
           const css = data.css && <style dangerouslySetInnerHTML={{__html: data.css}}/>;
-          return <div key={`content_css_${i}`}>
+          return <div key={`content_css_${i}`} className="custom-component">
             {css}
             {createElement(data.component, props)}
           </div>

@@ -18,7 +18,7 @@ export default memo(function ({content: data, index}) {
   }, [data]);
 
   return <Fragment>
-    <span ref={mRef}></span>
+    <span ref={mRef} role="hidden"></span>
     <Markdown
       className="markdown"
       data={data}
