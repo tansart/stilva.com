@@ -175,7 +175,7 @@ function splitLabel(label) {
   let lastIndex = 0;
 
   const words = [];
-  const pattern = /[\s-–]/igm;
+  const pattern = /[\s-]/igm;
 
   while(pattern.exec(label)) {
     const obj = {

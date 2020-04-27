@@ -110,7 +110,7 @@ export default memo(function Home({transitionstate}) {
     <div className="content" style={{ top: `-${offset}px`}}>
       <p>
         <Greetings/><br/>
-        I'm <AnimatedLink link="https://github.com/stilva" label="Thomas Ansart" target="_blank"/>,
+        I'm <AnimatedLink link="https://github.com/stilva" label="Thomas Ansart" target="_blank" rel="noreferrer" />,
         a senior software engineer at Paperless Post, NY. Previously principal developer at Firstborn.
       </p>
       <p>
