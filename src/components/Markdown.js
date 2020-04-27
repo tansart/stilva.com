@@ -6,14 +6,14 @@ export default memo(function ({content: data, index}) {
   const mRef = useRef(null);
 
   useEffect(function () {
-    const node = mRef.current.nextSibling.querySelector('[class*=language]');
+    const node = mRef.current.nextSibling.querySelectorAll('[class*=language]');
 
     if(!node) return;
 
     import(/* webpackChunkName: "prismjs" */ /* webpackMode: "lazy" */ 'prismjs')
       .then(() => import(/* webpackChunkName: "prismjs-jsx" */ /* webpackMode: "lazy" */ 'prismjs/components/prism-jsx'))
       .then(() => {
-        Prism.highlightElement(node, false);
+        node.forEach(el => Prism.highlightElement(el, false));
       });
   }, [data]);
 

@@ -37,6 +37,7 @@
     "@babel/register": "^7.0.0",
     "@stilva/glsl": "github:stilva/glsl",
     "@stilva/markdown": "github:stilva/markdown",
+    "@stilva/spring": "github:stilva/spring",
     "@stilva/transitionable-react-router": "github:stilva/transitionable-react-router",
     "autoprefixer": "^9.7.6",
     "babel-loader": "^8.0.0",

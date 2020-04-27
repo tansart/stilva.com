@@ -58,7 +58,7 @@ module.exports = {
 			{
         test: /\.jsx?$/,
         include: [
-          path.resolve(__dirname, 'node_modules', '@stilva', 'transitionable-react-router'),
+          path.resolve(__dirname, 'node_modules', '@stilva', 'spring'),
           path.resolve(__dirname, 'src')
         ],
 				// exclude: /node_modules/,
