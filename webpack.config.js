@@ -49,7 +49,7 @@ module.exports = {
 				test: /\.jsx?$/,
 				// exclude: path.resolve(__dirname, 'src'),
         include: [
-          // path.resolve(__dirname, 'node_modules', '@stilva'),
+          path.resolve(__dirname, 'node_modules', '@stilva'),
           path.resolve(__dirname, 'src')
         ],
 				enforce: 'pre',
@@ -58,7 +58,7 @@ module.exports = {
 			{
         test: /\.jsx?$/,
         include: [
-          // path.resolve(__dirname, 'node_modules', '@stilva', 'spring'),
+          path.resolve(__dirname, 'node_modules', '@stilva', 'spring'),
           path.resolve(__dirname, 'src')
         ],
 				// exclude: /node_modules/,
