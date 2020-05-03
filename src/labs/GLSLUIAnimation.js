@@ -232,12 +232,11 @@ function Column({index, offset, onMouseOut, onMouseOver, selectedIndex}) {
 
   const [animatedProps, setAnimatedProps] = useSpring({
     x: 0,
-    w: Math.round(800 * .1)
+    w: 0
   }, {
     mass: 1,
-    tension: 175,
-    friction: 28,
-    precision: 1,
+    tension: 200,
+    friction: 26,
     onEnd: () => {
       setAnimComplete(s => ({
         selected: s.selected,
@@ -249,20 +248,14 @@ function Column({index, offset, onMouseOut, onMouseOver, selectedIndex}) {
   useEffect(() => {
     let x = 0;
     if(index === selectedIndex) {
-      if(index === 1) {
-        x = .2 * .25 * 800;
-      } else if(index === 2) {
-        x = -(.2 * .25 * 800);
-      }
+      x = 0;
     } else if(selectedIndex > -1 && selectedIndex < 3 && selectedIndex > 0) {
       if(selectedIndex < index) {
-        x = .5 * .1 * 800;
+        x = 1;
       } else {
-        x = -.5 * .1 * 800;
+        x = -1;
       }
     }
-
-    x = Math.round(x);
 
     setAnimComplete(s => ({
       selected: index === selectedIndex,
@@ -271,41 +264,35 @@ function Column({index, offset, onMouseOut, onMouseOver, selectedIndex}) {
 
     setAnimatedProps({
       x,
-      w: Math.round(800 * (selectedIndex === index ? .2: .1))
+      w: (selectedIndex === index ? 1: 0)
     });
   }, [index, selectedIndex]);
-
-  const r = 800/1440;
 
   const style = useMemo(() => {
     switch(index) {
       case 0:
         return {
-          right: `${Math.round(800 * .5 + r * (20 + 40 + 144))}px`,
-          transform: interpolate(animatedProps, ({x}) => `translate3d(${Math.round(x.lastPosition)}px, 0, 0)`),
-          transformOrigin: '100% 50%',
-          width: interpolate(animatedProps, ({w}) => `${w.lastPosition}px`)
+          right: `${Math.round(800 * .5)}px`,
+          transform: interpolate(animatedProps, ({x, w}) => `translate3d(${Math.round(-800 * (.1 + 0.0375) + (800 * .05) * (x.lastPosition))}px, 0, 0) scaleX(${.5 + .5 * w.lastPosition})`),
+          transformOrigin: '100% 50%'
         };
       case 1:
         return {
-          right: `${Math.round(800 * .5 + r * 20)}px`,
-          transform: interpolate(animatedProps, ({x}) => `translate3d(${Math.round(x.lastPosition)}px, 0, 0)`),
-          transformOrigin: '50% 50%',
-          width: interpolate(animatedProps, ({w}) => `${w.lastPosition}px`)
+          right: `${Math.round(800 * (.5 - .05))}px`,
+          transform: interpolate(animatedProps, ({x, w}) => `translate3d(${Math.round(-800 * 0.0125 + (800 * .05) * (x.lastPosition))}px, 0, 0) scaleX(${.5 + .5 * w.lastPosition})`),
+          transformOrigin: '50% 50%'
         }
       case 2:
         return {
-          left: `${Math.round(800 * .5 + r * 20)}px`,
-          transform: interpolate(animatedProps, ({x}) => `translate3d(${Math.round(x.lastPosition)}px, 0, 0)`),
-          transformOrigin: '50% 50%',
-          width: interpolate(animatedProps, ({w}) => `${w.lastPosition}px`)
+          left: `${Math.round(800 * (.5 - .05))}px`,
+          transform: interpolate(animatedProps, ({x, w}) => `translate3d(${Math.round(800 * 0.0125 + (800 * .05) * (x.lastPosition))}px, 0, 0) scaleX(${.5 + .5 * w.lastPosition})`),
+          transformOrigin: '50% 50%'
         }
       case 3:
         return {
-          left: `${Math.round(800 * .5 + r * (20 + 40 + 144))}px`,
-          transform: interpolate(animatedProps, ({x}) => `translate3d(${Math.round(x.lastPosition)}px, 0, 0)`),
-          transformOrigin: '0% 50%',
-          width: interpolate(animatedProps, ({w}) => `${w.lastPosition}px`)
+          left: `${Math.round(800 * .5)}px`,
+          transform: interpolate(animatedProps, ({x, w}) => `translate3d(${Math.round(800 * (.1 + 0.0375) + (800 * .05) * (x.lastPosition))}px, 0, 0) scaleX(${.5 + .5 * w.lastPosition})`),
+          transformOrigin: '0% 50%'
         }
     }
   }, [animatedProps]);
@@ -370,6 +357,7 @@ export default {
   height: 40%;
   margin: 0;
   position: absolute;
+  width: 20%;
 }
 
 .section__text {
@@ -378,7 +366,7 @@ export default {
   height: 15px;
   left: 15px;
   position: relative;
-  top: 15px;
+  top: 15px
 }
 `,
       component: function () {
