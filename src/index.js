@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from 'react-dom';
+import {hydrate} from 'react-dom';
 import {canUseDOM} from './utils/dom';
 
 import './styles/index.scss';
@@ -13,7 +13,7 @@ function init() {
   const App = require('./components/App').default;
   const node = document.getElementById('app');
 
-  render(<App/>, node)
+  hydrate(<App/>, node)
 }
 
 if (module.hot) {
