@@ -1,5 +1,5 @@
 export default {
-  // 'glsl-ui-animation': require('./labs/GLSLUIAnimation').default,
+  'glsl-ui-animation': require('./labs/glsl-ui-animation/index').default,
   'spring-animation': require('./labs/springAnimation').default,
   'splitting-cubic-bezier': require('./labs/splittingCubicBezier').default,
   'transitionable-react-router': {
