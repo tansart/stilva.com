@@ -32,6 +32,7 @@ export default `
   --scale: 0;
   left: 0;
   margin: 24px auto 0;
+  overflow: hidden;
   position: relative;
   top: 0;
   white-space: nowrap;

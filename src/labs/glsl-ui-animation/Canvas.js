@@ -26,16 +26,11 @@ const MaisonNeue = (function() {
   return _promise;
 })();
 
-export default function Canvas({children, isActive}) {
+export default function Canvas({children}) {
   const node = useRef();
   const childrenWrapper = useRef();
-  const [swapToGL, setSwapToGL] = useState(isActive);
 
   useLayoutEffect(() => {
-    if(!isActive) {
-      return () => {};
-    }
-
     const glsl = new GLSL(node.current);
     glsl.addVariable('u_delta', [0, 2, 4]);
     const image = new Image();
@@ -68,7 +63,6 @@ export default function Canvas({children, isActive}) {
           return new Promise(r => {
             img.addEventListener('load', e => {
               r(img);
-              setSwapToGL(true);
             });
             img.src = b;
           });
@@ -175,7 +169,7 @@ void main()
     return () => {
       glsl.kill();
     }
-  }, [isActive]);
+  }, []);
 
   return <>
     <canvas
@@ -189,7 +183,7 @@ void main()
       }}
     />
     <div
-      className={["glsl__content", swapToGL ? '': 'gl'].join(' ')}
+      className="glsl__content"
       ref={childrenWrapper}
     >
       {children}
