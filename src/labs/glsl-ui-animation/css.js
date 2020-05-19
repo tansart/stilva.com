@@ -11,6 +11,34 @@ export default `
   width: 800px;
 }
 
+.preloading,
+.preloading--white {
+  background: #1D1D1D;
+  display: block;
+  height: auto;
+  overflow: hidden;
+  margin: 0 auto;
+  max-width: 800px;
+  position: relative;
+  width: 100%;
+}
+
+.preloading--white {
+  background: #FFFAF5;
+  margin: 24px auto 0;
+}
+
+.preloading:before,
+.preloading--white:before {
+  content: '';
+  display: block;
+  max-width: 800px;
+  padding-bottom: 62.5%;
+  position: relative;
+}
+
+.preloading--white {}
+
 .section__project canvas {
   max-height: 100%;
   max-width: 100%;

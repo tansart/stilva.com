@@ -34,7 +34,7 @@ function Section({isVisible}) {
   </>
 }
 
-function Column({ dispatcher, index, state }) {
+function Column({ dispatcher, index, state, width }) {
   const wrapperRef = useRef();
   const hoveredIndexRef = useRef(state.hoveredIndex);
   hoveredIndexRef.current = state.hoveredIndex;
@@ -83,26 +83,26 @@ function Column({ dispatcher, index, state }) {
     switch(index) {
       case 0:
         return {
-          right: `${Math.round(800 * .5)}px`,
-          transform: interpolate(animatedProps, ({x, w}) => `translate3d(${(-800 * (.1 + 0.0375) + (800 * .05) * x.lastPosition)}px, 0, 0) scaleX(${.5 + .5 * w.lastPosition})`),
+          right: `${Math.round(width * .5)}px`,
+          transform: interpolate(animatedProps, ({x, w}) => `translate3d(${(-width * (.1 + 0.0375) + (width * .05) * x.lastPosition)}px, 0, 0) scaleX(${.5 + .5 * w.lastPosition})`),
           transformOrigin: '100% 50%'
         };
       case 1:
         return {
-          right: `${Math.round(800 * (.5 - .05))}px`,
-          transform: interpolate(animatedProps, ({x, w}) => `translate3d(${(-800 * 0.0125 + (800 * .05) * x.lastPosition)}px, 0, 0) scaleX(${.5 + .5 * w.lastPosition})`),
+          right: `${Math.round(width * (.5 - .05))}px`,
+          transform: interpolate(animatedProps, ({x, w}) => `translate3d(${(-width * 0.0125 + (width * .05) * x.lastPosition)}px, 0, 0) scaleX(${.5 + .5 * w.lastPosition})`),
           transformOrigin: '50% 50%'
         }
       case 2:
         return {
-          left: `${Math.round(800 * (.5 - .05))}px`,
-          transform: interpolate(animatedProps, ({x, w}) => `translate3d(${(800 * 0.0125 + (800 * .05) * x.lastPosition)}px, 0, 0) scaleX(${.5 + .5 * w.lastPosition})`),
+          left: `${Math.round(width * (.5 - .05))}px`,
+          transform: interpolate(animatedProps, ({x, w}) => `translate3d(${(width * 0.0125 + (width * .05) * x.lastPosition)}px, 0, 0) scaleX(${.5 + .5 * w.lastPosition})`),
           transformOrigin: '50% 50%'
         }
       case 3:
         return {
-          left: `${Math.round(800 * .5)}px`,
-          transform: interpolate(animatedProps, ({x, w}) => `translate3d(${(800 * (.1 + 0.0375) + (800 * .05) * x.lastPosition)}px, 0, 0) scaleX(${.5 + .5 * w.lastPosition})`),
+          left: `${Math.round(width * .5)}px`,
+          transform: interpolate(animatedProps, ({x, w}) => `translate3d(${(width * (.1 + 0.0375) + (width * .05) * x.lastPosition)}px, 0, 0) scaleX(${.5 + .5 * w.lastPosition})`),
           transformOrigin: '0% 50%'
         }
     }
@@ -180,21 +180,38 @@ function appReducer(state, action) {
 }
 
 const indexes = Array.from(Array(4), (_, i) => i);
-export default function Wrapper({}) {
+export default function Wrapper({transitionstate}) {
+  const ref = useRef();
+  const [rect, setRect] = useState({width: 0, height: 0});
   const [state, dispatch] = useReducer(appReducer, initialAppState);
 
+  useEffect(() => {
+    setRect({
+      height: ref.current.clientHeight,
+      width: ref.current.clientWidth
+    });
+  }, []);
+
+  if(transitionstate !== 'entered') {
+    return <>
+      <div className="preloading" ref={ref}/>
+      <div className="preloading--white" />
+    </>;
+  }
+
   return [
-    <div className="wrapper">
+    <div className="wrapper" style={{height: `${rect.height}px`, width: `${rect.width}px`}}>
       {indexes.map((index) => <Column
         dispatcher={dispatch}
         index={index}
         key={`column_${index}`}
         state={state}
+        width={rect.width}
       />)}
     </div>,
     <Project
-      height={500}
-      width={800}
+      height={rect.height}
+      width={rect.width}
     />
   ];
 }

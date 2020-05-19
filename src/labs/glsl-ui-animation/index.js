@@ -1,7 +1,6 @@
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-import App, {css} from './App';
-import Project from './Project';
+import css from './css';
 
 export default {
   link: 'glsl-ui-animation',
@@ -12,8 +11,24 @@ export default {
     {
       type: 'FunctionalComponent',
       css,
-      component: function () {
-        return <App />
+      component: function(props) {
+        const [component, setComponent] = useState(null);
+
+        useEffect(() => {
+          import(/* webpackChunkName: "lab/glsl-ui-animation" */ /* webpackMode: "lazy" */ './App.js').then((mComponent) => {
+            setComponent(mComponent);
+          });
+        }, []);
+
+        if(!component) {
+
+          return <>
+            <div className="preloading" />
+            <div className="preloading--white" />
+          </>;
+        }
+
+        return React.createElement(component.default, props);
       }
     },
     {
