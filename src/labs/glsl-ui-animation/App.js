@@ -186,10 +186,12 @@ export default function Wrapper({transitionstate}) {
   const [state, dispatch] = useReducer(appReducer, initialAppState);
 
   useEffect(() => {
-    setRect({
-      height: ref.current.clientHeight,
-      width: ref.current.clientWidth
-    });
+    if(ref.current) {
+      setRect({
+        height: ref.current.clientHeight,
+        width: ref.current.clientWidth
+      });
+    }
   }, []);
 
   if(transitionstate !== 'entered') {

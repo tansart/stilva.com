@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
@@ -62,8 +63,15 @@ module.exports = {
           path.resolve(__dirname, 'src')
         ],
 				// exclude: /node_modules/,
-				use: 'babel-loader'
-			},
+				use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              plugins: [ENV === 'development' && require.resolve('react-refresh/babel')].filter(Boolean)
+            }
+          }
+        ]
+      },
 			{
 				test: /\.(scss|css)$/,
 				include: [
@@ -147,6 +155,7 @@ module.exports = {
 			},
 			minify: {collapseWhitespace: true}
 		}),
+    devOnly(new ReactRefreshWebpackPlugin()),
 		prodOnly(
 				new BundleAnalyzerPlugin({
 					analyzerMode: "disabled",
@@ -174,6 +183,10 @@ module.exports = {
 
 function PluginProxy() {
 	this.apply = _ => {};
+}
+
+function devOnly(arr) {
+	return ENV === "development" ? arr : new PluginProxy();
 }
 
 function prodOnly(arr) {
