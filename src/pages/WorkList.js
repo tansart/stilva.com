@@ -4,7 +4,7 @@ import BasePage from './BasePage';
 import CategoryLink from "../components/CategoryLink";
 import work from '../work';
 
-export default memo(function WorkList({dir, transitionstate}) {
+export default memo(function WorkList({transitionstate}) {
   const list = [];
 
   for(const k of work.keys()) {

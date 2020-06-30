@@ -1,8 +1,8 @@
 import React, {memo} from 'react'; // eslint-disable-line no-unused-vars
 
-import data from '../lab';
-import CategoryLink from "../components/CategoryLink";
 import BasePage from "./BasePage";
+import CategoryLink from "../components/CategoryLink";
+import lab from '../lab';
 
 export default memo(function LabList({transitionstate}) {
   const props = {
@@ -12,13 +12,15 @@ export default memo(function LabList({transitionstate}) {
     transitionstate
   };
 
+  const list = [];
+
+  for(const k of lab.keys()) {
+    list.push(<CategoryLink key={`lab_title_${k}`} link={`/lab/${k}`} label={lab.get(k).label} />);
+  }
+
   return <BasePage
     {...props}
   >
-    {Object.keys(data)
-      .map(k =>
-        <CategoryLink key={`title_${k}`} link={`/lab/${k}`} label={`${data[k].title}`}/>
-      )
-    }
+    {list}
   </BasePage>;
 });
