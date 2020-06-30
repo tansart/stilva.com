@@ -1,15 +1,24 @@
 import React, {memo, useContext, Component} from 'react';
+import { css, cx } from 'linaria';
 
 import GLSL from '@stilva/glsl';
-import {RouterContext} from '@stilva/transitionable-react-router';
 
-import Greetings from '../components/Greetings';
-import AnimatedLink from '../components/AnimatedLink';
-import cx from "classnames";
-import useOnScroll from "../hooks/useOnScroll";
-import useTransitionDirection from "../hooks/useTransitionDirection";
+const canvas = css`
+  bottom: 0;
+  display: block;
+  height: 100vh;
+  left: 0;
+  min-height: 100vh;
+  min-width: 100vw;
+  opacity: 1;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100vw;
+  z-index: 0;
+`;
 
-class Background extends Component {
+export default class Background extends Component {
   componentDidMount() {
     this.glsl = new GLSL(this.el);
 
@@ -93,43 +102,10 @@ class Background extends Component {
 
   render() {
     return <canvas
-      className="home__background"
+      className={canvas}
       ref={node => this.el = node}
       width={400}
       height={400}
     />;
   }
-}
-
-export default memo(function Home({transitionstate}) {
-  const offset = useOnScroll(transitionstate);
-  const direction = useTransitionDirection(transitionstate);
-  const {previousRoute} = useContext(RouterContext);
-
-  return <div className={cx('home', 'page', `page--${transitionstate}`, direction)}>
-    <div className="content" style={{ top: `-${offset}px`}}>
-      <p>
-        <Greetings/><br/>
-        I'm <AnimatedLink link="https://github.com/stilva" label="Thomas Ansart" target="_blank" rel="noreferrer" />,
-        a senior software engineer at Paperless Post, NY. Previously principal developer at Firstborn.
-      </p>
-      <p>
-        My day job involves engineering solutions, creating pixel perfect, and delightful UIs. Here's some of my <AnimatedLink link="work" label="work" key="lab"/>.
-      </p>
-      <p>
-        At night, I spend my time building UIs, writing code, or actively exploring Machine Learning (tensorflow/Python), with my pug Nugget on my laps.
-        Check out my <AnimatedLink link="lab" label="Lab" key="lab"/>.
-      </p>
-      <p>
-        Always down for a <AnimatedLink onClick={onContact} label="chat" rel="nofollow"/> over a drink.
-      </p>
-    </div>
-    <Background previousRoute={previousRoute} transitionstate={transitionstate} />
-  </div>
-});
-
-function onContact(e) {
-  e.preventDefault();
-
-  location.href = `mailto:${atob('dGhvbWFzLmFuc2FydEA=')}${atob('c3RpbHZhLmNvbQ==')}`;
 }

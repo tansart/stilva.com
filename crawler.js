@@ -1,10 +1,13 @@
 import ejs from 'ejs';
-import {join} from 'path';
+import {join, resolve} from 'path';
 import {readFile, writeFile} from 'fs';
 import {mkdirp} from 'mkdirp';
+import { ChunkExtractor } from '@loadable/server'
 
 import React from 'react';
 import {renderToString} from 'react-dom/server';
+
+const statsFile = resolve('./dist/loadable-stats.json')
 
 import labs from './src/lab';
 import work from './src/work';
@@ -14,19 +17,21 @@ import {RouterContext} from "@stilva/transitionable-react-router";
 
 readFile('./src/index.ejs', (err, buff) => {
   const tpl = ejs.compile(buff.toString());
-  const boundWriteToFile = writeToFile.bind(null, tpl);
 
-  ['/', '/lab', '/work'].concat(
-    getLabs(),
-    getClients()
-  )
-    .forEach(boundWriteToFile);
+  ['/', '/lab', '/work'].forEach(path => writeToFile(tpl, path));
+
+  getLabs()
+    .forEach(path => writeToFile(tpl, path, true));
+
+  getWorks()
+    .forEach(path => writeToFile(tpl, path, true));
 });
 
-function getClients() {
-  return Array
+function getWorks() {
+  /*return Array
     .from(work.keys())
-    .map(slug => `/work/${slug}`)
+    .map(slug => `/work/${slug}`)*/
+  return ['/work/paperlesspost']
 }
 
 function getLabs() {
@@ -35,12 +40,21 @@ function getLabs() {
     .map(slug => `/lab/${slug}`)
 }
 
-function writeToFile(tpl, path) {
+function writeToFile(tpl, path, isEntry = false) {
+  const options = {
+    entrypoints: ["bundle"],
+    statsFile
+  };
+
+  const extractor = new ChunkExtractor(options);
+
+  const jsx = extractor.collectChunks(<RouterContext.Provider value={{currentRoute: path}}>
+    <App/>
+  </RouterContext.Provider>);
+
   const out = tpl({
     distPath: '/dist',
-    rendered: renderToString(<RouterContext.Provider value={{currentRoute: path}}>
-      <App/>
-    </RouterContext.Provider>)
+    rendered: renderToString(jsx)
   });
 
   const filename = join(`${path === '/' ? 'index' : path}.html`);

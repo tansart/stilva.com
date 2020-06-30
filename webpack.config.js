@@ -5,13 +5,12 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
-
-const autoprefixer = require('autoprefixer');
+const LoadablePlugin = require('@loadable/webpack-plugin')
 
 const path = require('path');
 
 const ENV = process.env.NODE_ENV || 'development';
-const CSS_MAPS = ENV !== 'production';
+const hasCSSMaps = ENV !== 'production';
 
 const devServerConfig = {
 	host: '0.0.0.0',
@@ -31,7 +30,7 @@ module.exports = {
 	output: {
 		path: path.resolve(__dirname, "dist"),
 		publicPath: '/',
-    chunkFilename: '[name].js',
+    chunkFilename: 'partials/[name].js',
 		filename: 'bundle.js'
 	},
 
@@ -69,6 +68,13 @@ module.exports = {
             options: {
               plugins: [ENV === 'development' && require.resolve('react-refresh/babel')].filter(Boolean)
             }
+          },
+          {
+            loader: 'linaria/loader',
+            options: {
+              preprocessor: 'none',
+              sourceMap: process.env.NODE_ENV !== 'production',
+            },
           }
         ]
       },
@@ -76,26 +82,32 @@ module.exports = {
 				test: /\.(scss|css)$/,
 				include: [
 					path.resolve(__dirname, 'node_modules'),
-					path.resolve(__dirname, 'src')
+					path.resolve(__dirname, 'src'),
+					path.resolve(__dirname, '.linaria-cache'),
 				],
 				use: [
-					process.env.NODE_ENV !== 'production' ? 'style-loader' : MiniCssExtractPlugin.loader,
+          {
+            loader: process.env.NODE_ENV !== 'production' ? 'style-loader' : MiniCssExtractPlugin.loader,
+            options: {
+              hmr: process.env.NODE_ENV !== 'production',
+            }
+          },
 					{
 						loader: 'css-loader',
-						options: {sourceMap: CSS_MAPS, importLoaders: 1, minimize: true}
+						options: {sourceMap: hasCSSMaps, importLoaders: 1, minimize: true}
 					},
-					{
-						loader: 'postcss-loader',
-						options: {
-							sourceMap: CSS_MAPS,
-							plugins: () => {
-								autoprefixer();
-							}
-						}
-					},
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: hasCSSMaps,
+              config: {
+                path: 'postcss.config.js'
+              }
+            }
+          },
 					{
 						loader: 'sass-loader',
-						options: {sourceMap: CSS_MAPS}
+						options: {sourceMap: hasCSSMaps}
 					}
 				]
 			}
@@ -148,6 +160,7 @@ module.exports = {
 			allChunks: true,
 			// disable: ENV !== 'production'
 		}),
+    new LoadablePlugin(),
 		new HtmlWebpackPlugin({
 			template: './index.ejs',
 			templateParameters: {

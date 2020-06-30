@@ -1,4 +1,6 @@
 export default {
+  // 'mediapipe': require('./labs/mediapipe/index').default,
+  // 'refactor-06-2020': require('./labs/refactor-06-2020').default,
   'glsl-ui-animation': require('./labs/glsl-ui-animation/index').default,
   'spring-animation': require('./labs/springAnimation').default,
   'splitting-cubic-bezier': require('./labs/splittingCubicBezier').default,

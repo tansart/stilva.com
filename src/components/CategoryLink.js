@@ -1,8 +1,83 @@
 import React, {Component} from "react";
-import cx from 'classnames';
+import {css} from 'linaria';
 
 import {RouterContext} from "@stilva/transitionable-react-router";
-import lab from "../lab";
+
+import { mq } from '../utils/css-utils';
+
+const linkcss = css`
+  display: inline-block;
+  font-size: 22px;
+  overflow: hidden;
+  position: relative;
+  vertical-align: bottom;
+  
+  @media ${mq.MS} {
+    font-size: 20px;
+  }
+  
+  @media ${mq.ML} {
+    font-size: 5.6vw;
+  }
+  
+  @media ${mq.TS} {
+    font-size: 36px;
+  }
+  
+  @media ${mq.L} {
+    font-size: 42px;
+  }
+  
+  .underline {
+    background: black;
+    bottom: 0;
+    display: block;
+    height: 1px;
+    left: 0;
+    position: absolute;
+    transform: translateX(calc(-100% - 1px));
+    //transition: transform 250ms cubic-bezier(0,0,.58,1);
+    width: 100%;
+
+    // @media ${mq.T} {
+    //   height: 2px;
+    // }
+
+    .visible & {
+      transform: translateX(0);
+    }
+  }
+`;
+
+const text = css`
+  color: black;
+  display: block;
+  position: relative;
+  transition: color 250ms ease-out;
+  z-index: 1;
+
+  .animated {
+    background: black;
+    content: "";
+    height: 100%;
+    left: 0;
+    position: absolute;
+    transform: translateX(calc(-100% - 1px));
+    top: 0;
+    width: 100%;
+    z-index: -1;
+  }
+`;
+
+const wrapper = css`
+  display: block;
+  margin-bottom: 1rem;
+  position: relative;
+
+  &:hover .${text} {
+    color: white;
+  }
+`;
 
 class Animator {
   constructor(time = 0, render) {
@@ -52,7 +127,6 @@ class Animator {
 
     this._render(this._progress);
 
-    // this._reference = setTimeout(this._tick, 250);
     this._reference = requestAnimationFrame(this._tick);
   };
 }
@@ -65,10 +139,6 @@ export default class AnimatedLink extends Component {
     super(props);
 
     this._animator = new Animator(250, this.update);
-
-    this.__rafRef = null;
-    this.__currentIndex = 0;
-    this.__isHovering = false;
   }
 
   update = (t) => {
@@ -76,7 +146,7 @@ export default class AnimatedLink extends Component {
       if(t > r.max) {
         r.t.style.transform = `translateX(0%)`;
       } else if(t <= r.min) {
-        r.t.style.transform = `translateX(105%)`;
+        r.t.style.transform = `translateX(calc(100% + 1px))`;
       } else if(r.min < t && t <= r.max) {
         const transform = (t - r.min)/r.time * 100 - 100;
         r.t.style.transform = `translateX(${Math.min(transform, 0)}%)`;
@@ -89,12 +159,12 @@ export default class AnimatedLink extends Component {
       return
     }
 
-    const totalWidth = Array.from(this.node.querySelectorAll('.category-link'))
+    const totalWidth = Array.from(this.node.querySelectorAll(`.${linkcss}`))
       .reduce((acc, node) => {
         return acc + node.getBoundingClientRect().width;
       }, 0);
 
-    this.ratios = Array.from(this.node.querySelectorAll('.category-link'))
+    this.ratios = Array.from(this.node.querySelectorAll(`.${linkcss}`))
       .reduce((acc, node) => {
         const time = node.getBoundingClientRect().width/totalWidth;
         const min = (acc.length > 0) ? acc[acc.length - 1].min + acc[acc.length - 1].time: 0;
@@ -145,30 +215,23 @@ export default class AnimatedLink extends Component {
       onClick={onClick}
       {...extra}
       ref={node => this.node = node}
-      className="category-link__wrapper"
+      className={wrapper}
       onMouseEnter={this._animator.onEnter}
       onMouseLeave={this._animator.onLeave}
       onTouchStart={this._animator.onEnter}
       onTouchEnd={this._animator.onLeave}
     >
       {splitLabel(label).map(({word}, i) => (
-        <span className="category-link" key={`word_${i}`}>
-          <span className="category-link__text">
+        <span className={linkcss} key={`word_${i}`}>
+          <span className={text}>
             {word}
-            <span className="animated"></span>
+            <span className="animated" />
           </span>
-          <span className="category-link__underline" />
+          <span className="underline" />
 	      </span>
       ))}
     </a>;
   }
-}
-
-function bezierEasing(t, p0, p1) {
-  return {
-    x: 3. * Math.pow(1. - t, 2.) * t * p0.x + 3. * (1. - t) * Math.pow(t, 2.) * p1.x + Math.pow(t, 3.),
-    y: 3. * Math.pow(1. - t, 2.) * t * p0.y + 3. * (1. - t) * Math.pow(t, 2.) * p1.y + Math.pow(t, 3.)
-  };
 }
 
 function splitLabel(label) {
