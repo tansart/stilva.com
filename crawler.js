@@ -2,7 +2,7 @@ import ejs from 'ejs';
 import {join, resolve} from 'path';
 import {readFile, writeFile} from 'fs';
 import {mkdirp} from 'mkdirp';
-import { ChunkExtractor } from '@loadable/server'
+import {ChunkExtractor} from '@loadable/server'
 
 import React from 'react';
 import {renderToString} from 'react-dom/server';
@@ -28,16 +28,15 @@ readFile('./src/index.ejs', (err, buff) => {
 });
 
 function getWorks() {
-  /*return Array
+  return Array
     .from(work.keys())
-    .map(slug => `/work/${slug}`)*/
-  return ['/work/paperlesspost']
+    .map(slug => `/work/${slug}`);
 }
 
 function getLabs() {
   return Object
     .keys(labs)
-    .map(slug => `/lab/${slug}`)
+    .map(slug => `/lab/${slug}`);
 }
 
 function writeToFile(tpl, path, isEntry = false) {

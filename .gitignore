@@ -68,4 +68,6 @@ node_modules/
 .DS_Store
 .linaria-cache
 .idea
-dist
+dist/*
+!dist/images
+!dist/videos

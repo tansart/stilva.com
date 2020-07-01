@@ -1,6 +1,6 @@
 // 'mediapipe': require('./labs/mediapipe/index').default,
 // 'refactor-06-2020': require('./labs/refactor-06-2020').default,
-export default new Map([
+export default new Map(injectIndex([
   ['glsl-ui-animation', {
     label: 'GLSL UI animation'
   }],
@@ -19,4 +19,11 @@ export default new Map([
   ['glsl', {
     label: 'GLSL'
   }]
-]);
+]));
+
+function injectIndex(data) {
+  return data.map((d, i) => {
+    d[1].index = data.length - i;
+    return d;
+  })
+}
