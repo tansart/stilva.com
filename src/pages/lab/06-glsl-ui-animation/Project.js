@@ -1,5 +1,6 @@
-import React, {useState, useEffect, useRef} from "react";
+import React, {useEffect} from "react";
 import {Animated, useSpring, interpolate} from '@stilva/spring';
+import {css} from 'linaria';
 
 import BezierEasing from './bezier';
 import Canvas from './Canvas';
@@ -15,6 +16,28 @@ function ProjectContent() {
   </Canvas>
 }
 
+const section = css`
+  --translateXY: 0;
+  --scale: 0;
+  left: 0;
+  margin: 24px auto 0;
+  overflow: hidden;
+  position: relative;
+  top: 0;
+  white-space: nowrap;
+  z-index: 1;
+`;
+
+const content = css`
+  background: #FFFAF5;
+  display: block;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transform: translate3d(var(--translateXY), 0) scale(var(--scale));
+  transform-origin: 0% 0%;
+`;
+
 export default function Project({ height, width}) {
   const [opacityProps, setOpacityProps] = useSpring({ o: 0 }, {
     easing: BezierEasing(.47,.04,.94,.57),
@@ -26,7 +49,7 @@ export default function Project({ height, width}) {
   }, []);
 
   return <Animated.div
-    className="section__project"
+    className={section}
     style={{
       'opacity': interpolate(opacityProps, ({o}) => {
         return o.lastPosition;
@@ -36,7 +59,7 @@ export default function Project({ height, width}) {
     }}
   >
     <Animated.div
-      className="section__project-content"
+      className={content}
       style={{
         height: `${height}px`,
         width: `${width}px`

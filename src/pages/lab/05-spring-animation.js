@@ -1,5 +1,5 @@
-import React, {memo, useEffect, useRef} from 'react';
-import {css, cx} from 'linaria';
+import React, {memo, useEffect} from 'react';
+import {css} from 'linaria';
 
 import Code from '../../components/Code';
 import {Animated, interpolate, useSpring} from "@stilva/spring";
@@ -105,71 +105,70 @@ const svg = css`
 
 export default memo(function () {
   return <>
-    <h1 className="work-name">Spring animation</h1>
-    <div className="blob">
-      <p>
-        In React apps, when you can afford adding around <code>10kB</code> of gzipped JS, you can reach out for
-        libraries such as <code>react-spring</code> (or the original, and smaller <code>react-motion</code>).
-        For my little lightweight website <code>10kB</code> is unfortunately way too much. So I wrote a smaller spring
-        library.
-      </p>
-      <p>
-        Before let's go through the core requirements that I felt were crucial to a spring component:
-      </p>
-      <ul>
-        <li>configurability of mass, tension, friction etc</li>
-        <li><code>Animated.div</code> Component with a declarative API, but a direct DOM manipulation behind the scene.
-        </li>
-        <li>hooks API such as <code>useSpring(animationProperties, springConfig)</code></li>
-      </ul>
-      <p>
-        Instead of re-implementing the velocity calculation, I've forked the core frame loop function
-        from <code>react-spring</code>'s <a
-        href="https://github.com/react-spring/react-spring/blob/master/src/animated/FrameLoop.ts">frameLoop.ts</a> update
-        function and trimmed it down to only support spring animations (e.g. no easing/time based support).
-      </p>
-      <p>
-        The other important feature is the ability to update the DOM node without triggering a Component state update.
-        For its API, I wanted the ability to have the short-hand notation of <code>&lt;Animated.div
-        /&gt;</code> over <code>&lt;Animated type="div" /&gt;</code> – the same notation
-        as <code>react-spring</code> and <code>emotionjs</code>
-      </p>
-      <p>
-        Thanks to <code>React.forwardRef</code> this is a simple API to implement. Here's one implementation:
-      </p>
-      <Code lan="javascript">
-        {`
-          ['div', 'span', /* 100+ more hard-coded tags here */].forEach(element => Animated[element] = React.forwardRef()); 
+    <h1>Spring animation</h1>
+    <p>
+      In React apps, when you can afford adding around <code>10kB</code> of gzipped JS, you can reach out for
+      libraries such as <code>react-spring</code> (or the original, and smaller <code>react-motion</code>).
+      For my little lightweight website <code>10kB</code> is unfortunately way too much. So I wrote a smaller spring
+      library.
+    </p>
+    <p>
+      Before let's go through the core requirements that I felt were crucial to a spring component:
+    </p>
+    <ul>
+      <li>configurability of mass, tension, friction etc</li>
+      <li><code>Animated.div</code> Component with a declarative API, but a direct DOM manipulation behind the scene.
+      </li>
+      <li>hooks API such as <code>useSpring(animationProperties, springConfig)</code></li>
+    </ul>
+    <p>
+      Instead of re-implementing the velocity calculation, I've forked the core frame loop function
+      from <code>react-spring</code>'s <a
+      href="https://github.com/react-spring/react-spring/blob/master/src/animated/FrameLoop.ts">frameLoop.ts</a> update
+      function and trimmed it down to only support spring animations (e.g. no easing/time based support).
+    </p>
+    <p>
+      The other important feature is the ability to update the DOM node without triggering a Component state update.
+      For its API, I wanted the ability to have the short-hand notation of <code>&lt;Animated.div
+      /&gt;</code> over <code>&lt;Animated type="div" /&gt;</code> – the same notation
+      as <code>react-spring</code> and <code>emotionjs</code>
+    </p>
+    <p>
+      Thanks to <code>React.forwardRef</code> this is a simple API to implement. Here's one implementation:
+    </p>
+    <Code lan="javascript">
+      {`
+['div', 'span', /* 100+ more hard-coded tags here */].forEach(element => Animated[element] = React.forwardRef()); 
         `}
-      </Code>
-      <p>
-        Luckily ES6 metaprogramming ability (<code>Proxy</code>) comes to the rescue (one of the very few times where
-        using ES6 Proxy came in very handy while building UIs...). It saves a few <code>kB</code> :).
-        The downside is we lose the transpile-time error feedback, and the IDE intellisense – worsened DX for a slightly
-        better UX.
-      </p>
-      <Code>
-        {`
-          const AnimatedInstances = {};
+    </Code>
+    <p>
+      Luckily ES6 metaprogramming ability (<code>Proxy</code>) comes to the rescue (one of the very few times where
+      using ES6 Proxy came in very handy while building UIs...). It saves a few <code>kB</code> :).
+      The downside is we lose the transpile-time error feedback, and the IDE intellisense – worsened DX for a slightly
+      better UX.
+    </p>
+    <Code lan="javascript">
+      {`
+const AnimatedInstances = {};
 export default new Proxy(AnimatedBase, {
   get(obj, type) {
     return AnimatedInstances[type] || (AnimatedInstances[type] = React.forwardRef();
   }
 }); 
         `}
-      </Code>
-      <p>
-        One thing to note: <code>AnimatedInstances</code> is there so we don't constantly create new components
-        with <code>React.forwardRef()</code>.
-      </p>
-      <p>Let's dive into a simple example – I'll shamelessly borrow the example <code>react-spring</code> has on their
-        documentation page.
-      </p>
-      <Code lan="jsx">
-        {`
-          import {Animated, interpolate, useSpring} from '@stilva/spring';
+    </Code>
+    <p>
+      One thing to note: <code>AnimatedInstances</code> is there so we don't constantly create new components
+      with <code>React.forwardRef()</code>.
+    </p>
+    <p>Let's dive into a simple example – I'll shamelessly borrow the example <code>react-spring</code> has on their
+      documentation page.
+    </p>
+    <Code lan="jsx">
+      {`
+import {Animated, interpolate, useSpring} from '@stilva/spring';
 
-function MenuButton({}) {
+function Square({}) {
   const {x, y} = useMouse();
   const [animatedProps, setAnimatedProps] = useSpring({
     x: 1,
@@ -186,35 +185,34 @@ function MenuButton({}) {
     });
   }, [x, y])
   
-  return <div className="wrapper">
-    <Animated.div
+  return \<div className="wrapper">
+    \<Animated.div
       className="square"
       style={{
         '--transform': interpolate(animatedProps, ({x, y}) => \`rotateX($\{-20 * y.lastPosition}deg) rotateY($\{20 * x.lastPosition}deg)\`),
       }}
     >
       {Date.now()}
-    </Animated.div>
-  </div>
-} 
+    \</Animated.div>
+  \</div>
+}
         `}
-      </Code>
-      <p>
-        And here's what we get:
-      </p>
-      <Example />
-      <p>
-        A few things to note:
-      </p>
-      <ul>
-        <li><code>useMouse</code> throttles the callbacks to once every 50ms.</li>
-        <li>The square has <code>Date.now()</code> so you can see how often the state updates.</li>
-        <li><code>Animatmed.div</code> can animate independently of state updates, and keeps track of animations</li>
-        <li>This is probably not the best example, since you could achieve similar results with a mixture of
-          CSS <code>transition</code> and the same <code>useMouse</code> hook I've used.
-        </li>
-      </ul>
-    </div>
+    </Code>
+    <p>
+      And here's what we get:
+    </p>
+    <Example/>
+    <p>
+      A few things to note:
+    </p>
+    <ul>
+      <li><code>useMouse</code> throttles the callbacks to once every 50ms.</li>
+      <li>The square has <code>Date.now()</code> so you can see how often the state updates.</li>
+      <li><code>Animatmed.div</code> can animate independently of state updates, and keeps track of animations</li>
+      <li>This is probably not the best example, since you could achieve similar results with a mixture of
+        CSS <code>transition</code> and the same <code>useMouse</code> hook I've used.
+      </li>
+    </ul>
   </>
 });
 
@@ -273,7 +271,7 @@ function throttle(fn) {
 
   return (e) => {
     now = Date.now();
-    if(now - last > 50) {
+    if (now - last > 50) {
       last = now;
       fn(e);
     }
@@ -284,13 +282,13 @@ function useMouse() {
   const [delta, setDelta] = React.useState({x: 0, y: 0});
 
   useEffect(() => {
-    const sq = document.querySelector('.square');
+    const sq = document.querySelector(`.${square}`);
     const move = throttle(e => {
       const {x, y} = getXY(e);
 
       setDelta({
-        x:1 - x / 250 * 2,
-        y:1 - y / 250 * 2
+        x: 1 - x / 250 * 2,
+        y: 1 - y / 250 * 2
       })
     });
 

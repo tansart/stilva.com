@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 
 import Greetings from '../../components/Greetings';
 import AnimatedLink from '../../components/AnimatedLink';
@@ -24,6 +24,10 @@ const pagragraph = css`
   }
 `;
 
+const first = css`
+  margin-top: 0;
+`;
+
 export default memo(function Home({transitionstate}) {
   const props = {
     background: Background,
@@ -34,7 +38,7 @@ export default memo(function Home({transitionstate}) {
   return <BasePage
     {...props}
   >
-    <p className={pagragraph}>
+    <p className={cx(pagragraph, first)}>
       <Greetings/><br/>
       I'm <AnimatedLink link="https://github.com/stilva" label="Thomas Ansart" target="_blank" rel="noreferrer" />,
       a senior software engineer at Paperless Post, NY. Previously principal developer at Firstborn

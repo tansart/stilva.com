@@ -1,13 +1,25 @@
 import React from 'react';
+import {css} from 'linaria';
 
-import Awards from './Awards';
+const p = css`
+  font-family: 'Roboto Mono', monospace;
+  font-size: 14px;
+  color: black;
+  //letter-spacing: -0.03vw;
+  line-height: 1.5;
+  margin: .5em 0 1em;
+  //word-spacing: 0.05vw;
+  
+  a {
+    border-bottom: 1px solid black;
+    color: black;
+    display: inline;
+    margin: 0;
+    position: relative;
+    text-decoration: none;
+  }
+`;
 
-export default function (props) {
-  const builtIn = props.date ? <span className="built-in"> {props.date}</span> : null;
-  const title = (props.title || builtIn) ? <h2 className="blob__title">{props.title} /{builtIn}</h2> : null;
-  return <div className="blob">
-    {title}
-    {props.content.map((t, i) => <p key={`${props.title}_${i}`}>{t}</p>)}
-    <Awards awards={props.awards}/>
-  </div>
+export default function ({children}) {
+  return <p className={p}>{children}</p>;
 }

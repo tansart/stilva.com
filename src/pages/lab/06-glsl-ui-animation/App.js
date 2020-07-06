@@ -1,8 +1,51 @@
-import React, {useState, useEffect, useMemo, useReducer, useRef} from "react";
+import React, {useLayoutEffect, useState, useEffect, useMemo, useReducer, useRef} from "react";
+import {css, cx} from 'linaria';
 import {Animated, useSpring, interpolate} from '@stilva/spring';
-
-import css from './css';
 import Project from "./Project";
+
+const wrapper = css`
+  align-items: center;
+  background: #1D1D1D;
+  display: flex;
+  height: auto;
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 800px;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  
+  &:after {
+    content: '';
+    display: block;
+    height: auto;
+    padding-bottom: calc(900/1440 * 100%);
+    pointer-events: none;
+    position: relative;
+    width: 100%;
+  }
+`;
+
+const text = css`
+  background: black;
+  display: block;
+  height: 15px;
+  left: 15px;
+  pointer-events: none;
+  position: relative;
+  top: 15px
+`;
+
+const column = css`
+  background: #FFFAF5;
+  cursor: pointer;
+  display: block;
+  flex: 0 0 auto;
+  height: 40%;
+  margin: 0;
+  position: absolute;
+  width: 20%;
+`;
 
 function Section({isVisible}) {
   const [animTitleProps, setAnimTitleProps] = useSpring({ x: 0 });
@@ -15,7 +58,7 @@ function Section({isVisible}) {
 
   return <>
     <Animated.span
-      className="section__text"
+      className={text}
       style={{
         transform: interpolate(animTitleProps, ({x}) => `scaleX(${x.lastPosition})`),
         transformOrigin: '0 0',
@@ -23,7 +66,7 @@ function Section({isVisible}) {
       }}
     />
     <Animated.span
-      className="section__text"
+      className={text}
       style={{
         margin: '5px 0 0 0',
         transform: interpolate(animCatProps, ({x}) => `scaleX(${x.lastPosition})`),
@@ -131,7 +174,7 @@ function Column({ dispatcher, index, state, width }) {
   const isHoverable = state.currentState === 'preselected' || state.currentState === 'hovered' || state.currentState === 'closed';
 
   return <Animated.div
-    className="column"
+    className={column}
     onMouseOver={() => isHoverable && dispatcher({ type: 'hover', index })}
     onMouseOut={() => isHoverable && dispatcher({ type: 'hover', index: -1 })}
     ref={wrapperRef}
@@ -179,30 +222,75 @@ function appReducer(state, action) {
   }
 }
 
+const preloading = css`
+  background: #1D1D1D;
+  display: block;
+  height: auto;
+  overflow: hidden;
+  margin: 0 auto;
+  max-width: 800px;
+  position: relative;
+  width: 100%;
+
+&:before {
+  content: '';
+  display: block;
+  max-width: 800px;
+  padding-bottom: 62.5%;
+  position: relative;
+}
+`;
+
+const preloadingWhite = css`
+  background: #FFFAF5;
+  margin: 24px auto 0;
+`;
+
 const indexes = Array.from(Array(4), (_, i) => i);
 export default function Wrapper({transitionstate}) {
-  const ref = useRef();
+  const ref = useRef(null);
   const [rect, setRect] = useState({width: 0, height: 0});
   const [state, dispatch] = useReducer(appReducer, initialAppState);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if(ref.current) {
       setRect({
         height: ref.current.clientHeight,
         width: ref.current.clientWidth
       });
     }
-  }, []);
+  }, [transitionstate]);
+
+  useLayoutEffect(() => {
+    let resizeObserver;
+    const target = ref.current;
+    if(target) {
+      resizeObserver = new ResizeObserver(entries => {
+        for (const entry of entries) {
+          setRect({
+            height: entry.contentRect.height,
+            width: entry.contentRect.width
+          });
+        }
+      });
+
+      resizeObserver.observe(target);
+    }
+
+    return () => {
+      resizeObserver && target && resizeObserver.unobserve(target);
+    }
+  }, [ref]);
 
   if(transitionstate !== 'entered') {
     return <>
-      <div className="preloading" ref={ref}/>
-      <div className="preloading--white" />
+      <div className={preloading} ref={ref}/>
+      <div className={cx(preloading, preloadingWhite)} />
     </>;
   }
 
-  return [
-    <div className="wrapper" style={{height: `${rect.height}px`, width: `${rect.width}px`}}>
+  return <>
+    <div className={wrapper}>
       {indexes.map((index) => <Column
         dispatcher={dispatch}
         index={index}
@@ -210,12 +298,12 @@ export default function Wrapper({transitionstate}) {
         state={state}
         width={rect.width}
       />)}
-    </div>,
-    <Project
+    </div>
+    {rect.height && <Project
       height={rect.height}
       width={rect.width}
-    />
-  ];
+    />}
+  </>
 }
 
 export {

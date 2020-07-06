@@ -1,4 +1,5 @@
 import React, {useState, useRef, useLayoutEffect} from "react";
+import {css, cx} from 'linaria';
 import GLSL from "@stilva/glsl";
 
 const MaisonNeue = (function() {
@@ -25,6 +26,50 @@ const MaisonNeue = (function() {
 
   return _promise;
 })();
+
+const glslClass = css`
+img {
+  top: 30%;
+  display: block;
+  left: 50%;
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
+  transform: translate3d(-50%, 0, 0);
+}
+
+span {
+  color: transparent;
+  display: block;
+  font-family: MaisonNeue-Book;
+  font-size: 94px;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1.25;
+  max-width: 100%;
+  position: relative;
+  text-align: center;
+  text-transform: uppercase;
+  top: 75px;
+  white-space: normal;
+}
+`;
+
+const glslContent = css`
+  img {
+    opacity: 1;
+  }
+  
+  span {
+    color: black;
+  }
+`;
+
+const canvasClass = css`
+  max-height: 100%;
+  max-width: 100%;
+  pointer-events: none;
+`;
 
 export default function Canvas({children}) {
   const node = useRef();
@@ -72,7 +117,7 @@ export default function Canvas({children}) {
       (new Promise(r => {
         let urls = [];
         const wrapper = document.createElement('div');
-        wrapper.className = "gl glsl__content";
+        wrapper.className = cx(glslClass, glslContent);
         wrapper.innerHTML = childrenWrapper.current.innerHTML;
         const mHtml = wrapper.outerHTML.replace(/<img([^>]+)>/, (tags, attributes) => {
           attributes.replace(/src="([^\"]+)"/,  (match, src) => {
@@ -173,7 +218,7 @@ void main()
 
   return <>
     <canvas
-      className="canvas"
+      className={canvasClass}
       height="500"
       width="800"
       ref={node}
@@ -183,7 +228,7 @@ void main()
       }}
     />
     <div
-      className="glsl__content"
+      className={glslClass}
       ref={childrenWrapper}
     >
       {children}

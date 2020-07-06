@@ -1,12 +1,12 @@
 import React, {memo, useContext, Component} from 'react';
-import { css } from 'linaria';
+import {css} from 'linaria';
 import cx from 'classnames';
 import {RouterContext} from "@stilva/transitionable-react-router";
 
 import useOnScroll from "../hooks/useOnScroll";
 import useTransitionDirection from "../hooks/useTransitionDirection";
 import BackButton from "../components/BackButton";
-import { mq } from '../utils/css-utils';
+import {mq} from '../utils/css-utils';
 
 const content = css`
   display: block;
@@ -61,6 +61,104 @@ const content = css`
   }
 `;
 
+const baseStyle = css`
+  h1 {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 5.6vw;
+    letter-spacing: -0.05em;
+    line-height: 1.28;
+    font-size: 22px;
+    display: block;
+    font-weight: 400;
+    letter-spacing: -.04vw;
+    margin: 0;
+    padding: 0 0 1.4vw 0;
+    position: relative;
+    
+    @media ${mq.ML} {
+      font-size: 5.6vw;
+      padding: 0 0 3vw 0;
+    }
+    
+    @media ${mq.T} {
+      font-size: 42px;
+      padding: 0 0 22px 0;
+    }
+  }
+  
+  h2 {
+    display: block;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 14px;
+    //letter-spacing: -0.05em;
+    line-height: 1.28;
+    margin: 0;
+    padding-top: 12px;
+    position: relative;
+    
+    ~ p {
+      margin-top: 6px;
+    }
+  }
+  
+  p {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 14px;
+    color: black;
+    //letter-spacing: -0.03vw;
+    line-height: 1.5;
+    margin: .5em 0 1em;
+    //word-spacing: 0.05vw;
+    
+    a {
+      border-bottom: 1px solid black;
+      color: black;
+      display: inline;
+      margin: 0;
+      position: relative;
+      text-decoration: none;
+    }
+  }
+  
+  picture {
+    display: block;
+    margin: 0 auto;
+    position: relative;
+    width: 100%;
+
+      img {
+        display: block;
+        height: auto;
+        position: relative;
+        width: 100%;
+      }
+  }
+  
+  ul {
+    display: block;
+    list-style-type: none;
+    line-height: 2;
+    margin: 0;
+    padding: 12px 0;
+  }
+  
+  li {
+    font-size: 14px;
+    color: black;
+    //letter-spacing: -0.03vw;
+    line-height: 1.5;
+    margin-bottom: .5rem;
+    word-spacing: 0.05vw;
+
+    &:before {
+      content: '\\2013';
+      display: inline-block;
+      position: relative;
+      margin-right: 1rem;
+    }
+  }
+`;
+
 const page = css`
   display: block;
   min-width: 100vw;
@@ -106,15 +204,15 @@ const exited = css`
   display: none;
 `;
 
-function contentClass(section, transitionstate, direction) {
-  if(section === 'home' && transitionstate === 'exiting') {
+function getContentClass(section, transitionstate, direction) {
+  if (section === 'home' && transitionstate === 'exiting') {
     return css`
       animation: animation-rl-out var(--page-transition-duration) cubic-bezier(0,.3,.61,1) both;
     `;
   }
 
-  if(!direction) {
-    if(transitionstate === 'entering') {
+  if (!direction) {
+    if (transitionstate === 'entering') {
       return css`
         animation-timing-function: cubic-bezier(.3,.86,.68,1);
       `;
@@ -137,15 +235,21 @@ export default function BasePage({background, backPath, children, section, isLis
 
   let animationType = "animation";
 
-  if(direction === 'page--rl') {
+  if (direction === 'page--rl') {
     animationType += '-rl';
   } else {
     animationType += '-lr';
   }
 
-  if(transitionstate === 'exiting') {
+  if (transitionstate === 'exiting') {
     animationType += '-out';
   }
+
+  const contentClass = cx(
+    content,
+    section !== 'home' && baseStyle,
+    getContentClass(section, transitionstate, direction, isList && list)
+  );
 
   return <div
     className={cx([
@@ -157,8 +261,9 @@ export default function BasePage({background, backPath, children, section, isLis
     ])}
     style={{'--page-transition-animation': animationType}}
   >
-    {backPath && <BackButton path={backPath} />}
-    <div className={cx([content, contentClass(section, transitionstate, direction, isList && list,)])} style={{ top: `-${offset}px`}}>
+    {backPath && <BackButton path={backPath}/>}
+    <div className={contentClass}
+         style={{top: `-${offset}px`}}>
       {children}
     </div>
     {background && React.createElement(background, {previousRoute, transitionstate})}

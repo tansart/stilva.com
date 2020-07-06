@@ -15,11 +15,14 @@ export const App = React.memo(function AppFactory() {
   useEffect(() => {
     const eventHandler = () => {
       const animDuration = getComputedStyle(document.documentElement).getPropertyValue('--page-transition-duration');
-      setAnimationTimeout(parseInt(animDuration, 10) + 100);
+      const parsed = parseInt(animDuration, 10);
+      !Number.isNaN(parsed) && setAnimationTimeout(parseInt(animDuration, 10));
     };
 
     window.addEventListener('load', eventHandler);
     window.addEventListener('resize', eventHandler);
+
+    eventHandler();
 
     return () => {
       window.removeEventListener('load', eventHandler);

@@ -34,8 +34,8 @@ function getWorks() {
 }
 
 function getLabs() {
-  return Object
-    .keys(labs)
+  return Array
+    .from(labs.keys())
     .map(slug => `/lab/${slug}`);
 }
 
