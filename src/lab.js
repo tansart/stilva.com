@@ -1,6 +1,9 @@
 // 'mediapipe': require('./labs/mediapipe/index').default,
 // 'refactor-06-2020': require('./labs/refactor-06-2020').default,
 export default new Map(injectIndex([
+  ['refactor', {
+    label: 'Refactoring the Folio'
+  }],
   ['glsl-ui-animation', {
     label: 'GLSL UI animation'
   }],
