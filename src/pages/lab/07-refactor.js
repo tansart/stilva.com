@@ -38,7 +38,7 @@ export default memo(function () {
     </p>
     <p>
       I used <code>loadable-components</code> to do route-based component splitting (see below). The lighthouse score
-      did not change much, but without code splitting lighthouse score would have eventually seen a dip from bundle.js
+      improved. Moreover without code splitting the lighthouse scores would have progressively worsen from bundle.js
       getting too large.
     </p>
     <Code lan="jsx">
