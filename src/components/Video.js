@@ -4,6 +4,7 @@ import {css} from 'linaria';
 const placeholder = css`
   display: block;
   height: 0;
+  max-width: 624px;
   position: relative;
   width: 100%;
 `;

@@ -17,12 +17,6 @@
           "value": "max-age=60"
         }
       ]
-    },
-    "rewrites": [
-      {
-        "source": "/uxe/**",
-        "function": "uxe"
-      }
-    ]
+    }
   }
 }

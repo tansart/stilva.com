@@ -40,31 +40,35 @@ export default memo(function () {
       overall seemed like an interesting tool to experiment with.
     </p>
     <p>
-      <i>Note:</i> There are a few TFLite examples out there, showing ways of running a <code>.tflite</code> model on a
-      mobile. I just wanted to experiment with MediaPipe.
+      <i>Note:</i> You can use TFLite without MediaPipe but there's more to just adding a TFLite model to building an ML
+      based mobile app.
     </p>
     <p>
-      While the concept is great, MediaPipe has quite the steep learning curve. Bazel, C++, TFLite's C++ API, MediaPipe
-      Calculators. I've spent quite some time just trying to set-up a project. Turns out, when you want to create your
-      own calculators, tweak some components that are given to you, you need to just fork the project. My workflow
-      current workflow is to point <code>origin</code> to my github,
-      and <code>upstream</code> to <code>google/mediapipe</code>, and <code>git rebase
-      upstream/master</code>.
+      While the concept is great, MediaPipe has quite the steep learning curve. You need to understand Bazel, write C++,
+      learn the MediaPipe specific concepts such as Calculators etc.
     </p>
     <p>
-      <i>Note:</i> it is possible to reference mediapipe from within your bazel build files (<a
-      href="https://github.com/mgyong/mediapipe_addons/blob/master/helloworld/BUILD">here</a>'s an example), there are a
-      lot of restrictions when it comes to package visibility. After couple of hours hacking away and going through
-      bazel documentation, I gave up and opted for my current workflow.
+      I spent quite some time trying to set-up my project. I initially wanted to treat it like a third-party dependency,
+      but I quickly ran into problems when trying to write my own custom Calculators, or extend
+      their <code>FrameProcessor.java</code> file.
     </p>
     <p>
-      On top of the steep learning curve, it's still in alpha so there's no guarantees the current API will stand.
-      Moreover, the documentation is still lacking.
+      In the end, I set-up my project to have two remote end-points. <code>origin</code> points to my github,
+      while <code>upstream</code> points to <code>google/mediapipe</code>, and I occasionally run <code>git rebase
+      upstream/master</code> to rebase my repo atop MediaPipe.
+    </p>
+    <p>
+      <i>Note:</i> To reference MediaPipe from within your bazel build files see <a
+      href="https://github.com/mgyong/mediapipe_addons/blob/master/helloworld/BUILD" target="_blank">here</a>.
     </p>
     {/*<p>
       export ANDROID_NDK_HOME=/Users/thomas/Library/Android/sdk/ndk/21.2.6472646/
       open -a "Android Studio"
     </p>*/}
+    <p>
+      This following one-liner compiles all your calculator, bundles your <code>.tflite</code> model, streams the
+      final <code>.apk</code> onto your phone, and launches the <code>MainActivity</code>.
+    </p>
     <p>
       <code>
         bazel build -c opt --config=android_arm64
@@ -75,15 +79,11 @@ export default memo(function () {
         --pid=`adb shell pidof -s com.google.mediapipe.apps.basic`
       </code>
     </p>
-    <p>
-      This one-liner compiles all your calculator, bundles your <code>.tflite</code> model, streams the
-      final <code>.apk</code> onto your phone, and launches the <code>MainActivity</code>.
-    </p>
     <h2>Custom MediaPipe calculator</h2>
     <p>
       I've also gone ahead and created a new calculator that
       converts <code>std::vector &lt;GlBuffer&gt;</code> into <code>mediapipe::GpuBuffer</code>. This is great for
-      models that spit out an image.
+      models that spit out an image. I learnt about Compute Shaders – something that hasn't quite made its way to WebGL!
     </p>
     {/*<p>
       In the future, I'd like to import https://bkaradzic.github.io/bgfx/ assuming it works on iOS.
