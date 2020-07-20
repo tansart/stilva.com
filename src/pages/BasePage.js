@@ -161,6 +161,7 @@ const baseStyle = css`
 
 const page = css`
   display: block;
+  min-height: 100%;
   min-width: 100vw;
   overflow: hidden;
   padding: 86px 20px;
@@ -229,7 +230,7 @@ function getContentClass(section, transitionstate, direction) {
 }
 
 export default function BasePage({background, backPath, children, section, isList, transitionstate}) {
-  const offset = useOnScroll(transitionstate);
+  const offset = useOnScroll(transitionstate, section);
   const direction = useTransitionDirection(transitionstate);
   const {previousRoute} = useContext(RouterContext);
 
@@ -263,7 +264,10 @@ export default function BasePage({background, backPath, children, section, isLis
   >
     {backPath && <BackButton path={backPath}/>}
     <div className={contentClass}
-         style={{top: `-${offset}px`}}>
+         style={{
+           top: `-${offset}px`,
+           background: offset
+         }}>
       {children}
     </div>
     {background && React.createElement(background, {previousRoute, transitionstate})}

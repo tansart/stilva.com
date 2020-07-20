@@ -17,8 +17,16 @@
 html, body {
   background: #f1f1f1;
   font-family: 'Roboto Mono', monospace;
+  height: 100%;
   margin: 0;
+  min-height: 100%;
   overflow-x: hidden;
   padding: 0;
   width: 100vw;
+}
+
+#app {
+  display: block;
+  min-height: 100%;
+  position: relative;
 }

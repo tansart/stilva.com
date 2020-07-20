@@ -1,5 +1,6 @@
 import React from 'react';
 import {hydrate} from 'react-dom';
+
 import {canUseDOM} from './utils/dom';
 
 import './styles/index.scss';

@@ -1,6 +1,9 @@
 // 'mediapipe': require('./labs/mediapipe/index').default,
 // 'refactor-06-2020': require('./labs/refactor-06-2020').default,
 export default new Map(injectIndex([
+  ['mediapipe', {
+    label: 'MediaPipe'
+  }],
   ['refactor', {
     label: 'Refactoring the Folio'
   }],
