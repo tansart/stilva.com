@@ -7,7 +7,7 @@
     "analyse": "npm run build && webpack-bundle-analyzer ./dist/stats-fe.json -p 8000",
     "build": "NODE_ENV=production webpack --config webpack.config.js --display-error-details",
     "crawl": "NODE_ENV=production babel-node ./crawler.js --presets=@babel/preset-env,@babel/preset-react",
-    "deploy": "npm run build && npm run crawl && firebase deploy",
+    "deploy": "npm run build && npm run crawl && firebase deploy --except functions",
     "deploy:functions": "firebase deploy --only functions",
     "start": "webpack-dev-server --hot --config webpack.config.js"
   },

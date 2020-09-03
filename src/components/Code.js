@@ -20,7 +20,18 @@ export default memo(function ({children, lan}) {
     if(!node.current) return;
 
     import(/* webpackChunkName: "prismjs" */ /* webpackMode: "lazy" */ 'prismjs')
-      .then(() => import(/* webpackChunkName: "prismjs-jsx" */ /* webpackMode: "lazy" */ 'prismjs/components/prism-jsx'))
+      .then(() => {
+        switch(lan) {
+          case 'jsx':
+            return import(/* webpackChunkName: "prismjs-jsx" */ /* webpackMode: "lazy" */ 'prismjs/components/prism-jsx');
+          case 'java':
+            return import(/* webpackChunkName: "prismjs-java" */ /* webpackMode: "lazy" */ 'prismjs/components/prism-java');
+          case 'javascript':
+          default:
+            return Promise.resolve();
+        }
+        // import(/* webpackChunkName: "prismjs-python" */ /* webpackMode: "lazy" */ 'prismjs/components/prism-python'),
+      })
       .then(() => {
         Prism.highlightElement(node.current, false);
       });
