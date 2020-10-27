@@ -14,14 +14,14 @@ export default memo(function Home({transitionstate}) {
     </p>
     <h2>My role /</h2>
     <p>
-      At Paperless Post, I work as a senior software engineer (since April 2019) as part of the Pages team. I've
+      At Paperless Post, I work as a senior software engineer (since April 2019) as part of the WEB team. I've
       worked on multiple UI projects, including but not limited to unifying components across teams, building the
       payment UIs, revamped existing UIs and added animations for a more delightful user experience.
     </p>
     <p>
-      Moreover I've done a lot of work on improving bundle size (a lot of next.js/webpack config tweaks), improving
-      and creating internal tools (internal temporar A/B testing framework, improving an old school rails sass build
-      system process by 60 times), and more.
+      Moreover I've done a lot of work on improving bundle size (next.js/webpack config tweaks), improving
+      and creating internal tools (internal interim A/B testing framework, improving an old school rails sass build
+      system process by 60 fold), and more.
     </p>
     <h2>Shallow dive /</h2>
     <p>
@@ -35,8 +35,8 @@ export default memo(function Home({transitionstate}) {
       target="_blank">previous iteration</a> of <a href="https://material.io/" target="_blank">Material design</a> and
       built with <a href="https://github.com/stripe/react-stripe-elements" target="_blank">react stripe elements</a>.
       Given the solid foundations of Material design, the difficulties lied with getting the Stripe and non-Stripe
-      elements to interact and animate similarly – Stripe uses iframes in order to keep all the Credit Card
-      information in their "context", so it was difficult to get everything animating the same.<br/>
+      elements to interact and animate seamlessly – Stripe uses iframes in order to keep all the Credit Card
+      information in their "context", so it was an interesting challenge.<br/>
       We are planning to update the textfield components to follow the latest Material design guidelines, and to then
       unify some of the other input fields to use the same components.
     </p>
