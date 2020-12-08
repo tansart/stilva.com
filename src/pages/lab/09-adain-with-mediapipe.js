@@ -65,24 +65,12 @@ public void onCaptureSuccess(ImageProxy image, int rotationDegrees) {
       I then
     </p>*/}
     <p>
-      This took me a while to figure out, as there wasn't much documentation around it, but the trick was to use
-      the <code>SyncSetInputStreamHandler</code>. By adding the following, the calculator was able to run as soon as
-      either stream was ready.
+      By using the <code>ImmediateInputStreamHandler</code>, the calculator is able to run as soon as either stream was ready.
     </p>
     <Code lan="javascript">
       {`
 input_stream_handler {
-  input_stream_handler: "SyncSetInputStreamHandler"
-  options {
-    [mediapipe.SyncSetInputStreamHandlerOptions.ext] {
-      sync_set {
-        tag_index: "VIDEO"
-      }
-      sync_set {
-        tag_index: "STYLE"
-      }
-    }
-  }
+  input_stream_handler: "ImmediateInputStreamHandler"
 }
       `}
     </Code>
