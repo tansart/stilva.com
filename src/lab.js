@@ -1,6 +1,9 @@
 // 'mediapipe': require('./labs/mediapipe/index').default,
 // 'refactor-06-2020': require('./labs/refactor-06-2020').default,
 export default new Map(injectIndex([
+  // ['real-time-style-transfer-on-android-with-mediapipe', {
+  //   label: 'Real-time style transfer on Android with Mediapipe'
+  // }],
   ['adain-with-mediapipe', {
     label: 'AdaIN with MediaPipe'
   }],

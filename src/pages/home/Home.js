@@ -40,7 +40,7 @@ export default memo(function Home({transitionstate}) {
   >
     <p className={cx(pagragraph, first)}>
       <Greetings/><br/>
-      I'm <AnimatedLink link="https://www.twitter.com/tansart" label="Thomas Ansart" target="_blank" rel="noreferrer" />,
+      I'm <AnimatedLink link="https://github.com/stilva" label="Thomas" target="_blank" rel="noreferrer" /> <AnimatedLink link="https://www.twitter.com/tansart" label="Ansart" target="_blank" rel="noreferrer" />,
       a senior software engineer at Paperless Post, NY. Previously principal developer at Firstborn
     </p>
     <p className={pagragraph}>

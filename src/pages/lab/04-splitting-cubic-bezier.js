@@ -159,7 +159,7 @@ export default memo(function () {
     </p>
     <p>
       Below, we have a quadratic Bézier curve: two points where the line starts/end and two control points that
-      dictates the curvature of the curve (control points).
+      dictates the curvature of the curve.
     </p>
     <GraphTwo/>
     <p>
@@ -176,14 +176,14 @@ export default memo(function () {
     </Code>
     <p>
       Unfortunately, we cannot solely rely on this formula as it only gives us the point on the curve at a
-      given <code>t</code>, without its two control points.
+      given <code>t</code> – and <code>t</code> doesn't directly correlate to the x-axis.
     </p>
     <p>
       Luckily, there is a simple recursive approximate algorithm called <code>de Casteljau's algorithm</code>, which
       allows you to split a curve into two distinct Bézier curves at any given <code>t</code>.
     </p>
     <p>
-      Here's the geometric representation of the algorithm:
+      Here's the geometric representation of the algorithm (the vertical line tracks <code>t</code>):
     </p>
     <GraphThree/>
     <p>

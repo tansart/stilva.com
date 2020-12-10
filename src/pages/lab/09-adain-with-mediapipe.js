@@ -4,7 +4,7 @@ import Code from '../../components/Code'
 export default memo(function () {
   return <>
     <h1>AdaIN with MediaPipe</h1>
-    <p>This is a work in progress – the Android app needs some UI work, and I'm still training the model.</p>
+    {/*<p>I've written a more thorough follow up: <a href="/lab/adain-with-mediapipe">Real-time style transfer on Android with Mediapipe</a></p>*/}
     <h2>Tensorflow implementation</h2>
     <p>
       I've been experimenting with MediaPipe for the last few months and my latest project has been an Android MediaPipe
