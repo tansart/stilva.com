@@ -7,7 +7,6 @@ export default memo(function ({transitionstate}) {
   return <>
     <h1>GLSL UI animation</h1>
     <App transitionstate={transitionstate}/>
-    <p><i>Note:</i> You can highlight the text, since the DOM is used as a texture in the shader.</p>
     <p>
       The two modules above are <strong>prototypes</strong> for one of my side project that I've been tinkering with.
       To build them, I've used both <code>@stilva/spring</code> and <code>@stilva/glsls</code>, and I thought I'd

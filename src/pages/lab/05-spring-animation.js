@@ -113,7 +113,7 @@ export default memo(function () {
       library.
     </p>
     <p>
-      Before let's go through the core requirements that I felt were crucial to a spring component:
+      First, let's go through the core requirements that I felt were crucial to a spring component:
     </p>
     <ul>
       <li>configurability of mass, tension, friction etc</li>
@@ -199,7 +199,7 @@ function Square({}) {
         `}
     </Code>
     <p>
-      And here's what we get:
+      And here's what we get (move your mouse around the square):
     </p>
     <Example/>
     <p>

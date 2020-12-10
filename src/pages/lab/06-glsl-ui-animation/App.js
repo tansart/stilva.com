@@ -47,6 +47,10 @@ const column = css`
   width: 20%;
 `;
 
+const centered = css`
+  margin: 0 auto;
+`;
+
 function Section({isVisible}) {
   const [animTitleProps, setAnimTitleProps] = useSpring({ x: 0 });
   const [animCatProps, setAnimCatProps] = useSpring({ x: 0 });
@@ -303,6 +307,7 @@ export default function Wrapper({transitionstate}) {
       height={rect.height}
       width={rect.width}
     />}
+    <p style={{textAlign: "center"}}><i>Note:</i> You can highlight the text, since the DOM is used as a texture in the shader.</p>
   </>
 }
 
