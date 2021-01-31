@@ -120,7 +120,6 @@ export default class AnimatedLink extends Component {
 
     const onClick = e => {
       e.preventDefault();
-      trackPage(label);
       this.context.setRoute(link);
     };
 
