@@ -1,7 +1,9 @@
-import React, {Component, useRef} from 'react';
+import React, {Component} from 'react';
 import {css, cx} from 'linaria';
 
 import {RouterContext} from "@stilva/transitionable-react-router";
+
+import {trackPage} from '../utils/tracker';
 
 const anchor = css`
   cursor: pointer;
@@ -110,6 +112,7 @@ export default class AnimatedLink extends Component {
         className={anchor}
         href={link}
         {...extra}
+        onClick={() => trackPage(label)}
         ref={node => this.node = node}>
         <AnimatedLinkDecorator {...props} />
       </a>
@@ -117,6 +120,7 @@ export default class AnimatedLink extends Component {
 
     const onClick = e => {
       e.preventDefault();
+      trackPage(label);
       this.context.setRoute(link);
     };
 
