@@ -1,5 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Router, TransitionableReactRoute} from "@stilva/transitionable-react-router";
+
+import {trackPage} from '../utils/tracker';
 
 import Home from '../pages/home/Home';
 
@@ -31,8 +33,9 @@ export const App = React.memo(function AppFactory() {
   }, []);
 
   return <TransitionableReactRoute
-    timeout={timeout}
     animateOnMount={true}
+    onRouteChange={trackPage}
+    timeout={timeout}
   >
     <LabList path="/lab" />
     <LabEntry path="/lab/:labId" />
