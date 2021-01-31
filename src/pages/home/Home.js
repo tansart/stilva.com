@@ -40,15 +40,15 @@ export default memo(function Home({transitionstate}) {
   >
     <p className={cx(pagragraph, first)}>
       <Greetings/><br/>
-      I'm <AnimatedLink link="https://github.com/stilva" label="Thomas" target="_blank" rel="noreferrer" /> <AnimatedLink link="https://www.twitter.com/tansart" label="Ansart" target="_blank" rel="noreferrer" />,
+      I'm Thomas Ansart (<AnimatedLink link="https://github.com/stilva" label="Github" target="_blank" rel="noreferrer" />, <AnimatedLink link="https://www.twitter.com/tansart" label="Twitter" target="_blank" rel="noreferrer" />),
       a senior software engineer at Paperless Post, NY. Previously principal developer at Firstborn
-    </p>
-    <p className={pagragraph}>
-      My day job involves engineering solutions, creating pixel perfect, and delightful UIs. Here's some of my <AnimatedLink link="work" label="work" key="lab"/>
     </p>
     <p className={pagragraph}>
       At night, I spend my time building UIs, writing code, or actively exploring Machine Learning (tensorflow/Python), with my pug Nugget on my laps.
       Check out my <AnimatedLink link="lab" label="Lab" key="lab"/>
+    </p>
+    <p className={pagragraph}>
+      My day job involves engineering solutions, creating pixel perfect, and delightful UIs. Here's some of my <AnimatedLink link="work" label="work" key="lab"/>
     </p>
     <p className={pagragraph}>
       Always down for a <AnimatedLink onClick={onContact} label="chat" rel="nofollow"/> over a drink
