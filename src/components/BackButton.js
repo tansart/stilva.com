@@ -6,7 +6,7 @@ import {RouterContext} from "@stilva/transitionable-react-router";
 const button = css`
   display: block;
   left: 20px;
-  position: absolute;
+  position: fixed;
   top: 20px;
   z-index: 3;
 `;

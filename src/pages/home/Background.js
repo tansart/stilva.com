@@ -11,6 +11,7 @@ const canvas = css`
   min-height: 100vh;
   min-width: 100vw;
   opacity: 1;
+  pointer-events: none;
   position: fixed;
   right: 0;
   top: 0;
