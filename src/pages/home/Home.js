@@ -44,7 +44,7 @@ export default memo(function Home({transitionstate}) {
       a senior software engineer at Paperless Post, NY. Previously principal developer at Firstborn
     </p>
     <p className={pagragraph}>
-      At night, I spend my time building UIs, writing code, or actively exploring Machine Learning (tensorflow/Python), with my pug Nugget on my laps.
+      At night, I spend my time building UIs, writing code, or actively exploring Machine Learning (tensorflow/Python), with my pug Nugget on my lap.
       Check out my <AnimatedLink link="lab" label="Lab" key="lab"/>
     </p>
     <p className={pagragraph}>

@@ -26,19 +26,17 @@ export default memo(function Home({transitionstate}) {
     <h2>Shallow dive /</h2>
     <p>
       I thought I would highlight some of the UI work I've done in the last few months. I'll go over the checkout UIs
-      I've built, followed by some major UI revamps I've done in the manage section, and lastly some more UI work I've
+      I've built, followed by some UI revamps I've worked on in the manage section, and lastly some more UI work I've
       done in the RSVP flow.
     </p>
     <p>
-      Below is a prototype of the UI work I've done on some of our checkout UI. Based on the <a
+      Below is a prototype of the UI work I've built on some of our checkout UI. Based on the <a
       href="https://medium.com/google-design/the-evolution-of-material-designs-text-fields-603688b3fe03"
       target="_blank">previous iteration</a> of <a href="https://material.io/" target="_blank">Material design</a> and
       built with <a href="https://github.com/stripe/react-stripe-elements" target="_blank">react stripe elements</a>.
       Given the solid foundations of Material design, the difficulties lied with getting the Stripe and non-Stripe
       elements to interact and animate seamlessly – Stripe uses iframes in order to keep all the Credit Card
       information in their "context", so it was an interesting challenge.<br/>
-      We are planning to update the textfield components to follow the latest Material design guidelines, and to then
-      unify some of the other input fields to use the same components.
     </p>
     <Video src="/videos/cards.mp4" enabled={isVideoEnabled} ratio={532 / 900}/>
     <p>
