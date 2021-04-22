@@ -2,7 +2,7 @@
   "sourceMaps": true,
   "presets": [
     ["@babel/preset-env", {
-      "targets": "last 2 years"
+      "targets": "last 1 year"
     }],
     "@babel/preset-react",
     "linaria/babel"

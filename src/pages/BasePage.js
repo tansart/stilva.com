@@ -1,7 +1,6 @@
-import React, {memo, useContext, Component} from 'react';
+import React from 'react';
 import {css} from 'linaria';
 import cx from 'classnames';
-import {RouterContext} from "@stilva/transitionable-react-router";
 
 import useOnScroll from "../hooks/useOnScroll";
 import useTransitionDirection from "../hooks/useTransitionDirection";
@@ -96,7 +95,7 @@ const baseStyle = css`
     padding-top: 12px;
     position: relative;
     
-    ~ p {
+    & ~ p {
       margin-top: 6px;
     }
   }
@@ -117,6 +116,10 @@ const baseStyle = css`
       margin: 0;
       position: relative;
       text-decoration: none;
+    }
+    
+    & ~ code {
+      margin-top: -.5em;
     }
   }
   
@@ -229,10 +232,9 @@ function getContentClass(section, transitionstate, direction) {
   `;
 }
 
-export default function BasePage({background, backPath, children, section, isList, transitionstate}) {
+export default function BasePage({backPath, children, section, isList, transitionstate}) {
   const offset = useOnScroll(transitionstate, section);
   const direction = useTransitionDirection(transitionstate);
-  const {previousRoute} = useContext(RouterContext);
 
   let animationType = "animation";
 
@@ -270,6 +272,5 @@ export default function BasePage({background, backPath, children, section, isLis
          }}>
       {children}
     </div>
-    {background && React.createElement(background, {previousRoute, transitionstate})}
   </div>
 }

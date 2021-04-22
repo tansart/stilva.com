@@ -1,11 +1,12 @@
-import React, { memo } from 'react';
+import React, {memo, useContext} from 'react';
 import { css, cx } from 'linaria';
 
 import Greetings from '../../components/Greetings';
 import AnimatedLink from '../../components/AnimatedLink';
 import BasePage from '../../pages/BasePage';
-import Background from "../Home/Background";
+import Background from "../home/Background";
 import {mq} from '../../utils/css-utils';
+import {RouterContext} from "@stilva/transitionable-react-router";
 
 const pagragraph = css`
   color: white;
@@ -29,6 +30,8 @@ const first = css`
 `;
 
 export default memo(function Home({transitionstate}) {
+  const {previousRoute} = useContext(RouterContext);
+
   const props = {
     background: Background,
     section:'home',
@@ -53,6 +56,7 @@ export default memo(function Home({transitionstate}) {
     <p className={pagragraph}>
       Always down for a <AnimatedLink onClick={onContact} label="chat" rel="nofollow"/> over a drink
     </p>
+    <Background previousRoute={previousRoute} transitionstate={transitionstate} />
   </BasePage>
 });
 

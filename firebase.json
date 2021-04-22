@@ -9,14 +9,25 @@
       "stats-fe.json"
     ],
     "cleanUrls": true,
-    "headers": {
-      "source": "**/*.@(html)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "max-age=60"
-        }
-      ]
-    }
+    "headers": [
+      {
+        "source": "**/*.@(jpg|jpeg|gif|png|css|js)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=1000000"
+          }
+        ]
+      },
+      {
+        "source": "t.js",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
+      }
+    ]
   }
 }

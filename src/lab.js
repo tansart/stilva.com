@@ -4,6 +4,9 @@ export default new Map(injectIndex([
   // ['real-time-style-transfer-on-android-with-mediapipe', {
   //   label: 'Real-time style transfer on Android with Mediapipe'
   // }],
+  // ['splittable-bezier-component', {
+  //   label: 'Splittable Bézier component'
+  // }],
   ['adain-with-mediapipe', {
     label: 'AdaIN with MediaPipe'
   }],

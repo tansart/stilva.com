@@ -102,6 +102,11 @@ const svg = css`
   }
 `;
 
+const graphTwoOverwrite = css`
+  height: 300px;
+  width: 300px;
+`;
+
 export default memo(function () {
   return <>
     <h1>Splitting a cubic Bézier curve</h1>
@@ -164,7 +169,7 @@ export default memo(function () {
     <GraphTwo/>
     <p>
       Here's the quadratic Bézier curve function that returns the point of the curve at <code>t</code> (where <code>t
-      ∈ {0, 1}</code>) given the four points <code>p0, p1, p2, p3</code>:
+      ∈ {'{0, 1}'}</code>) given the four points <code>p0, p1, p2, p3</code>:
     </p>
 
     <Code lan="javascript">
@@ -183,14 +188,31 @@ export default memo(function () {
       allows you to split a curve into two distinct Bézier curves at any given <code>t</code>.
     </p>
     <p>
-      Here's the geometric representation of the algorithm (the vertical line tracks <code>t</code>):
+      Here's the visual representation of the algorithm (the vertical line tracks <code>t</code>):
     </p>
     <GraphThree/>
     <p>
-      We're almost there. Given the text will vary in length, we'll need to split the Bézier curve on the y-axis. And
-      here's the tricky part: how to find all the intersecting points between the line and the Bézier curve? Luckily,
-      the heavy lifting was already done <a
-      href="https://www.particleincell.com/2013/cubic-line-intersection/">here</a>
+      We're almost there!
+    </p>
+    <p>
+      Given the text will vary in length, we'll need to split the Bézier curve on the y-axis (as opposed to the x-axis which is the easing duration). And this is where it gets
+      a bit tricky: as you can see in the graph below, if we were to split the Bézier curve on the y-axis, in three separate parts, we'd end-up with
+      more than one intersection between the horizontal lines and the curve:
+    </p>
+    <GraphTwo showControlPoints={false} overWriteCSS={graphTwoOverwrite} points={[[0, 0], [160, 735], [500, 0], [500, 500]]} viewBox="-100 -100 700 700">
+      <line x1={0} y1={350} x2={500} y2={350} stroke="black" style={{strokeWidth: 2}} shapeRendering="crispEdges"/>
+      <circle cx="42" cy="350" r="8" fill="#0a6bf2" stroke="black" strokeWidth="4" />
+
+      <line x1={0} y1={175} x2={500} y2={175} stroke="black" style={{strokeWidth: 2}} shapeRendering="crispEdges"/>
+      <circle cx="155" cy="175" r="8" fill="#f8205d" stroke="black" strokeWidth="4" />
+      <circle cx="355" cy="175" r="8" fill="#f8205d" stroke="black" strokeWidth="4" />
+      <circle cx="460" cy="175" r="8" fill="#f8205d" stroke="black" strokeWidth="4" />
+
+      <circle cx={0} cy={500} r="12" fill="black" stroke="none"/>
+      <circle cx={500} cy={0} r="12" fill="black" stroke="none"/>
+    </GraphTwo>
+    <p>
+      Luckily, finding the intersection of a line and a Bézier curve is solved <a href="https://www.particleincell.com/2013/cubic-line-intersection/">here</a>.
     </p>
     <p>
       Below we have our tweaked component which has
@@ -225,12 +247,11 @@ function GraphOne() {
   </svg>
 }
 
-function GraphTwo() {
-  const points = [[0, 0], [0, 250], [290, 500], [500, 0]];
-
-  return <svg viewBox="-50 -50 600 600" className={svg} xmlns="http://www.w3.org/2000/svg">
-    {drawBezier(points)}
+function GraphTwo({children, showControlPoints = true, overWriteCSS, points = [[0, 0], [0, 250], [290, 500], [500, 0]], viewBox="-50 -50 600 600"}) {
+  return <svg viewBox={viewBox} className={cx(svg, overWriteCSS)} xmlns="http://www.w3.org/2000/svg">
+    {showControlPoints && drawBezier(points)}
     {drawCurve(points[0], points[1], points[2], points[3])}
+    {children}
   </svg>
 }
 
