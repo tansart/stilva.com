@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require("terser-webpack-plugin");
 const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 const LoadablePlugin = require('@loadable/webpack-plugin')
 
@@ -115,38 +115,8 @@ module.exports = {
 	},
 
 	optimization: {
-		minimizer: [prodOnly(
-				new UglifyJsPlugin({
-					uglifyOptions: {
-						output: {
-							beautify: false,
-							comments: false
-						},
-						compress: {
-							unsafe_comps: true,
-							properties: true,
-							keep_fargs: false,
-							pure_getters: true,
-							collapse_vars: true,
-							unsafe: true,
-							warnings: false,
-							sequences: true,
-							dead_code: true,
-							drop_debugger: true,
-							comparisons: true,
-							conditionals: true,
-							evaluate: true,
-							booleans: true,
-							loops: true,
-							unused: true,
-							hoist_funs: true,
-							if_return: true,
-							join_vars: true,
-							drop_console: true
-						}
-					}
-				})
-		)]
+    minimize: true,
+    minimizer: [new TerserPlugin()]
 	},
 
 	plugins: [
@@ -188,6 +158,7 @@ module.exports = {
 		historyApiFallback: true,
 		port: process.env.PORT || 8080,
 		proxy: {
+			'/assets': `http://${devServerConfig.host}:${devServerConfig.port}/dist`,
 			'/images': `http://${devServerConfig.host}:${devServerConfig.port}/dist`,
 			'/videos': `http://${devServerConfig.host}:${devServerConfig.port}/dist`
 		}

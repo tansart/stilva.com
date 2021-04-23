@@ -1,12 +1,12 @@
 // 'mediapipe': require('./labs/mediapipe/index').default,
 // 'refactor-06-2020': require('./labs/refactor-06-2020').default,
 export default new Map(injectIndex([
-  // ['real-time-style-transfer-on-android-with-mediapipe', {
-  //   label: 'Real-time style transfer on Android with Mediapipe'
-  // }],
   // ['splittable-bezier-component', {
   //   label: 'Splittable Bézier component'
   // }],
+  ['real-time-style-transfer-with-tensorflowjs', {
+    label: 'Real-time style transfer with tensorflow.js'
+  }],
   ['adain-with-mediapipe', {
     label: 'AdaIN with MediaPipe'
   }],

@@ -215,6 +215,9 @@ export default memo(function () {
       Luckily, finding the intersection of a line and a Bézier curve is solved <a href="https://www.particleincell.com/2013/cubic-line-intersection/">here</a>.
     </p>
     <p>
+      👀 Note to self: finish writing this.
+    </p>
+    <p>
       Below we have our tweaked component which has
       the <code>transition-timing-function</code>, <code>transition-delay</code> etc, tweaked and applied on a per
       element basis.

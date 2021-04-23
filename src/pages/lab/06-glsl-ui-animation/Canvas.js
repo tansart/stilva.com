@@ -148,7 +148,8 @@ export default function Canvas({children}) {
         });
     });
 
-    glsl.fragment`//2D (returns 0 - 1)
+    glsl.fragment`out vec4 flagColor;
+//2D (returns 0 - 1)
 float random2d(vec2 n) { 
   return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
 }
@@ -172,7 +173,7 @@ void main()
   vec2 uv = gl_FragCoord.xy/u_resolution.xy;
   uv = vec2(uv.x, 1. - uv.y);
   
-  vec4 img = texture2D(u_image, uv);
+  vec4 img = texture(u_image, uv);
   vec4 outCol = vec4(vec3(dot( img.rgb, vec3(.2126, .7152, .0722) )), img.a);
   
   float i = 1.;
@@ -183,7 +184,7 @@ void main()
   vec2 uvOff = uv;
   uvOff.x += hOffset;
   if (insideRange(uv.y, sliceY, fract(sliceY+sliceH)) == 1.0 ){
-    outCol = texture2D(u_image, uvOff);
+    outCol = texture(u_image, uvOff);
       
     if (insideRange(uv.x, sliceH, fract(sliceY+sliceH)) == 1.0 ) {
       has = true;
@@ -197,7 +198,7 @@ void main()
   colOffset = vec2(hOffset * -1.);
   
   if(has) {
-    vec4 t = texture2D(u_image, uv + colOffset);
+    vec4 t = texture(u_image, uv + colOffset);
     if(rnd < 0.33 && t.a > 0.){
       outCol.r = t.r;
     } else if (rnd < 0.66){
@@ -205,8 +206,8 @@ void main()
     }
   }
 
-  // gl_FragColor = texture2D(u_background, uv);
-  gl_FragColor = outCol;
+  // flagColor = texture(u_background, uv);
+  flagColor = outCol;
 }`;
 
     glsl.render();
