@@ -15,8 +15,7 @@ export default memo(function Home({transitionstate}) {
     <h2>My role /</h2>
     <p>
       At Paperless Post, I work as a senior software engineer (since April 2019) as part of the WEB team. I've
-      worked on multiple UI projects, including but not limited to unifying components across teams, building the
-      payment UIs, revamped existing UIs and added animations for a more delightful user experience.
+      worked on multiple UI projects, including but not limited to building and revamping UIs and adding some subtle animations for a more delightful user experience.
     </p>
     <p>
       Moreover I've done a lot of work on improving bundle size (next.js/webpack config tweaks), improving
@@ -35,7 +34,7 @@ export default memo(function Home({transitionstate}) {
       target="_blank">previous iteration</a> of <a href="https://material.io/" target="_blank">Material design</a> and
       built with <a href="https://github.com/stripe/react-stripe-elements" target="_blank">react stripe elements</a>.
       Given the solid foundations of Material design, the difficulties lied with getting the Stripe and non-Stripe
-      elements to interact and animate seamlessly – Stripe uses iframes in order to keep all the Credit Card
+      elements to interact and animate seamlessly – Stripe uses iframes in order to keep all the sensitive customer
       information in their "context", so it was an interesting challenge.<br/>
     </p>
     <Video src="/videos/cards.mp4" enabled={isVideoEnabled} ratio={532 / 900}/>
@@ -48,7 +47,7 @@ export default memo(function Home({transitionstate}) {
     <Video src="/videos/simple.1.mp4" enabled={isVideoEnabled} ratio={780 / 900}/>
     <p>
       Based on the exploration above, I had also tried adding some scaling to the card. Unfortunately, this animation
-      had some visual defects – fonts antialiasing, overall business with the various colours, and different text
+      had some visual defects – fonts antialiasing, overall busyness with the various colours, and different text
       layouts.
     </p>
     <Video src="/videos/simple.2.mp4" enabled={isVideoEnabled} ratio={780 / 900}/>
@@ -60,6 +59,7 @@ export default memo(function Home({transitionstate}) {
     <p>
       Ultimately though, the final animation was based on the first iteration, but without the text animating in.
       This made both the HTML simpler, and worked better with majority of the data that can be see on production.
+      (the animations were further simplified on production around March 2021)
     </p>
     <Video src="/videos/simple.4.mp4" enabled={isVideoEnabled} ratio={780 / 900}/>
     <p>

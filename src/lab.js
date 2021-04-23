@@ -4,9 +4,9 @@ export default new Map(injectIndex([
   // ['splittable-bezier-component', {
   //   label: 'Splittable Bézier component'
   // }],
-  ['real-time-style-transfer-with-tensorflowjs', {
-    label: 'Real-time style transfer with tensorflow.js'
-  }],
+  // ['real-time-style-transfer-with-tensorflowjs', {
+  //   label: 'Real-time style transfer with tensorflow.js'
+  // }],
   ['adain-with-mediapipe', {
     label: 'AdaIN with MediaPipe'
   }],
