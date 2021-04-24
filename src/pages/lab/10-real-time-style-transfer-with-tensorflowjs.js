@@ -1,79 +1,54 @@
-import React, {memo, useEffect, useRef} from 'react';
+import React, {memo, useState, Suspense} from 'react';
+import loadable from "@loadable/component";
+import {css} from 'linaria';
 
-import { facemeshFactory, StyleTransferHelper } from './10-real-time-style-transfer-with-tensorflowjs/tf.facemesh';
-import GLSL from "@stilva/glsl";
+const Webcam = loadable(() => import('./10-real-time-style-transfer-with-tensorflowjs/Webcam'));
+
+const webcamWrapperCSS = css`
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 640px;
+  position: relative;
+  
+  &:before {
+    content: '';
+    display: block;
+    height: 0;
+    position: relative;
+    padding-top: calc(400 / 640 * 100%);
+    width: 100%;
+  }
+  
+  & > * {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+  }
+`;
 
 export default memo(function () {
-  const node = useRef();
-  const video = document.createElement('video');
-
-  useEffect(() => {
-    let generator;
-
-    const styleTransferHelper = new StyleTransferHelper();
-    const glsl = new GLSL(node.current, {webglVersion: 'webgl'});
-    glsl.addVariable('u_delta', [0, 2, 4]);
-
-    video.addEventListener('loadeddata', async () => {
-      generator = await facemeshFactory(video);
-      await styleTransferHelper.init(video.videoWidth, video.videoHeight);
-      await styleTransferHelper.setStyle('/assets/adain/images/style_03.png');
-
-      const canvas = document.createElement('canvas');
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
-
-      const updateBackground = glsl.addTexture('u_background', canvas);
-      const updateFaces = glsl.addTexture('u_faces', canvas);
-      const updateMask = glsl.addTexture('u_mask', canvas);
-
-      glsl.fragment`void main() {
-        vec2 uv = gl_FragCoord.xy/u_resolution.xy;
-        uv = vec2(uv.x, 1. - uv.y);
-        vec4 bg = texture2D(u_background, uv);
-        vec4 faces = texture2D(u_faces, uv);
-        gl_FragColor = mix(bg, faces, step(2., texture2D(u_mask, uv).a + faces.a));
-      }`;
-
-      glsl.render();
-
-      for await (let generated of generator.generator()) {
-        styleTransferHelper.clear();
-        ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
-
-        for(let mesh of generated) {
-          await styleTransferHelper.crop(canvas, mesh);
-          await styleTransferHelper.applyStyletransfer();
-          await styleTransferHelper.draw(mesh);
-        }
-        const images = await styleTransferHelper.getImages();
-        updateBackground(canvas);
-        updateMask(images[0]);
-        updateFaces(images[1]);
-      }
-    });
-
-    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-      .then((stream) => {
-        video.srcObject = stream;
-        video.play();
-      })
-      .catch(function(err) {
-        console.log("An error occurred: " + err);
-      });
-
-    return () => {
-      glsl.kill();
-      generator.kill();
-      styleTransferHelper.destroy();
-      video.srcObject.getTracks().forEach(track => track.stop());
-    };
-  }, []);
-
+  const [loadWebcam, setLoadWebcam] = useState(false);
   return <>
     <h1>Real-time style transfer with tensorflow.js</h1>
-    <canvas ref={node} width={640} height={400} />
+    <p>
+      Last year I worked on a small arbitrary style transfer machine learning model that could run in real-time on my Pixel 2.
+      I trained it in Tensorflow, built with MediaPipe.
+    </p>
+    <p>
+      Below is the same model, saved as <code>SavedModel</code>, then converted with <code>tfjs-converter</code>:
+    </p>
+    <p>
+      <i>Note:</i> please be aware that this will load 5 ML models, which is about 35MB of data – face detection model,
+      face landmark model, vgg encoder, encoder, and the AdaIN decoder.
+    </p>
+    <div className={webcamWrapperCSS}>
+      {loadWebcam ? <Webcam />: <button onClick={() => setLoadWebcam(true)}>
+        Start the webcam
+      </button>}
+    </div>
   </>
 });
