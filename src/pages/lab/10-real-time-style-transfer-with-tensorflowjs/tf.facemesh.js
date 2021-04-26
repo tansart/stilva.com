@@ -83,6 +83,10 @@ export class StyleTransferHelper {
     this._st = new StyleTransfer();
   }
 
+  setAlpha(n) {
+    this._st.setAlpha(n);
+  }
+
   async init(w, h) {
     await this._st.init();
 

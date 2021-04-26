@@ -46,10 +46,6 @@ const animatedLink = css`
     transform: translateX(calc(-100% - 1px));
     transition: transform 250ms ease-out;
     width: 100%;
-
-    //@media #{$tablet-large} {
-    //  height: 2px;
-    //}
   }
   
   &.visible .underline {
@@ -100,7 +96,7 @@ export default class AnimatedLink extends Component {
   }
 
   render() {
-    const {link, label, ...extra} = this.props;
+    const {link, label, overrideCSS, ...extra} = this.props;
     const external = !link || link.indexOf('http') > -1;
 
     const className = cx(animatedLink, this.state.visible && 'visible');
@@ -124,9 +120,9 @@ export default class AnimatedLink extends Component {
     };
 
     return <a
-      className={anchor}
+      className={cx(anchor, overrideCSS)}
       href={link}
-      onClick={onClick}
+      onClick={this.props.onClick || onClick}
       ref={node => this.node = node}
     >
         <AnimatedLinkDecorator {...props} />
