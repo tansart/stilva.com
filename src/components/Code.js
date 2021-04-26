@@ -26,6 +26,8 @@ export default memo(function ({children, lan}) {
             return import(/* webpackChunkName: "prismjs-jsx" */ /* webpackMode: "lazy" */ 'prismjs/components/prism-jsx');
           case 'java':
             return import(/* webpackChunkName: "prismjs-java" */ /* webpackMode: "lazy" */ 'prismjs/components/prism-java');
+          case 'markup':
+            return import(/* webpackChunkName: "prismjs-markup" */ /* webpackMode: "lazy" */ 'prismjs/components/prism-markup');
           case 'javascript':
           default:
             return Promise.resolve();

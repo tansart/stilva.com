@@ -4,6 +4,9 @@ export default new Map(injectIndex([
   // ['splittable-bezier-component', {
   //   label: 'Splittable Bézier component'
   // }],
+  ['drop-table-shadow-maker', {
+    label: 'Drop-table-shadow maker'
+  }],
   ['real-time-style-transfer-with-tensorflowjs', {
     label: 'Real-time style transfer with tensorflow.js'
   }],
