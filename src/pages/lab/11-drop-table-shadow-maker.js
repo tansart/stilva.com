@@ -7,16 +7,14 @@ export default memo(function () {
   return <>
     <h1>Drop-table-shadow maker</h1>
     <p>
-      Here's a quick drop-table-shadow maker: many many nested tables so your email clients that don't support AMP-email,
+      Here's a quick drop-table-shadow maker (or more like a table-box-shadow maker): many many nested tables so your email clients that don't support AMP-email,
       nor CSS <code>filter: drop-shadow(...);</code>, nor CSS <code>background: linear-gradient(...);</code>, and not even
       a basic support for <code>background: url(...) [no-repeat|repeat-x|repeat-y]);</code> – looking at you outlook 2007+
     </p>
     <p>
       This is far from perfect, since it's effectively doing a 9 slice scaling on the table.
     </p>
-    <p>
-      <i>Note:</i> This was a very quick evening hack, so it doesn't support spread yet.
-    </p>
+    <br />
     <DropTableShadow />
   </>
 });
@@ -91,7 +89,7 @@ function DropTableShadow({}) {
   const onChangeFactory = (type, isInt = true) => e => {
     setData({
       ...data,
-      [type]: isInt ? parseInt(e.target.value, 10): e.target.value
+      [type]: isInt ? parseInt(e.target.value || 0, 10): e.target.value
     })
   };
 
@@ -104,8 +102,6 @@ function DropTableShadow({}) {
         <br/>
         <NumberInput label="Blur" id="blur" defaultValue={8} onChange={onChangeFactory('blur')} />
         <br/>
-        <NumberInput label="Spread" id="spread" onChange={onChangeFactory('spread')} disabled={true} />
-        <br/>
         <NumberInput label="Opacity" id="opacity" min={0} max={1} step={.01} defaultValue={.3} onChange={onChangeFactory('opacity')} />
         <br/>
         <ColourInput label="Background" id="background" defaultColour="#f1f1f1" onChange={onChangeFactory('background', false)} />
@@ -115,6 +111,7 @@ function DropTableShadow({}) {
       </div>
       <div className={sampleCSS} dangerouslySetInnerHTML={{__html: html}}/>
     </div>
+    <br/>
     <Code lan="markup">{html}</Code>
   </>;
 }
@@ -185,7 +182,7 @@ function getHTML({xMin, xMax, yMin, yMax}, ctx) {
       if(r === center.r && c === center.c) {
         out += `
 
-<td style="text-align:center; width: 100px;"> 🤠 </td>
+<td style="text-align:center; width: 200px;"> <br/> 🤠 <br/> &lt;table /&gt; wrangler <br/> &nbsp; </td>
 
 `;
       } else {
