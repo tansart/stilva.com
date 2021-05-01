@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -30,8 +31,8 @@ module.exports = {
 	output: {
 		path: path.resolve(__dirname, "dist"),
 		publicPath: '/',
-    chunkFilename: 'partials/[name].js',
-		filename: 'bundle.js'
+    chunkFilename: 'partials/[name].[contenthash].js',
+		filename: 'bundle.[contenthash].js'
 	},
 
 	resolve: {
@@ -120,13 +121,23 @@ module.exports = {
 	},
 
 	plugins: [
+    new CleanWebpackPlugin({
+      dry: false,
+      cleanOnceBeforeBuildPatterns: [
+        '**/*',
+        '!t.js',
+        '!assets/**',
+        '!images/**',
+        '!videos/**',
+      ],
+    }),
 		new webpack.NoEmitOnErrorsPlugin(),
 		new webpack.DefinePlugin({
 			'process.env.NODE_ENV': JSON.stringify(ENV),
 			'__DEV__': JSON.stringify(ENV !== 'production')
 		}),
 		new MiniCssExtractPlugin({
-			filename: 'styles.css',
+			filename: 'styles.[contenthash].css',
 			allChunks: true,
 			// disable: ENV !== 'production'
 		}),

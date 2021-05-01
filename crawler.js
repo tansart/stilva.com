@@ -2,7 +2,8 @@ import ejs from 'ejs';
 import {join, resolve} from 'path';
 import {readFile, writeFile} from 'fs';
 import {mkdirp} from 'mkdirp';
-import {ChunkExtractor} from '@loadable/server'
+import {ChunkExtractor} from '@loadable/server';
+import { parse } from 'node-html-parser';
 
 import React from 'react';
 import {renderToString} from 'react-dom/server';
@@ -15,16 +16,16 @@ import work from './src/work';
 import {App} from './src/components/App.js';
 import {RouterContext} from "@stilva/transitionable-react-router";
 
-readFile('./src/index.ejs', (err, buff) => {
-  const tpl = ejs.compile(buff.toString());
+readFile('./dist/index.html', (err, buff) => {
+  const parsedTemplate = parse(buff.toString());
 
-  ['/', '/lab', '/work'].forEach(path => writeToFile(tpl, path));
+  ['/', '/lab', '/work'].forEach(path => writeToFile(parsedTemplate, path));
 
   getLabs()
-    .forEach(path => writeToFile(tpl, path, true));
+    .forEach(path => writeToFile(parsedTemplate, path, true));
 
   getWorks()
-    .forEach(path => writeToFile(tpl, path, true));
+    .forEach(path => writeToFile(parsedTemplate, path, true));
 });
 
 function getWorks() {
@@ -51,10 +52,7 @@ function writeToFile(tpl, path, isEntry = false) {
     <App/>
   </RouterContext.Provider>);
 
-  const out = tpl({
-    distPath: '/dist',
-    rendered: renderToString(jsx)
-  });
+  tpl.querySelector('#app').set_content(renderToString(jsx));
 
   const filename = join(`${path === '/' ? 'index' : path}.html`);
 
@@ -65,7 +63,7 @@ function writeToFile(tpl, path, isEntry = false) {
 
   pMakeDirOrSkip({prefix: './dist', folder: match[1], uri: filename})
     .then(({prefix, folder, uri}) => {
-      writeFile(join(prefix, uri), out, err => {
+      writeFile(join(prefix, uri), tpl.toString(), err => {
         if (err) {
           console.log('Error while writing to file', err.toString())
         }
