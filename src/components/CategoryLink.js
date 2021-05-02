@@ -142,6 +142,10 @@ export default class AnimatedLink extends Component {
   }
 
   update = (t) => {
+    if (typeof IntersectionObserver === 'undefined') {
+      return;
+    }
+
     for(let r of this.ratios) {
       if(t > r.max) {
         r.t.style.transform = `translateX(0%)`;

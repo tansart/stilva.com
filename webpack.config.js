@@ -31,8 +31,8 @@ module.exports = {
 	output: {
 		path: path.resolve(__dirname, "dist"),
 		publicPath: '/',
-    chunkFilename: 'partials/[name].[contenthash].js',
-		filename: 'bundle.[contenthash].js'
+    chunkFilename: 'partials/[name].[hash].js',
+		filename: 'bundle.[hash].js'
 	},
 
 	resolve: {
@@ -78,6 +78,15 @@ module.exports = {
             },
           }
         ]
+      },
+      {
+        test: /\.wasm$/i,
+        type: 'javascript/auto',
+        use: [
+          {
+            loader: 'file-loader',
+          },
+        ],
       },
 			{
 				test: /\.(scss|css)$/,

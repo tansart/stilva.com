@@ -314,6 +314,11 @@ function IntersectionObs({id, onVisibilityChange}) {
       threshold: [0, 1]
     };
 
+    if(typeof IntersectionObserver === 'undefined') {
+      // iOS 11 :(
+      return () => {};
+    }
+
     observer = new IntersectionObserver(onVisibilityChange, options);
     observer.observe(ref.current);
 
