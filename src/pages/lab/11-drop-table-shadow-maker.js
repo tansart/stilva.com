@@ -115,7 +115,7 @@ function DropTableShadow({}) {
     checkValue(gradientProperties, 'yMin', 'yMax', data.background, (i) => ctx.getImageData(150 + data.offset_x, i, 1, 1));
 
     debounced((...args) => {
-      setHtml(parser.current.getHTML(...args));
+      setHtml(parser.current.getHTML(...args).replaceAll(/\>([\s\n\r]+)\</ig, () => `><`));
     }, gradientProperties);
   }, [data, setHtml, parser]);
 
@@ -141,9 +141,9 @@ function DropTableShadow({}) {
         <br/>
         <NumberInput label="Opacity" id="opacity" min={0} max={1} step={.01} defaultValue={.3} onChange={onChangeFactory('opacity', (value) => parseFloat(value))} />
         <br/>
-        <ColourInput label="Background" id="background" defaultColour="#f1f1f1" onChange={onChangeFactory('background', (value) => parseInt(value, 10))} />
+        <ColourInput label="Background" id="background" defaultColour="#f1f1f1" onChange={onChangeFactory('background')} />
         <br/>
-        <ColourInput label="Dropshadow colour" id="color" defaultColour="#000000" onChange={onChangeFactory('color', (value) => parseInt(value, 10))} />
+        <ColourInput label="Dropshadow colour" id="color" defaultColour="#000000" onChange={onChangeFactory('color')} />
         <br/>
       </div>
       <div className={sampleCSS} style={{background: data.background}} dangerouslySetInnerHTML={{__html: html}}/>
@@ -223,9 +223,12 @@ class Parser {
 
   constructor(ctx) {
     this._ctx = ctx;
+    this._classes = '';
   }
 
   getHTML = ({xMin, xMax, yMin, yMax}) => {
+    this._classes = '';
+
     let out = `<table border="0" class="${tableCSS}" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:collapse;border-spacing:0px;">
   <tbody>
 `;
