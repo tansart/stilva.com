@@ -58,12 +58,13 @@ function writeToFile(tpl, path, isEntry = false) {
 
   const folderPattern = /^(\/.+\/)?[^\.]+\.(?:html)$/ig;
   const match = folderPattern.exec(filename);
+  const stringified = tpl.toString();
 
   if (!match) return;
 
   pMakeDirOrSkip({prefix: './dist', folder: match[1], uri: filename})
     .then(({prefix, folder, uri}) => {
-      writeFile(join(prefix, uri), tpl.toString(), err => {
+      writeFile(join(prefix, uri), stringified, err => {
         if (err) {
           console.log('Error while writing to file', err.toString())
         }

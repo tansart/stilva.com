@@ -4,6 +4,9 @@ export default new Map(injectIndex([
   // ['splittable-bezier-component', {
   //   label: 'Splittable Bézier component'
   // }],
+  // ['face-from-landmarks', {
+  //   label: 'Face from landmarks'
+  // }],
   ['drop-table-shadow-maker', {
     label: 'Drop-table-shadow maker'
   }],
