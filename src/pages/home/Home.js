@@ -44,10 +44,10 @@ export default memo(function Home({transitionstate}) {
     <p className={cx(pagragraph, first)}>
       <Greetings/><br/>
       I'm Thomas Ansart (<AnimatedLink link="https://github.com/stilva" label="Github" target="_blank" rel="noreferrer" />, <AnimatedLink link="https://www.twitter.com/tansart" label="Twitter" target="_blank" rel="noreferrer" />),
-      a senior software engineer at Paperless Post, NY. Previously principal developer at Firstborn
+      a software engineer based in Brooklyn, NY.
     </p>
     <p className={pagragraph}>
-      At night, I spend my time building UIs, writing code, or actively exploring Machine Learning (tensorflow/Python), with my pug Nugget on my lap.
+      Outside of work, I spend my time building UIs, writing code, or actively exploring Machine Learning (tensorflow/Python), with my pug Nugget on my lap.
       Check out my <AnimatedLink link="lab" label="Lab" key="lab"/>
     </p>
     <p className={pagragraph}>

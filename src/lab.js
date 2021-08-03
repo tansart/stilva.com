@@ -7,6 +7,9 @@ export default new Map(injectIndex([
   // ['face-from-landmarks', {
   //   label: 'Face from landmarks'
   // }],
+  ['instance-normalization', {
+    label: 'Instance Normalization with tfjs'
+  }],
   ['drop-table-shadow-maker', {
     label: 'Drop-table-shadow maker'
   }],

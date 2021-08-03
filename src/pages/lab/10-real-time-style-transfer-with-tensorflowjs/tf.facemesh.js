@@ -36,8 +36,45 @@ export const facemeshFactory = async function facemeshFactory(input) {
   }
 }
 
+const GRAPH_MAPPING = {
+  no_instance_norm: {
+    vgg: {
+      node: 'input_9:0',
+      url: '/assets/adain/adain_vgg/model.json'
+    },
+    decoder: {
+      url: '/assets/adain/adain_decoder/model.json'
+    },
+    encoder: {
+      node: 'input_10:0',
+      url: '/assets/adain/adain_encoder/model.json'
+    },
+    alpha: {
+      node: 'input_11:0',
+    }
+  },
+  with_instance_norm: {
+    vgg: {
+      node: 'input_8:0',
+      url: '/assets/12-adaIN/adain_vgg/model.json'
+    },
+    decoder: {
+      url: '/assets/12-adaIN/adain_decoder/model.json'
+    },
+    encoder: {
+      node: 'input_9:0',
+      url: '/assets/12-adaIN/adain_encoder/model.json'
+    },
+    alpha: {
+      node: 'input_10:0',
+    }
+  }
+}
+
 export class StyleTransfer {
-  constructor() {
+  constructor(use_instance_norm=false) {
+    this._use_instance_norm = use_instance_norm;
+    this._model_mapping = GRAPH_MAPPING[use_instance_norm ? 'with_instance_norm': 'no_instance_norm'];
     this.s255 = tf.scalar(255);
     this.alpha = tf.mul(tf.scalar(.5), tf.ones([1, 1, 1, 512]));
   }
@@ -47,9 +84,9 @@ export class StyleTransfer {
   }
 
   async init() {
-    this.model_vgg = await loadGraphModel('/assets/adain/adain_vgg/model.json');
-    this.model_decoder = await loadGraphModel('/assets/adain/adain_decoder/model.json');
-    this.model_encoder = await loadGraphModel('/assets/adain/adain_encoder/model.json');
+    this.model_vgg = await loadGraphModel(this._model_mapping.vgg.url);
+    this.model_encoder = await loadGraphModel(this._model_mapping.encoder.url);
+    this.model_decoder = await loadGraphModel(this._model_mapping.decoder.url);
   }
 
   async vgg(imageData) {
@@ -66,10 +103,13 @@ export class StyleTransfer {
 
   async decode(content) {
     let output = this.model_decoder.execute({
-      'input_9:0': this.style,
-      'input_10:0': content,
-      'input_11:0': this.alpha
+      [this._model_mapping.vgg.node]: this.style,
+      [this._model_mapping.encoder.node]: content,
+      [this._model_mapping.alpha.node]: this.alpha
     });
+    if(this._use_instance_norm) {
+      output = tf.mul(output, 255.);
+    }
     output = tf.squeeze(output, 0);
     output = tf.clipByValue(output, 0, 255);
     output = tf.cast(output, 'int32');
@@ -79,8 +119,8 @@ export class StyleTransfer {
 }
 
 export class StyleTransferHelper {
-  constructor() {
-    this._st = new StyleTransfer();
+  constructor(use_instance_norm = false) {
+    this._st = new StyleTransfer(use_instance_norm);
   }
 
   setAlpha(n) {

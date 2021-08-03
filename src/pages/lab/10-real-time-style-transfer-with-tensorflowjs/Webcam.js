@@ -170,7 +170,7 @@ const IMAGES = [
   'style_07'
 ]
 
-export default memo(function () {
+export default memo(function ({useIN=false}) {
   const node = useRef();
   const helperRef = useRef();
   const wrapperRef = useRef();
@@ -181,7 +181,7 @@ export default memo(function () {
   useEffect(() => {
     let generator;
 
-    const styleTransferHelper = new StyleTransferHelper();
+    const styleTransferHelper = new StyleTransferHelper(useIN);
     helperRef.current = styleTransferHelper;
     const glsl = new GLSL(node.current, {webglVersion: 'webgl'});
 
