@@ -232,9 +232,12 @@ function getContentClass(section, transitionstate, direction) {
   `;
 }
 
+let hasRendered = false;
 export default function BasePage({backPath, children, section, isList, transitionstate}) {
-  const offset = useOnScroll(transitionstate, section);
-  const direction = useTransitionDirection(transitionstate);
+  const mState = typeof window === 'object' ? (hasRendered ? transitionstate: 'entered'): 'entered';
+  hasRendered = true;
+  const offset = useOnScroll(mState, section);
+  const direction = useTransitionDirection(mState);
 
   let animationType = "animation";
 
@@ -244,23 +247,23 @@ export default function BasePage({backPath, children, section, isList, transitio
     animationType += '-lr';
   }
 
-  if (transitionstate === 'exiting') {
+  if (mState === 'exiting') {
     animationType += '-out';
   }
 
   const contentClass = cx(
     content,
     section !== 'home' && baseStyle,
-    getContentClass(section, transitionstate, direction, isList && list)
+    getContentClass(section, mState, direction, isList && list)
   );
 
   return <div
     className={cx([
       section,
       page,
-      transitionstate === 'entering' && entering,
-      transitionstate === 'exiting' && exiting,
-      transitionstate === 'exited' && exited,
+      mState === 'entering' && entering,
+      mState === 'exiting' && exiting,
+      mState === 'exited' && exited,
     ])}
     style={{'--page-transition-animation': animationType}}
   >
