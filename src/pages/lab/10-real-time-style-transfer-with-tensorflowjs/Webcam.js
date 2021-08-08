@@ -193,7 +193,7 @@ export default memo(function ({useIN=false}) {
 
       generator = await facemeshFactory(video);
       await styleTransferHelper.init(video.videoWidth, video.videoHeight);
-      await styleTransferHelper.setStyle('/assets/adain/images/style_03.png');
+      await styleTransferHelper.setStyle('/assets/10-adain/images/style_03.png');
 
       ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
 
@@ -281,9 +281,9 @@ export default memo(function ({useIN=false}) {
     <input className={inputRangeCSS} type="range" onInput={e => helperRef.current.setAlpha(e.target.value)} min="0" max="10" defaultValue="5" step="1"/>
     <div className={stylesListCSS} onDragOver={e => e.preventDefault()} onDrop={handlerFunction}>
       <IntersectionObs onVisibilityChange={(entries) => onVisibilityChange(entries?.[0], wrapperRef.current, 'left-visibility')} />
-      {IMAGES.map((name, i) => <Picture name={`style_${i}`} onClick={onImageClickFactory(i)} selectedStyle={i === selected ? selectedCSS: null} src={`/assets/adain/images/${name}.png`} />)}
+      {IMAGES.map((name, i) => <Picture name={`style_${i}`} onClick={onImageClickFactory(i)} selectedStyle={i === selected ? selectedCSS: null} src={`/assets/10-adain/images/${name}.png`} />)}
       {images.map((src, i) => <Picture name={`user_style_${i}`} onClick={onImageClickFactory(IMAGES.length + i)} selectedStyle={IMAGES.length + i === selected ? selectedCSS: null} src={src} />)}
-      {<Picture name={'add'} onClick={() => document.getElementById('input')?.click()} selectedStyle={null} src={`/assets/adain/images/plus.png`} />}
+      {<Picture name={'add'} onClick={() => document.getElementById('input')?.click()} selectedStyle={null} src={`/assets/10-adain/images/plus.png`} />}
       <IntersectionObs onVisibilityChange={(entries) => onVisibilityChange(entries?.[0], wrapperRef.current, 'right-visibility')} />
     </div>
   </div>

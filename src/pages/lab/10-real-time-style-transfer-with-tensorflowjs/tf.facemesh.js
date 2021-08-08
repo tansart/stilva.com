@@ -40,14 +40,14 @@ const GRAPH_MAPPING = {
   no_instance_norm: {
     vgg: {
       node: 'input_9:0',
-      url: '/assets/adain/adain_vgg/model.json'
+      url: '/assets/10-adain/adain_vgg/model.json'
     },
     decoder: {
-      url: '/assets/adain/adain_decoder/model.json'
+      url: '/assets/10-adain/adain_decoder/model.json'
     },
     encoder: {
       node: 'input_10:0',
-      url: '/assets/adain/adain_encoder/model.json'
+      url: '/assets/10-adain/adain_encoder/model.json'
     },
     alpha: {
       node: 'input_11:0',

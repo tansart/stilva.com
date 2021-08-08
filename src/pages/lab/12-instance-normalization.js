@@ -31,6 +31,36 @@ const buttonCSS = css`
   }
 `;
 
+const diffWrapperCSS = css`
+  & > div:first-of-type {
+    opacity: 0;
+    position: absolute;
+    z-index: 1;
+  }
+  
+  &:hover {
+    & > div:first-of-type {
+      opacity: 1;
+    }
+    
+    & > div:last-of-type {
+      opacity: 0;
+    }
+  }
+`;
+
+const imageWrapperCSS = css`
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  
+  img {
+    display: block;
+    width: 100%;
+  }
+`;
+
 export default memo(function () {
   const { setRoute } = useContext(RouterContext);
   const [loadWebcam, setLoadWebcam] = useState(false);
@@ -47,10 +77,10 @@ export default memo(function () {
       the Android GPU delegate would constantly fail when the model had an <a href="https://www.tensorflow.org/addons/api_docs/python/tfa/layers/InstanceNormalization" target="_blank">Instance Normalization</a> layer.
     </p>
     <p>
-      Thankfully, tfjs seems to work well with the webgl backend 🎉. Will update with some side-by-side tests after some more training.
+      Thankfully, tfjs seems to work well with the webgl backend 🎉.
     </p>
     <p>
-      Notebook is here: <a href="https://github.com/stilva/adain-notebook" target="_blank">stilva/adain-notebook</a>
+      Notebook is here: <a href="https://github.com/stilva/adain-notebook/blob/main/AdaIN.ipynb" target="_blank">stilva/adain-notebook</a>
     </p>
     <h2>Demo /</h2>
     <div className={webcamWrapperCSS}>
@@ -58,6 +88,18 @@ export default memo(function () {
         e.preventDefault();
         setLoadWebcam(true)
       }} />}
+    </div>
+    <h2>Comparison /</h2>
+    <div className={diffWrapperCSS}>
+      <p>
+        Below is a set of faces with style transfer applied to it <strong>with</strong> Instance normalization. Hover to see <strong>without</strong> Instance Normalization
+      </p>
+      <div className={imageWrapperCSS}>
+        <img src="/assets/12-adaIN/without_IN.jpeg" alt=""/>
+      </div>
+      <div className={imageWrapperCSS}>
+        <img src="/assets/12-adaIN/with_IN.jpeg" alt=""/>
+      </div>
     </div>
   </>
 });
